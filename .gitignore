@@ -50,7 +50,6 @@ docs/_build
 
 # Virtualenvs
 env
-env*
 venv
 
 # intellij
