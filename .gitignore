@@ -1,3 +1,6 @@
+# block our environment file for docker
+.env
+
 *.log
 
 *.py[codt]
