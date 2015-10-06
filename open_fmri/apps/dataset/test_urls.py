@@ -4,7 +4,7 @@ from django.test import TestCase
 from dataset.models import Dataset
 from dataset.views import DatasetCreate, DatasetList, DatasetUpdate
 
-class DataSetUrlTest(TestCase):
+class DataSetUrlTestCase(TestCase):
 
     def setUp(self):
         self.dataset = Dataset.objects.create(
