@@ -17,14 +17,41 @@
     <link rel="icon" type="image/gif" href="{% static 'img/favicon.gif' %}">
 
     {% block css %}
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     {% endblock %}
 
   </head>
 
   <body>
-    <div class="container">
+    <div class="m-b">
+      <nav class="navbar navbar-dark navbar-static-top bg-inverse">
+        <div class="container">
+         <a class="navbar-brand" href="/">OpenfMRI</a>
+          <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+            &#9776;
+          </button>
 
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
+            <nav class="nav navbar-nav">
+              <a class="nav-link nav-item" href="{% url 'dataset_list' %}">Home</a>
+              <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
+            </nav>
+        
+            <nav class="nav navbar-nav pull-right">
+             </nav>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+          {% endfor %}
+      {% endif %}
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
