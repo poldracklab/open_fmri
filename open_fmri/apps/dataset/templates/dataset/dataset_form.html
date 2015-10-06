@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+{% if object.pk %}
+    Update Dataset
+{% else %}
+    Create Dataset
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <input type="submit" value="Save">
+    <table>
+    {{ form.as_table }}
+    </table>
+    </form>
+{% endblock %}

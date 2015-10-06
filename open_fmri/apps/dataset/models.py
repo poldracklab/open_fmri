@@ -18,23 +18,27 @@ class Dataset(models.Model):
     project_name = models.CharField(max_length=MAX_TITLE_LENGTH)
     summary = models.TextField()
     sample_size = models.IntegerField()
-    scanner_type = models.TextField()
-    accession_number = models.CharField(max_length=200)
+    scanner_type = models.TextField(blank=True)
+    accession_number = models.CharField(max_length=200, blank=True)
     investigator = models.ManyToManyField('Investigator')
-    acknowledgements = models.TextField()
+    acknowledgements = models.TextField(blank=True)
 
     # These three fields are for any papers associated with the dataset
-    publication_pubmed_link = models.ManyToManyField('PublicationPubMedLink')
-    publication_full_text = models.ManyToManyField('PublicationFullText')
-    publication_document = models.ManyToManyField('PublicationDocument')
+    publication_pubmed_link = models.ManyToManyField('PublicationPubMedLink',
+                                                     blank=True)
+    publication_full_text = models.ManyToManyField('PublicationFullText',
+                                                   blank=True)
+    publication_document = models.ManyToManyField('PublicationDocument',
+                                                  blank=True)
 
-    license_title = models.CharField(max_length=MAX_TITLE_LENGTH)
-    license_url = models.TextField(validators=[URLValidator()])
+    license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
+                                     default="PPDL")
+    license_url = models.TextField(validators=[URLValidator()], blank=True)
 
-    task = models.ManyToManyField('Task')
+    task = models.ManyToManyField('Task', blank=True)
 
-    aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH)
-    aws_link_url = models.TextField(validators=[URLValidator()])
+    aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
+    aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
 
 class Investigator(models.Model):
     investigator = models.CharField(max_length=200)

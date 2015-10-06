@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}
+    Datasets
+{% endblock %}
+
+{% block content %}
+{% for dataset in object_list %}
+    {{ dataset.project_name }}
+{% endfor %}
+{% endblock %}
