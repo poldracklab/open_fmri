@@ -49,4 +49,8 @@ class PublicationFullText(models.Model):
 class PublicationDocument(models.Model):
     document = models.FileField()
 
+# Form will hit the cogat api, we will only record the cogat id for the task 
+# so we can find it again and the name for display purposes
 class Task(models.Model):
+    cogat_id = models.TextField()
+    name = models.TextField()
