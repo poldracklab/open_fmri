@@ -1,3 +1,6 @@
+#block vim swap files
+*.swp
+
 # block our environment file for docker
 .env
 

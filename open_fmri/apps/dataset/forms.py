@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
 from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
@@ -39,4 +40,22 @@ class PublicationPubMedLinkForm(ModelForm):
         model = PublicationPubMedLink
         fields = ['title', 'url']
 
+        widgets = {
+            'url': TextInput()
+        }
+
+InvestigatorFormSet = inlineformset_factory(
+    Dataset, Investigator, form=InvestigatorForm, extra=1)
+
+PublicationDocumentFormSet = inlineformset_factory(
+    Dataset, PublicationDocument, form=PublicationDocumentForm, extra=0, 
+    can_delete=False)
+
+PublicationFullTextFormSet = inlineformset_factory(
+    Dataset, PublicationFullText, form=PublicationFullTextForm, extra=0, 
+    can_delete=False)
+
+PublicationPubMedLinkFormSet = inlineformset_factory(
+    Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=0, 
+    can_delete=False)
 
