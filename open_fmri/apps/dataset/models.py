@@ -20,17 +20,9 @@ class Dataset(models.Model):
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
     accession_number = models.CharField(max_length=200, blank=True)
-    investigator = models.ManyToManyField('Investigator')
     acknowledgements = models.TextField(blank=True)
 
     # These three fields are for any papers associated with the dataset
-    publication_pubmed_link = models.ManyToManyField('PublicationPubMedLink',
-                                                     blank=True)
-    publication_full_text = models.ManyToManyField('PublicationFullText',
-                                                   blank=True)
-    publication_document = models.ManyToManyField('PublicationDocument',
-                                                  blank=True)
-
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
                                      default="PPDL")
     license_url = models.TextField(validators=[URLValidator()], blank=True)
@@ -42,16 +34,20 @@ class Dataset(models.Model):
 
 class Investigator(models.Model):
     investigator = models.CharField(max_length=200)
+    dataset = models.ForeignKey('Dataset')
 
 class PublicationPubMedLink(models.Model):
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     url = models.TextField(validators=[URLValidator()])
+    dataset = models.ForeignKey('Dataset')
     
 class PublicationFullText(models.Model):
     full_text = models.TextField()
+    dataset = models.ForeignKey('Dataset')
     
 class PublicationDocument(models.Model):
     document = models.FileField()
+    dataset = models.ForeignKey('Dataset')
 
 # Form will hit the cogat api, we will only record the cogat id for the task 
 # so we can find it again and the name for display purposes
