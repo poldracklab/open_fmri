@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
 
-from dataset.models import Dataset
+from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
+    PublicationFullText, PublicationDocument
 
 
 class DatasetForm(ModelForm):
@@ -17,3 +18,25 @@ class DatasetForm(ModelForm):
             'license_url': TextInput(),
             'aws_link_url': TextInput()
         }
+
+class InvestigatorForm(ModelForm):
+    class Meta:
+        model = Investigator
+        fields = ['investigator']
+
+class PublicationDocumentForm(ModelForm):
+    class Meta:
+        model = PublicationDocument
+        fields = ['document']
+
+class PublicationFullTextForm(ModelForm):
+    class Meta:
+        model = PublicationFullText
+        fields = ['full_text']
+
+class PublicationPubMedLinkForm(ModelForm):
+    class Meta:
+        model = PublicationPubMedLink
+        fields = ['title', 'url']
+
+
