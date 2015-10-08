@@ -5,9 +5,11 @@ from django.test import TestCase
 from model_mommy import mommy as ModelFactory
 
 from dataset.forms import DatasetForm, InvestigatorForm, \
-    PublicationDocumentForm, PublicationFullTextForm, PublicationPubMedLinkForm
+    PublicationDocumentForm, PublicationFullTextForm, \
+    PublicationPubMedLinkForm, TaskForm
+
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationFullText, PublicationPubMedLink
+    PublicationFullText, PublicationPubMedLink, Task
 
 class DatasetFormTestCase(TestCase):
     def test_valid_data(self):
@@ -79,4 +81,16 @@ class PublicationPubMedLink(TestCase):
         form = PublicationFullTextForm({})
         self.assertFalse(form.is_valid())
 
+class TaskTestCase(TestCase):
+    def test_valid_data(self):
+        task = ModelFactory.make('Task')
+        form = TaskForm({
+            'cogat_id': task.cogat_id,
+            'number': task.number
+        })
+        self.assertTrue(form.is_valid())
+    
+    def test_blank_data(self):
+        form = TaskForm({})
+        self.assertFalse(form.is_valid())
 
