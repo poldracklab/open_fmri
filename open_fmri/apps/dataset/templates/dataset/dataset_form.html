@@ -12,16 +12,13 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     <table class= "dataset_form table table-bordered">
     {{ form.as_table }}
-    {{ publication_document_formset.as_table }}
-    {{ publication_full_text_formset.as_table }}
-    {{ publication_pubmed_link_formset.as_table }}
     </table>
     
     <table id="id_investigator_table" class="table table-bordered">
         {% for form in investigator_formset %}
             <tr>
             <td>
-                {% for fld in form.hidden_fields %}{{ fld }}{% endfor %}
+                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
                 {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                 {{ form.investigator.label_tag }}
             </td>
@@ -31,8 +28,27 @@
             </tr>
         {% endfor %}
     </table>
+    
+    <table id="id_publication_document_table" class="table table-bordered">
+        {% for form in publication_document_formset %}
+            <tr>
+            <td>
+                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                {{ form.document.label_tag }}
+            </td>
+            <td>
+                {{ form.document }}
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
     <input class="btn btn-primary" type="submit" value="Save">
-    {{ investigator_formset.managment_form }}
+
+    {{ investigator_formset.management_form }}
+    {{ publication_document_formset.management_form }}
+    {{ publication_full_text_formset.management_form }}
+    {{ publication_pubmed_link_formset.management_form }}
     </form>
 {% endblock %}
 {% block javascript %}
@@ -42,6 +58,15 @@
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}'
+        });
+    })
+
+    
+    $(document).ready(function() {
+        $('#id_publication_document_table').formset({
+            addText: 'Add Publication Document',
+            deleteText: 'Remove',
+            prefix: '{{ publication_document_formset.prefix }}'
         });
     })
     </script>

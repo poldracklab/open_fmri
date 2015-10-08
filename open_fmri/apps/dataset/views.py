@@ -37,14 +37,14 @@ class DatasetCreate(CreateView):
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
 
-        if publication_formset.is_valid():
+        if publication_document_formset.is_valid():
             investigator_formset.save()
         
         publication_full_text_formset = PublicationFullTextFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
 
         if publication_full_text_formset.is_valid():
-            publication_full_text.save()
+            publication_full_text_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
@@ -58,3 +58,16 @@ class DatasetUpdate(UpdateView):
     model = Dataset
     form_class = DatasetForm
     success_url = reverse_lazy('dataset_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(DatasetCreate, self).get_context_data(**kwargs)
+        context['investigator_formset'] = InvestigatorFormSet(
+            instance=self.object)
+        context['publication_document_formset'] = PublicationDocumentFormSet(
+            instance=self.object)
+        context['publication_full_text_formset'] = PublicationFullTextFormSet(
+            instance=self.object)
+        context['publication_pubmed_link_formset'] = \
+            PublicationPubMedLinkFormSet(instance=self.object)
+        return context
+

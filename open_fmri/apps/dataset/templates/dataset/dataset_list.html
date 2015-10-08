@@ -4,7 +4,27 @@
 {% endblock %}
 
 {% block content %}
+<table class="table table-bordered">
+<thead>
+<tr>
+<td>
+Project Name
+</td>
+<td>
+<td>
+</tr>
+</thead>
+<tbody>
 {% for dataset in object_list %}
+    <tr>
+    <td>
     {{ dataset.project_name }}
-{% endfor %}
+    </td>
+    <td>
+    <a href="{% url 'dataset_update' dataset.id %}">Edit</a>
+    </td>
+    </tr>
+{% endfor %} 
+</tbody>
+</table>
 {% endblock %}

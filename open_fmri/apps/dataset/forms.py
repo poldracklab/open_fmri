@@ -48,14 +48,12 @@ InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1)
 
 PublicationDocumentFormSet = inlineformset_factory(
-    Dataset, PublicationDocument, form=PublicationDocumentForm, extra=0, 
-    can_delete=False)
+    Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1) 
 
 PublicationFullTextFormSet = inlineformset_factory(
-    Dataset, PublicationFullText, form=PublicationFullTextForm, extra=0, 
-    can_delete=False)
+    Dataset, PublicationFullText, form=PublicationFullTextForm, extra=1) 
 
 PublicationPubMedLinkFormSet = inlineformset_factory(
-    Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=0, 
-    can_delete=False)
+    Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
+    
 

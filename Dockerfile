@@ -9,6 +9,4 @@ ADD ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 RUN pip install -r /requirements/local.txt
 
-RUN groupadd -r open_fmri && useradd -r -g open_fmri open_fmri
-#ADD . /app
-#RUN chown -R django /app
+#RUN groupadd -r open_fmri && useradd -r -g open_fmri open_fmri
