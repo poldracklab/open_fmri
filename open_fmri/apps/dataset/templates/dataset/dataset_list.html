@@ -11,7 +11,9 @@
 Project Name
 </td>
 <td>
+</td>
 <td>
+</td>
 </tr>
 </thead>
 <tbody>
@@ -20,9 +22,8 @@ Project Name
     <td>
     {{ dataset.project_name }}
     </td>
-    <td>
-    <a href="{% url 'dataset_update' dataset.id %}">Edit</a>
-    </td>
+    <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
+    <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
     </tr>
 {% endfor %} 
 </tbody>
