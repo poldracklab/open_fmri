@@ -54,7 +54,7 @@
 {% block javascript %}
     <script>
     $(document).ready(function() {
-        $('#id_investigator_table').formset({
+        $('#id_investigator_table tr').formset({
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}'
@@ -63,7 +63,7 @@
 
     
     $(document).ready(function() {
-        $('#id_publication_document_table').formset({
+        $('#id_publication_document_table tr').formset({
             addText: 'Add Publication Document',
             deleteText: 'Remove',
             prefix: '{{ publication_document_formset.prefix }}'
