@@ -100,10 +100,10 @@
             <td>
                 {% for field in form.hidden_fields %}{{ field }}{% endfor %}
                 {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                {{ form.tasks }}
+                {{ form.cogat_id }}
             </td>
             <td>
-                {{ form.number}}
+                {{ form.number }}
             </td>
             </tr>
             </tbody>
@@ -117,6 +117,7 @@
     {{ publication_document_formset.management_form }}
     {{ publication_full_text_formset.management_form }}
     {{ publication_pubmed_link_formset.management_form }}
+    {{ task_formset.management_form }}
     </form>
 {% endblock %}
 {% block javascript %}

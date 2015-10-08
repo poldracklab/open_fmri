@@ -1,3 +1,6 @@
+import requests
+import requests_cache
+
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -7,6 +10,8 @@ from dataset.forms import DatasetForm, InvestigatorFormSet, \
     PublicationPubMedLinkFormSet, TaskFormSet
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationFullText, PublicationPubMedLink
+
+requests_cache.install_cache('test_cache')
 
 class DatasetList(ListView):
     model = Dataset
@@ -35,27 +40,28 @@ class DatasetCreate(CreateView):
         
         investigator_formset = InvestigatorFormSet(self.request.POST,
             self.request.FILES, instance=dataset)
-
         if investigator_formset.is_valid():
             investigator_formset.save()
 
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
-
         if publication_document_formset.is_valid():
             investigator_formset.save()
-        
+
         publication_full_text_formset = PublicationFullTextFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
-
         if publication_full_text_formset.is_valid():
             publication_full_text_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
-
         if publication_pubmed_link_formset.is_valid():
             publication_pubmed_link_formset.save()
+
+        task_formset = TaskFormSet(self.request.POST, self.request.FILES,
+            instance=dataset)
+        if task_formset.is_valid():
+            task_formset.save()
 
         return super(DatasetCreate, self).form_valid(form)
 

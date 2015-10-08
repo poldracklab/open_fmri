@@ -8,4 +8,5 @@ django-model-utils
 
 psycopg2
 requests
+requests-cache
 uwsgi
