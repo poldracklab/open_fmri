@@ -12,23 +12,37 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     <table class= "dataset_form table table-bordered">
     {{ form.as_table }}
-    {{ investigator_formset.as_table }}
     {{ publication_document_formset.as_table }}
     {{ publication_full_text_formset.as_table }}
     {{ publication_pubmed_link_formset.as_table }}
     </table>
+    
+    <table id="id_investigator_table" class="table table-bordered">
+        {% for form in investigator_formset %}
+            <tr>
+            <td>
+                {% for fld in form.hidden_fields %}{{ fld }}{% endfor %}
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                {{ form.investigator.label_tag }}
+            </td>
+            <td>
+                {{ form.investigator }}
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
     <input class="btn btn-primary" type="submit" value="Save">
+    {{ investigator_formset.managment_form }}
     </form>
 {% endblock %}
 {% block javascript %}
-    <script src="{% static 'js/jquey.formset.js' %}"></script>
     <script>
-    ${document).ready(function() {
-        $('').formset({
+    $(document).ready(function() {
+        $('#id_investigator_table').formset({
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}'
-        })
+        });
     })
     </script>
 {% endblock %}
