@@ -80,6 +80,7 @@ class DatasetUpdate(UpdateView):
             instance=self.object)
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet(instance=self.object)
+        context['task_formset'] = TaskFormSet(instance=self.object)
         return context
 
     def form_valid(self, form):
@@ -87,27 +88,28 @@ class DatasetUpdate(UpdateView):
         
         investigator_formset = InvestigatorFormSet(self.request.POST,
             self.request.FILES, instance=dataset)
-
         if investigator_formset.is_valid():
             investigator_formset.save()
 
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
-
         if publication_document_formset.is_valid():
             investigator_formset.save()
         
         publication_full_text_formset = PublicationFullTextFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
-
         if publication_full_text_formset.is_valid():
             publication_full_text_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
-
         if publication_pubmed_link_formset.is_valid():
             publication_pubmed_link_formset.save()
+        
+        task_formset = TaskFormSet(self.request.POST, self.request.FILES,
+            instance=dataset)
+        if task_formset.is_valid():
+            task_formset.save()
 
         return super(DatasetUpdate, self).form_valid(form)
 

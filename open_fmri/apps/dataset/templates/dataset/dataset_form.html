@@ -95,7 +95,6 @@
         </tr>
         </thead>
         {% for form in task_formset %}
-            <tbody>
             <tr>
             <td>
                 {% for field in form.hidden_fields %}{{ field }}{% endfor %}
@@ -106,7 +105,6 @@
                 {{ form.number }}
             </td>
             </tr>
-            </tbody>
         {% endfor %}
     </table>
 
@@ -152,6 +150,14 @@
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}'
+        });
+    })
+
+    $(document).ready(function() {
+        $('#id_task_table tr').formset({
+            addText: 'Add Task',
+            deleteText: 'Remove',
+            prefix: '{{ task_formset.prefix }}'
         });
     })
 
