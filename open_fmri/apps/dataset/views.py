@@ -4,7 +4,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from dataset.forms import DatasetForm, InvestigatorFormSet, \
     PublicationDocumentFormSet, PublicationFullTextFormSet, \
-    PublicationPubMedLinkFormSet
+    PublicationPubMedLinkFormSet, TaskFormSet
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationFullText, PublicationPubMedLink
 
@@ -27,6 +27,7 @@ class DatasetCreate(CreateView):
         context['publication_full_text_formset'] = PublicationFullTextFormSet()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet()
+        context['task_formset'] = TaskFormSet()
         return context
 
     def form_valid(self, form):

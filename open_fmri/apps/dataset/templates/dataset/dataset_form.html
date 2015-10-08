@@ -84,6 +84,33 @@
         {% endfor %}
     </table>
 
+    <table id="id_task_table" class="table table-bordered">
+        <thead>
+        <tr>
+        {% for field in task_formset.form.base_fields %}
+        <th>
+            {{ field }}
+        </th>
+        {% endfor %}
+        </tr>
+        </thead>
+        {% for form in task_formset %}
+            <tbody>
+            <tr>
+            <td>
+                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                {{ form.tasks }}
+            </td>
+            <td>
+                {{ form.number}}
+            </td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+
     <input class="btn btn-primary" type="submit" value="Save">
 
     {{ investigator_formset.management_form }}

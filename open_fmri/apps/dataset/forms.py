@@ -1,5 +1,8 @@
+import requests
+
+from django import forms
 from django.forms import ModelForm
-from django.forms.models import inlineformset_factory
+from django.forms.models import formset_factory, inlineformset_factory
 from django.forms.widgets import TextInput
 
 from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
@@ -44,6 +47,25 @@ class PublicationPubMedLinkForm(ModelForm):
             'url': TextInput()
         }
 
+class TaskForm(forms.Form):
+
+    tasks = forms.ChoiceField()
+    number = forms.IntegerField()
+
+    def get_cogat_tasks(self):
+        cogat_tasks = requests.get('http://cognitiveatlas.org/api/v-alpha/task')
+        tasks_json = cogat_tasks.json()
+        tasks_choices = []
+        for elem in tasks_json:
+            tasks_choices.append((elem['id'], elem['name']))
+        
+        return tasks_choices
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['tasks'].choices = self.get_cogat_tasks()
+
+
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1)
 
@@ -56,4 +78,4 @@ PublicationFullTextFormSet = inlineformset_factory(
 PublicationPubMedLinkFormSet = inlineformset_factory(
     Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
     
-
+TaskFormSet = formset_factory(TaskForm, extra=1)

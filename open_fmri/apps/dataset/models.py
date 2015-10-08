@@ -27,8 +27,6 @@ class Dataset(models.Model):
                                      default="PPDL")
     license_url = models.TextField(validators=[URLValidator()], blank=True)
 
-    task = models.ManyToManyField('Task', blank=True)
-
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
 
@@ -54,3 +52,5 @@ class PublicationDocument(models.Model):
 class Task(models.Model):
     cogat_id = models.TextField()
     name = models.TextField()
+    number = models.IntegerField()
+    dataset = models.ForeignKey('Dataset')
