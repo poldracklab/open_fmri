@@ -5,6 +5,6 @@ dependencies:
 
 test:
   override:
-    - coverage run --source=/app /app/manage.py test dataset
+    - coverage run --source='.' python manage.py test dataset
   post:
     - coveralls
