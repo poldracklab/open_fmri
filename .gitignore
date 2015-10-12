@@ -1,6 +1,9 @@
 #block vim swap files
 *.swp
 
+# ignore sqlite database used for cache
+*.sqlite
+
 # block our environment file for docker
 .env
 
