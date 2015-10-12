@@ -1,7 +1,8 @@
 import requests
 import requests_cache
 
-from django.core.urlresolvers import reverse_lazy
+from django import forms
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, DetailView, \
     ListView, UpdateView
@@ -74,7 +75,9 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
 class DatasetUpdate(LoginRequiredMixin, UpdateView):
     model = Dataset
     form_class = DatasetForm
-    success_url = reverse_lazy('dataset_list')
+
+    def get_success_url(self):
+        return reverse('dataset_update', kwargs={'pk': self.object.id})
 
     def get_context_data(self, **kwargs):
         context = super(DatasetUpdate, self).get_context_data(**kwargs)
@@ -93,29 +96,31 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         dataset = form.save()
         
         investigator_formset = InvestigatorFormSet(self.request.POST,
-            self.request.FILES, instance=dataset)
+            self.request.FILES, instance=self.object)
         if investigator_formset.is_valid():
             investigator_formset.save()
 
         publication_document_formset = PublicationDocumentFormSet(
-            self.request.POST, self.request.FILES, instance=dataset)
+            self.request.POST, self.request.FILES, instance=self.object)
         if publication_document_formset.is_valid():
             investigator_formset.save()
         
         publication_full_text_formset = PublicationFullTextFormSet(
-            self.request.POST, self.request.FILES, instance=dataset)
+            self.request.POST, self.request.FILES, instance=self.object)
         if publication_full_text_formset.is_valid():
             publication_full_text_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
-            self.request.POST, instance=dataset)
+            self.request.POST, instance=self.object)
         if publication_pubmed_link_formset.is_valid():
             publication_pubmed_link_formset.save()
         
         task_formset = TaskFormSet(self.request.POST, self.request.FILES,
-            instance=dataset)
+            instance=self.object)
         if task_formset.is_valid():
             task_formset.save()
-
+        else:
+            raise forms.ValidationError(task_formset.errors)
+            
         return super(DatasetUpdate, self).form_valid(form)
 

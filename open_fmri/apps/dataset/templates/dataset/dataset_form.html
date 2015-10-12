@@ -95,6 +95,7 @@
         </tr>
         </thead>
         {% for form in task_formset %}
+            <tbody>
             <tr>
             <td>
                 {% for field in form.hidden_fields %}{{ field }}{% endfor %}
@@ -105,6 +106,7 @@
                 {{ form.number }}
             </td>
             </tr>
+            </tbody>
         {% endfor %}
     </table>
 
@@ -125,6 +127,7 @@
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}'
+            formCssClass: '{{ investigator_formset.prefix }}'
         });
     })
 
@@ -134,6 +137,7 @@
             addText: 'Add Publication Document',
             deleteText: 'Remove',
             prefix: '{{ publication_document_formset.prefix }}'
+            formCssClass: '{{ publication_document_formset.prefix }}'
         });
     })
 
@@ -142,6 +146,7 @@
             addText: 'Add Publication Full Text',
             deleteText: 'Remove',
             prefix: '{{ publication_full_text_formset.prefix }}'
+            formCssClass: '{{ publication_full_text_formset.prefix }}'
         });
     })
 
@@ -150,14 +155,16 @@
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}'
+            formCssClass: '{{ publication_pubmed_link_formset.prefix }}'
         });
     })
 
     $(document).ready(function() {
-        $('#id_task_table tr').formset({
+        $('#id_task_table tbody').formset({
             addText: 'Add Task',
             deleteText: 'Remove',
             prefix: '{{ task_formset.prefix }}',
+            formCssClass: '{{ task_formset.prefix }}'
         });
     })
 
