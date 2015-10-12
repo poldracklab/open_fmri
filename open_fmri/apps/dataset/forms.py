@@ -2,7 +2,7 @@ import requests
 
 from django import forms
 from django.forms import ModelForm
-from django.forms.models import formset_factory, inlineformset_factory
+from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
 from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
