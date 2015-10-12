@@ -1,4 +1,6 @@
 ## OpenfMRI
+.. image:: https://circleci.com/gh/poldracklab/open_fmri/tree/master.svg?style=svg
+  :target: https://circleci.com/gh/poldracklab/open_fmri/tree/master
 ### Docker Usage
 env_example will need to be renamed to .env. The Posgres environment variables
 are used both by the uwsgi and postgres container. The postgres container will
