@@ -79,4 +79,5 @@ PublicationFullTextFormSet = inlineformset_factory(
 PublicationPubMedLinkFormSet = inlineformset_factory(
     Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
     
-TaskFormSet = inlineformset_factory(Dataset, Task, form=TaskForm, extra=1)
+TaskFormSet = inlineformset_factory(
+    Dataset, Task, form=TaskForm, extra=1)

@@ -51,6 +51,6 @@ class PublicationDocument(models.Model):
 # so we can find it again and the name for display purposes
 class Task(models.Model):
     cogat_id = models.TextField()
-    name = models.TextField()
+    name = models.TextField(blank=True)
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')

@@ -1,3 +1,5 @@
+import random
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
@@ -81,11 +83,16 @@ class PublicationPubMedLink(TestCase):
         form = PublicationFullTextForm({})
         self.assertFalse(form.is_valid())
 
+# Model factory doesn't generate a suitable choice for the choicefield, lets
+# override the value it made.
 class TaskTestCase(TestCase):
     def test_valid_data(self):
         task = ModelFactory.make('Task')
+        blank_form = TaskForm()
+        index = int(len(blank_form.fields['cogat_id'].choices) * 
+            random.random())
         form = TaskForm({
-            'cogat_id': task.cogat_id,
+            'cogat_id': blank_form.fields['cogat_id']._get_choices()[index][0],
             'number': task.number
         })
         self.assertTrue(form.is_valid())
