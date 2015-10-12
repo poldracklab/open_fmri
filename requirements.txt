@@ -1,3 +1,12 @@
-# This file is here because many Platforms as a Service look for
-#	requirements.txt in the root directory of a project.
--r requirements/production.txt
+# Versions are left out on purpose in order for you to use the latest ones.
+# After the first "pip install -r", just run "pip freeze" and add the version
+# to each package in each requirements/*.txt.
+
+django
+django-braces
+django-model-utils
+model_mommy
+psycopg2
+requests
+requests-cache
+uwsgi
