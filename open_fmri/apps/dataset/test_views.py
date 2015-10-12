@@ -5,6 +5,7 @@ from django.test import TestCase, RequestFactory
 from model_mommy import mommy as ModelFactory
 
 from dataset.models import Dataset
+from dataset.views import DatasetCreate
 
 class DatasetViewTestCase(TestCase):
     
@@ -52,11 +53,12 @@ class DatasetViewTestCase(TestCase):
     our new object shows up in the list
     '''
     def test_create_view_login_valid_data(self):
-        self.assertTrue(self.client.login(
-            username=self.user.username, password=self.password))
-        response = self.client.post(reverse('dataset_create'), {
-            'project_name': 'test name', 'summary': 'test summary', 
-            'sample_size': 19191919})
+        data = { 'project_name': 'test name', 'summary': 'test summary', 
+            'sample_size': 19191919}
+        request = self.request_factory.post(reverse('dataset_create'), data)
+        request.user = self.user
+        view = DatasetCreate.as_view()
+        response = view(request)
         self.assertContains(response, 'test name')
 
 
