@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 
 from model_mommy import mommy as ModelFactory
 
@@ -10,6 +10,7 @@ class DatasetViewTestCase(TestCase):
     
     def setUp(self):
         self.dataset = ModelFactory.make('Dataset')
+        self.request_factory = RequestFactory()
 
         self.password = 'pass'
         self.user = User.objects.create_user(
@@ -29,6 +30,34 @@ class DatasetViewTestCase(TestCase):
             username=self.user.username, password=self.password))
         response = self.client.get(reverse('dataset_create'))
         self.assertEqual(response.status_code, 200)
+
+    '''
+    Currently there are only 3 required fields. we will check that these
+    generate errors. Untouched formsets can be left blank and not run unto
+    validation errors
+    '''
+    def test_create_view_login_blank_data(self):
+        self.assertTrue(self.client.login(
+            username=self.user.username, password=self.password))
+        response = self.client.post(reverse('dataset_create'))
+        self.assertFormError(response, 'form', 'project_name', 
+                             'This field is required.')
+        self.assertFormError(response, 'form', 'summary', 
+                             'This field is required.')
+        self.assertFormError(response, 'form', 'sample_size', 
+                             'This field is required.')
+
+    '''
+    Create view redirects to the list view. lets check the response to see if
+    our new object shows up in the list
+    '''
+    def test_create_view_login_valid_data(self):
+        self.assertTrue(self.client.login(
+            username=self.user.username, password=self.password))
+        response = self.client.post(reverse('dataset_create'), {
+            'project_name': 'test name', 'summary': 'test summary', 
+            'sample_size': 19191919})
+        self.assertContains(response, 'test name')
 
 
     def test_update_view_nologin(self):
