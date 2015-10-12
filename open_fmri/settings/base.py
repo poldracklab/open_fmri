@@ -49,6 +49,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'open_fmri.urls'
 
+LOGIN_REDIRECT_URL = '/dataset/'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'open_fmri.wsgi.application'
 

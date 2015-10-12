@@ -7,23 +7,17 @@
 <table class="table table-bordered">
 <thead>
 <tr>
-<td>
-Project Name
-</td>
-<td>
-</td>
-<td>
-</td>
+<td> Project Name </td>
 </tr>
 </thead>
 <tbody>
 {% for dataset in object_list %}
     <tr>
-    <td>
-    {{ dataset.project_name }}
-    </td>
-    <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
-    <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
+    <td> <a href="{% url 'dataset_detail' dataset.id %}"> {{ dataset.project_name }} </a> </td>
+    {% if user.is_authenticated %}
+        <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
+        <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
+    {% endif %}
     </tr>
 {% endfor %} 
 </tbody>

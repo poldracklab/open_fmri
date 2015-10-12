@@ -3,9 +3,8 @@
 # to each package in each requirements/*.txt.
 
 django
-
+django-braces
 django-model-utils
-
 psycopg2
 requests
 requests-cache

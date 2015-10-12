@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, DetailView, \
     ListView, UpdateView
 
+from braces.views import LoginRequiredMixin
+
 from dataset.forms import DatasetForm, InvestigatorFormSet, \
     PublicationDocumentFormSet, PublicationFullTextFormSet, \
     PublicationPubMedLinkFormSet, TaskFormSet
@@ -17,14 +19,14 @@ requests_cache.install_cache('test_cache')
 class DatasetList(ListView):
     model = Dataset
 
-class DatasetDelete(DeleteView):
+class DatasetDelete(LoginRequiredMixin, DeleteView):
     model = Dataset
     success_url = reverse_lazy('dataset_list')
 
 class DatasetDetail(DetailView):
     model = Dataset
 
-class DatasetCreate(CreateView):
+class DatasetCreate(LoginRequiredMixin, CreateView):
     model = Dataset
     form_class = DatasetForm
     success_url = reverse_lazy('dataset_list')
@@ -69,7 +71,7 @@ class DatasetCreate(CreateView):
 
         return super(DatasetCreate, self).form_valid(form)
 
-class DatasetUpdate(UpdateView):
+class DatasetUpdate(LoginRequiredMixin, UpdateView):
     model = Dataset
     form_class = DatasetForm
     success_url = reverse_lazy('dataset_list')
