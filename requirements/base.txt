@@ -5,6 +5,7 @@
 django
 django-braces
 django-model-utils
+model_mommy
 psycopg2
 requests
 requests-cache
