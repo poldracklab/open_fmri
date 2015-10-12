@@ -17,6 +17,7 @@ uwsgi:
     command: /app/uwsgi.sh
     expose:
         - "4000"
+    working_dir: /app
 
 #For development well have the nginx.conf and uwsgi params as volumes for easy
 #testing. In development we might remove these volumes and uncomment the add 
