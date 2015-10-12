@@ -3,7 +3,8 @@ import requests_cache
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, \
+    ListView, UpdateView
 
 from dataset.forms import DatasetForm, InvestigatorFormSet, \
     PublicationDocumentFormSet, PublicationFullTextFormSet, \
@@ -19,6 +20,9 @@ class DatasetList(ListView):
 class DatasetDelete(DeleteView):
     model = Dataset
     success_url = reverse_lazy('dataset_list')
+
+class DatasetDetail(DetailView):
+    model = Dataset
 
 class DatasetCreate(CreateView):
     model = Dataset
