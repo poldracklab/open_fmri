@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase, RequestFactory
@@ -8,11 +10,9 @@ from dataset.models import Dataset
 from dataset.views import DatasetCreate
 
 class DatasetViewTestCase(TestCase):
-    
     def setUp(self):
         self.dataset = ModelFactory.make('Dataset')
         self.request_factory = RequestFactory()
-
         self.password = 'pass'
         self.user = User.objects.create_user(
             username='user', email='email@example.com', password=self.password)
@@ -50,20 +50,41 @@ class DatasetViewTestCase(TestCase):
 
     '''
     Create view redirects to the list view. lets check the response to see if
-    our new object shows up in the list
+    we are redirected. (should also check the template hit...)
     '''
     def test_create_view_login_valid_data(self):
         data = {
-            'project_name': self.dataset.project_name, 
+            'project_name': 'unique', 
             'summary': self.dataset.summary,
-            'sample_size': self.dataset.sample_size
-        }
-        request = self.request_factory.post(reverse('dataset_create'), data)
-        request.user = self.user
-        view = DatasetCreate.as_view()
-        response = view(request)
-        self.assertContains(response, self.dataset.project_name)
+            'sample_size': self.dataset.sample_size,
+            'workflow_stage': 'SUBMITTED',
+            'license_title': 'PPDL',
+            'investigator_set-TOTAL_FORMS': 0,
+            'investigator_set-INITIAL_FORMS': 0,
+            'investigator_set-MIN_NUM_FORMS': 0,
+            'investigator_set-MAX_NUM_FORMS': 0,
+            'publicationdocument_set-TOTAL_FORMS': 0,
+            'publicationdocument_set-INITIAL_FORMS': 0,
+            'publicationdocument_set-MIN_NUM_FORMS': 0,
+            'publicationdocument_set-MAX_NUM_FORMS': 0,
+            'publicationfulltext_set-TOTAL_FORMS': 0,
+            'publicationfulltext_set-INITIAL_FORMS': 0,
+            'publicationfulltext_set-MIN_NUM_FORMS': 0,
+            'publicationfulltext_set-MAX_NUM_FORMS': 0,
+            'publicationpubmedlink_set-TOTAL_FORMS': 0,
+            'publicationpubmedlink_set-INITIAL_FORMS': 0,
+            'publicationpubmedlink_set-MIN_NUM_FORMS': 0,
+            'publicationpubmedlink_set-MAX_NUM_FORMS': 0,
+            'task_set-TOTAL_FORMS': 0,
+            'task_set-INITIAL_FORMS': 0,
+            'task_set-MIN_NUM_FORMS': 0,
+            'task_set-MAX_NUM_FORMS': 0,
 
+        }
+        self.assertTrue(self.client.login(
+            username=self.user.username, password=self.password))
+        response = self.client.post(reverse('dataset_create'), data)
+        self.assertEqual(response.status_code, 302)
 
     def test_update_view_nologin(self):
         response = self.client.get(reverse('dataset_update', 
