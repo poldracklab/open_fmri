@@ -53,13 +53,16 @@ class DatasetViewTestCase(TestCase):
     our new object shows up in the list
     '''
     def test_create_view_login_valid_data(self):
-        data = { 'project_name': 'test name', 'summary': 'test summary', 
-            'sample_size': 19191919}
+        data = {
+            'project_name': self.dataset.project_name, 
+            'summary': self.dataset.summary,
+            'sample_size': self.dataset.sample_size
+        }
         request = self.request_factory.post(reverse('dataset_create'), data)
         request.user = self.user
         view = DatasetCreate.as_view()
         response = view(request)
-        self.assertContains(response, 'test name')
+        self.assertContains(response, self.dataset.project_name)
 
 
     def test_update_view_nologin(self):
@@ -74,7 +77,14 @@ class DatasetViewTestCase(TestCase):
                                            args=[self.dataset.id]))
         self.assertEqual(response.status_code, 200)
 
+    '''
+    Test to see if the detail view is displaying the three values that the 
+    model factory is generating appear in the response
+    '''
     def test_detail_view(self):
         response = self.client.get(reverse('dataset_detail', 
                                            args=[self.dataset.id]))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.dataset.project_name)
+        self.assertContains(response, self.dataset.summary)
+        self.assertContains(response, self.dataset.sample_size)

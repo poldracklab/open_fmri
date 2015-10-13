@@ -5,4 +5,31 @@
 {% endblock %}
 
 {% block content %}
+<h1>{{ object.project_name }}</h1>
+<p>{{ object.summary }}</p>
+<h3>Investigators</h3>
+<ul>
+{% for investigator in object.investigator_set.all %}
+    <li>{{ investigator.investigator }}</li>
+{% endfor %}
+</ul>
+<h3>Acknowledgements and Funding</h3>
+<p>{{ object.acknowledgements }}</p>
+<h3>Publications:</h3>
+{% for pubmed_link in object.publicationpubmedlink_set.all %}
+    <a href="{{ pubmed_link.url }}">{{ pubmed_link.title }}</a>
+{% endfor %}
+{% for document in object.publicationdocument.all %}
+    {{ document }}
+{% endfor %}
+<h3>Sample Size:</h3>
+<p>{{ object.sample_size }}</p>
+<h3>Scanner Type:</h3>
+<p>{{ object.scanner_type }}</p>
+<h3>License:</h3>
+<p><a href="{{ object.license_url }}">{{ object.license_title }}</a></p>
+<h3>Accession Number:</h3>
+<p>{{ object.accession_number }}</p>
+<h3>AWS Link</h3>
+<p><a href="{{ object.aws_link_url }}">{{ object.aws_link_title }}</a></p>
 {% endblock %}
