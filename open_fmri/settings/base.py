@@ -28,14 +28,21 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages'
 )
 
 PROJECT_APPS = (
     'dataset',
 )
 
+THIRD_PARTY_APPS = (
+    'ckeditor',
+)
+
 INSTALLED_APPS += PROJECT_APPS
+INSTALLED_APPS += THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,6 +57,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'open_fmri.urls'
 
 LOGIN_REDIRECT_URL = '/dataset/'
+
+SITE_ID = 1
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'open_fmri.wsgi.application'

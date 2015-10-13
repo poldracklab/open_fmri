@@ -4,6 +4,7 @@
 
 django
 django-braces
+django-ckeditor
 django-model-utils
 model_mommy
 psycopg2
