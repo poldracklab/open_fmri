@@ -15,8 +15,14 @@
 <th> Project Name </th>
 <th> Investigators </th>
 <th> Accession Number </th>
+<th> Project Summary </th>
+<th> Sample Size </th>
+<th> Scanner Type </th>
+<th> License </th>
+{% if user.is_authenticated %}
 <th></th>
 <th></th>
+{% endif %}
 </tr>
 </thead>
 <tbody>
@@ -31,6 +37,10 @@
     </ol>
     </td>
     <td>{{ dataset.accession_number }} </td>
+    <td>{{ dataset.summary }} </td>
+    <td>{{ dataset.sample_size }} </td>
+    <td>{{ dataset.scanner_type }} </td>
+    <td>{{ dataset.license_title }} </td>
     {% if user.is_authenticated %}
         <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
         <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
@@ -46,7 +56,12 @@
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" language="javascript">
 $(document).ready(function() {
-    $('#dataset-list-table').DataTable();
+    $('#dataset-list-table').DataTable({
+        "columnDefs": [{
+            "targets": [3,4,5,6],
+            "visible": false
+        }]        
+        });
 });
 </script>
 {% endblock %}
