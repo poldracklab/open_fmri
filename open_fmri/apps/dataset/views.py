@@ -10,10 +10,9 @@ from django.views.generic import CreateView, DeleteView, DetailView, \
 from braces.views import LoginRequiredMixin
 
 from dataset.forms import DatasetForm, InvestigatorFormSet, \
-    PublicationDocumentFormSet, PublicationFullTextFormSet, \
-    PublicationPubMedLinkFormSet, TaskFormSet
+    PublicationDocumentFormSet, PublicationPubMedLinkFormSet, TaskFormSet
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationFullText, PublicationPubMedLink
+    PublicationPubMedLink
 
 requests_cache.install_cache('test_cache')
 
@@ -36,7 +35,6 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
         context = super(DatasetCreate, self).get_context_data(**kwargs)
         context['investigator_formset'] = InvestigatorFormSet()
         context['publication_document_formset'] = PublicationDocumentFormSet()
-        context['publication_full_text_formset'] = PublicationFullTextFormSet()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet()
         context['task_formset'] = TaskFormSet()
@@ -54,11 +52,6 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             self.request.POST, self.request.FILES, instance=dataset)
         if publication_document_formset.is_valid():
             investigator_formset.save()
-
-        publication_full_text_formset = PublicationFullTextFormSet(
-            self.request.POST, self.request.FILES, instance=dataset)
-        if publication_full_text_formset.is_valid():
-            publication_full_text_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
@@ -85,8 +78,6 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
             instance=self.object)
         context['publication_document_formset'] = PublicationDocumentFormSet(
             instance=self.object)
-        context['publication_full_text_formset'] = PublicationFullTextFormSet(
-            instance=self.object)
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet(instance=self.object)
         context['task_formset'] = TaskFormSet(instance=self.object)
@@ -105,11 +96,6 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         if publication_document_formset.is_valid():
             investigator_formset.save()
         
-        publication_full_text_formset = PublicationFullTextFormSet(
-            self.request.POST, self.request.FILES, instance=self.object)
-        if publication_full_text_formset.is_valid():
-            publication_full_text_formset.save()
-
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=self.object)
         if publication_pubmed_link_formset.is_valid():

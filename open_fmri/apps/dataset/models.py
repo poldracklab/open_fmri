@@ -39,10 +39,6 @@ class PublicationPubMedLink(models.Model):
     url = models.TextField(validators=[URLValidator()])
     dataset = models.ForeignKey('Dataset')
     
-class PublicationFullText(models.Model):
-    full_text = models.TextField()
-    dataset = models.ForeignKey('Dataset')
-    
 class PublicationDocument(models.Model):
     document = models.FileField()
     dataset = models.ForeignKey('Dataset')

@@ -7,11 +7,10 @@ from django.test import TestCase
 from model_mommy import mommy as ModelFactory
 
 from dataset.forms import DatasetForm, InvestigatorForm, \
-    PublicationDocumentForm, PublicationFullTextForm, \
-    PublicationPubMedLinkForm, TaskForm
+    PublicationDocumentForm, PublicationPubMedLinkForm, TaskForm
 
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationFullText, PublicationPubMedLink, Task
+    PublicationPubMedLink, Task
 
 class DatasetFormTestCase(TestCase):
     def test_valid_data(self):
@@ -56,18 +55,6 @@ class PublicaitonDocumentFormTestCase(TestCase):
         form = PublicationDocumentForm({})
         self.assertFalse(form.is_valid())
 
-class PublicationFullTextTestCase(TestCase):
-    def test_valid_data(self):
-        publication_full_text = ModelFactory.make('PublicationFullText')
-        form = PublicationFullTextForm({
-            'full_text': publication_full_text.full_text
-        })
-        self.assertTrue(form.is_valid())
-
-    def test_blank_data(self):
-        form = PublicationFullTextForm({})
-        self.assertFalse(form.is_valid())
-
 # the model factory doesn't take into account the non-standard validator we
 # listed for the url field, well help it along for now
 class PublicationPubMedLink(TestCase):
@@ -80,7 +67,7 @@ class PublicationPubMedLink(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_blank_data(self):
-        form = PublicationFullTextForm({})
+        form = PublicationPubMedLinkForm({})
         self.assertFalse(form.is_valid())
 
 # Model factory doesn't generate a suitable choice for the choicefield, lets

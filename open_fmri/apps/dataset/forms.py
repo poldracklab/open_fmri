@@ -6,7 +6,7 @@ from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
 from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
-    PublicationFullText, PublicationDocument, Task
+    PublicationDocument, Task
 
 
 class DatasetForm(ModelForm):
@@ -32,11 +32,6 @@ class PublicationDocumentForm(ModelForm):
     class Meta:
         model = PublicationDocument
         fields = ['document']
-
-class PublicationFullTextForm(ModelForm):
-    class Meta:
-        model = PublicationFullText
-        fields = ['full_text']
 
 class PublicationPubMedLinkForm(ModelForm):
     class Meta:
@@ -72,9 +67,6 @@ InvestigatorFormSet = inlineformset_factory(
 
 PublicationDocumentFormSet = inlineformset_factory(
     Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1) 
-
-PublicationFullTextFormSet = inlineformset_factory(
-    Dataset, PublicationFullText, form=PublicationFullTextForm, extra=1) 
 
 PublicationPubMedLinkFormSet = inlineformset_factory(
     Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
