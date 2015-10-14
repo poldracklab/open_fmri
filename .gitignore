@@ -71,7 +71,7 @@ open_fmri/settings/production.py
 open_fmri/static/
 
 # Testing can generate a bunch of junk uploaded files
-assets/uploads/
+uploads
 
 .DS_Store
 

@@ -3,17 +3,34 @@
     Datasets
 {% endblock %}
 
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+{% endblock %}
+
 {% block content %}
-<table class="table table-bordered">
+<table id="dataset-list-table" class="table table-bordered">
 <thead>
 <tr>
-<td> Project Name </td>
+<th> Project Name </th>
+<th> Investigators </th>
+<th> Accession Number </th>
+<th></th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 {% for dataset in object_list %}
     <tr>
-    <td> <a href="{% url 'dataset_detail' dataset.id %}"> {{ dataset.project_name }} </a> </td>
+    <td><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
+    <td>
+    <ol>
+    {% for investigator in dataset.investigator_set.all %}
+        <li>{{ investigator.investigator }}<li>
+    {% endfor %}
+    </ol>
+    </td>
+    <td>{{ dataset.accession_number }} </td>
     {% if user.is_authenticated %}
         <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
         <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
@@ -22,4 +39,14 @@
 {% endfor %} 
 </tbody>
 </table>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript">
+$(document).ready(function() {
+    $('#dataset-list-table').DataTable();
+});
+</script>
 {% endblock %}

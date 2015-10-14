@@ -121,6 +121,7 @@
     </form>
 {% endblock %}
 {% block javascript %}
+{{ block.super }}
     <script>
     $(document).ready(function() {
         $('#id_investigator_table tr').formset({
