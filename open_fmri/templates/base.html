@@ -30,7 +30,7 @@
     <div class="m-b">
       <nav class="navbar navbar-dark navbar-static-top bg-inverse">
         <div class="container">
-         <a class="navbar-brand" href="/">OpenfMRI</a>
+         <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/grey_scale_logo.png' %}" alt="OpenfMRI"></a> 
           <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
             &#9776;
           </button>
@@ -38,7 +38,6 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
             <nav class="nav navbar-nav">
-              <a class="nav-link nav-item" href="{% url 'dataset_list' %}">Home</a>
               <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
             </nav>
         

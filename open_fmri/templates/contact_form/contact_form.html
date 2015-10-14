@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{ form|crispy }}
+    {# <div class="g-recaptcha" data-sitekey="your_site_key"></div> #}
+    <input class="btn btn-primary" type="submit" value="Send Message">
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
