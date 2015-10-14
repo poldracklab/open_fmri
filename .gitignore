@@ -67,8 +67,11 @@ open_fmri/settings/local.py
 open_fmri/settings/production.py
 
 # collect static output directory
-open_fmri/assets/
+# open_fmri/assets/
 open_fmri/static/
+
+# Testing can generate a bunch of junk uploaded files
+assets/uploads/
 
 .DS_Store
 

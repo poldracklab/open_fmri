@@ -1,4 +1,7 @@
-{% load staticfiles %}<!DOCTYPE html>
+{% load staticfiles %}
+{% load flatpages %}
+{% get_flatpages as flatpages %}
+<!DOCTYPE html>
 <html lang="en" ng-app>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -52,14 +55,26 @@
     </div>
 
     <div class="container">
-      {% if messages %}
+        {% if messages %}
           {% for message in messages %}
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
           {% endfor %}
-      {% endif %}
-      {% block content %}
+        {% endif %}
+        <div id="container-right">
+        <div id="toc">
+            Find Out More:
+            <ol>
+            {% for page in flatpages %}
+                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+            {% endfor %}
+            </ol>
+        </div>
+        </div>
+        <div id="container-content" class="column-three-fourths">
+        {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
+        {% endblock content %}
+        </div>
 
     </div> <!-- /container -->
 

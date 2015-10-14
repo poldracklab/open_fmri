@@ -1,0 +1,39 @@
+#container-right {
+    float: right;
+}
+
+#container-content {
+    float: right;
+}
+
+#toc {
+    background-color: #ECEEEF;
+    padding: 20px 15px;
+}
+
+ol {
+    list-style-type: none;
+}
+
+a, ol {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+}
+
+.dataset_form textarea {
+     width: 100%;
+     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+     box-sizing: border-box;         /* Opera/IE 8+ */
+     height: 5.8em;
+}
+
+.dataset_form input {
+    width: 100%;
+}
+
+.column-three-fourths {
+    width: 75%
+}
+
