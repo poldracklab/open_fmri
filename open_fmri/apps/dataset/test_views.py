@@ -98,6 +98,43 @@ class DatasetViewTestCase(TestCase):
                                            args=[self.dataset.id]))
         self.assertEqual(response.status_code, 200)
 
+    def test_update_view_login_valid_data(self):
+        dataset = ModelFactory.make('Dataset')
+        data = {
+            'project_name': 'unique', 
+            'summary': self.dataset.summary,
+            'sample_size': self.dataset.sample_size,
+            'workflow_stage': 'SUBMITTED',
+            'license_title': 'PPDL',
+            'investigator_set-TOTAL_FORMS': 0,
+            'investigator_set-INITIAL_FORMS': 0,
+            'investigator_set-MIN_NUM_FORMS': 0,
+            'investigator_set-MAX_NUM_FORMS': 0,
+            'publicationdocument_set-TOTAL_FORMS': 0,
+            'publicationdocument_set-INITIAL_FORMS': 0,
+            'publicationdocument_set-MIN_NUM_FORMS': 0,
+            'publicationdocument_set-MAX_NUM_FORMS': 0,
+            'publicationfulltext_set-TOTAL_FORMS': 0,
+            'publicationfulltext_set-INITIAL_FORMS': 0,
+            'publicationfulltext_set-MIN_NUM_FORMS': 0,
+            'publicationfulltext_set-MAX_NUM_FORMS': 0,
+            'publicationpubmedlink_set-TOTAL_FORMS': 0,
+            'publicationpubmedlink_set-INITIAL_FORMS': 0,
+            'publicationpubmedlink_set-MIN_NUM_FORMS': 0,
+            'publicationpubmedlink_set-MAX_NUM_FORMS': 0,
+            'task_set-TOTAL_FORMS': 0,
+            'task_set-INITIAL_FORMS': 0,
+            'task_set-MIN_NUM_FORMS': 0,
+            'task_set-MAX_NUM_FORMS': 0,
+
+        }
+        self.assertTrue(self.client.login(
+            username=self.user.username, password=self.password))
+        response = self.client.post(
+            reverse('dataset_update', args=[dataset.id]), data)
+        self.assertEqual(response.status_code, 302)
+
+
     '''
     Test to see if the detail view is displaying the three values that the 
     model factory is generating appear in the response
