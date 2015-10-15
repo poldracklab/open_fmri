@@ -5,6 +5,7 @@ django-ckeditor
 django-crispy-forms
 django-model-utils
 model_mommy
+pillow
 psycopg2
 requests
 requests-cache

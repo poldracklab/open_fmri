@@ -50,3 +50,16 @@ class Task(models.Model):
     name = models.TextField(blank=True)
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')
+
+class Revision(models.Model):
+    previous_revision = models.ForeignKey('Revision')
+    dataset = models.ForeignKey('Dataset')
+    revision_number = models.CharField(max_length=200)
+    notes = models.TextField()
+
+class FeaturedDataset(models.Model):
+    dataset = models.ForeignKey('Dataset')
+    image = models.ImageField()
+    title = models.CharField(max_length=MAX_TITLE_LENGTH)
+    content = models.TextField()
+    date_featured = models.DateField()
