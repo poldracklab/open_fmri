@@ -15,7 +15,7 @@
     {{ form.as_table }}
     </table>
     
-    <table id="id_investigator_table" class="table table-bordered">
+    <table id="id_investigator_table" class="table">
         {% for form in investigator_formset %}
             <tr>
             <td>
@@ -30,7 +30,7 @@
         {% endfor %}
     </table>
     
-    <table id="id_publication_document_table" class="table table-bordered">
+    <table id="id_publication_document_table" class="table">
         {% for form in publication_document_formset %}
             <tr>
             <td>
@@ -45,7 +45,7 @@
         {% endfor %}
     </table>
 
-    <table id="id_publication_pubmed_link_table" class="table table-bordered">
+    <table id="id_publication_pubmed_link_table" class="table">
         {% for form in publication_pubmed_link_formset %}
             <tbody>
             <tr>
@@ -70,7 +70,7 @@
         {% endfor %}
     </table>
 
-    <table id="id_task_table" class="table table-bordered">
+    <table id="id_task_table" class="table">
         <thead>
         <tr>
         {% for field in task_formset.form.base_fields %}

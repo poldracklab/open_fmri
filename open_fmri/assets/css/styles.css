@@ -1,14 +1,27 @@
 #container-right {
     float: right;
+    padding: 20px 15px;
+    height: 100%;
 }
 
 #container-content {
-    float: right;
 }
 
 #toc {
     background-color: #ECEEEF;
     padding: 20px 15px;
+    border-radius: 20px;
+}
+
+#toc li {
+    border-top: 1px solid #000000;
+}
+
+#toc li a {
+    color: #555555;
+    padding-left: 1em;
+    padding-top: 1px;
+    padding-bottom 1px; 
 }
 
 ol {
@@ -33,7 +46,6 @@ a, ol {
     width: 100%;
 }
 
-.column-three-fourths {
-    width: 75%
+.navbar-nav .nav-item {
+    line-height: 55px;
 }
-
