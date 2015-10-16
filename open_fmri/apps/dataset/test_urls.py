@@ -1,7 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 
-from model_mommy import mommy as model_factory
+from model_mommy import mommy as ModelFactory
 
 from dataset.models import Dataset, FeaturedDataset
 from dataset.views import DatasetCreate, DatasetList, DatasetUpdate, \
@@ -15,7 +15,7 @@ class DataSetUrlTestCase(TestCase):
             summary = 'project summary',
             sample_size = 2
         )
-        self.featured_dataset = model_factory.make('FeaturedDataset')
+        self.featured_dataset = ModelFactory.make('FeaturedDataset')
     
     def test_dataset_list(self):
         found = resolve('/dataset/')

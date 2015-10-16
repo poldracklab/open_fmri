@@ -66,3 +66,6 @@ class FeaturedDataset(models.Model):
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     content = models.TextField()
     date_featured = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
