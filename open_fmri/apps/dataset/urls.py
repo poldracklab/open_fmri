@@ -9,10 +9,10 @@ urlpatterns = patterns('',
     url(r'^view/(?P<pk>\d+)$', DatasetDetail.as_view(), name='dataset_detail'),
     url(r'^delete/(?P<pk>\d+)$', DatasetDelete.as_view(), 
         name='dataset_delete'),
-    url(r'^featured_dataset/', FeaturedDatasetEdit.as_view(), 
-        name='featureddataset_edit'),
     url(r'^featured_dataset/delete/(?P<pk>\d+)$', 
         FeaturedDatasetDelete.as_view(), name='featureddataset_delete'),
+    url(r'^featured_dataset/$', FeaturedDatasetEdit.as_view(), 
+        name='featureddataset_edit'),
     url(r'^$', DatasetList.as_view(), name='dataset_list'),
 )
 
