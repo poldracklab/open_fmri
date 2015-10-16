@@ -6,12 +6,13 @@ from django.test import TestCase, RequestFactory
 
 from model_mommy import mommy as ModelFactory
 
-from dataset.models import Dataset
+from dataset.models import Dataset, FeaturedDataset
 from dataset.views import DatasetCreate
 
 class DatasetViewTestCase(TestCase):
     def setUp(self):
         self.dataset = ModelFactory.make('Dataset')
+        self.featureddataset = ModelFactory.make('FeaturedDataset')
         self.request_factory = RequestFactory()
         self.password = 'pass'
         self.user = User.objects.create_user(
@@ -139,4 +140,22 @@ class DatasetViewTestCase(TestCase):
         self.assertContains(response, self.dataset.summary)
         self.assertContains(response, self.dataset.sample_size)
 
+    def test_featureddataset_edit_nologin(self):
+        response = self.client.get(reverse('featureddataset_edit'))
+        self.assertEqual(response.status_code, 302)
 
+    def test_featureddataset_delete_nologin(self):
+        response = self.client.get(reverse('featureddataset_delete', 
+            args=[self.featureddataset.id]))
+        self.assertEqual(response.status_code, 302)
+
+    def test_featureddataset_edit_blankdata(self):
+        self.assertTrue(self.client.login(
+            username=self.user.username, password=self.password))
+        response = self.client.post(reverse('featureddataset_edit'))
+        self.assertFormError(response, 'form', 'title', 
+                             'This field is required.')
+        self.assertFormError(response, 'form', 'content', 
+                             'This field is required.')
+        self.assertFormError(response, 'form', 'dataset', 
+                             'This field is required.')

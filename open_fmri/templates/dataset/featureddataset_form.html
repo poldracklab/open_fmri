@@ -26,7 +26,7 @@ Set Featured Dataset
             <td>{{ featured_dataset.content }}</td>
             <td>{{ featured_dataset.image }}</td>
             <td>{{ featured_dataset.dataset }}</td>
-            <td><a href="{% url 'featured_dataset_delete' featured_dataset.id %}">Delete</a></td>
+            <td><a href="{% url 'featureddataset_delete' featured_dataset.id %}">Delete</a></td>
             </tr>
         {% endfor %}
         </tbody>
