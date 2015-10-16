@@ -39,7 +39,7 @@
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
             <nav class="nav navbar-nav">
               <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
-              <a class="nav-link nav-item" href="/">Test Nav Item</a>
+              <a class="nav-link nav-item" href="">Test Nav Item</a>
             </nav>
         
             <nav class="nav navbar-nav pull-right">
@@ -60,7 +60,7 @@
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
           {% endfor %}
         {% endif %}
-        <div id="container-right">
+        <div id="container-right" class="col-md-3">
         <div id="toc">
             <h3>Find Out More:</h3>
             <ol>
@@ -70,7 +70,7 @@
             </ol>
         </div>
         </div>
-        <div id="container-content">
+        <div id="container-content" class="col-md-9">
         {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
         {% endblock content %}
