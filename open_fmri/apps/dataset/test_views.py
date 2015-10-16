@@ -138,3 +138,5 @@ class DatasetViewTestCase(TestCase):
         self.assertContains(response, self.dataset.project_name)
         self.assertContains(response, self.dataset.summary)
         self.assertContains(response, self.dataset.sample_size)
+
+

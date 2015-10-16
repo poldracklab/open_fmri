@@ -12,7 +12,7 @@ from braces.views import LoginRequiredMixin
 from dataset.forms import DatasetForm, InvestigatorFormSet, \
     PublicationDocumentFormSet, PublicationPubMedLinkFormSet, TaskFormSet
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationPubMedLink
+    PublicationPubMedLink, FeaturedDataset
 
 requests_cache.install_cache('test_cache')
 
@@ -110,3 +110,17 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
             
         return super(DatasetUpdate, self).form_valid(form)
 
+class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):
+    model = FeaturedDataset
+    fields = ['dataset', 'image', 'title', 'content']
+    success_url = reverse_lazy('dataset_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(FeaturedDatasetEdit, self).get_context_data(**kwargs)
+        context['featured_datasets'] = FeaturedDataset.objects.order_by(
+            '-date_featured')
+        return context
+
+class FeaturedDatasetDelete(LoginRequiredMixin, DeleteView):
+    model = FeaturedDataset
+    success_url = reverse_lazy('dataset_list')

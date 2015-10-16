@@ -29,6 +29,9 @@ class Dataset(models.Model):
 
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
+    
+    def __str__(self):
+        return self.project_name
 
 class Investigator(models.Model):
     investigator = models.CharField(max_length=200)
@@ -59,7 +62,7 @@ class Revision(models.Model):
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
-    image = models.ImageField()
+    image = models.ImageField(blank=True)
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     content = models.TextField()
-    date_featured = models.DateField()
+    date_featured = models.DateField(auto_now_add=True)

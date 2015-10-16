@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+Set Featured Dataset
+{% endblock %}
+
+{% block content %}
+    <form method=post>
+        {{ form|crispy }}
+    </form>
+    <table class="table>
+        <thead><tr>
+            <th>Dataset</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Image</th>
+            <th>Date Set</th>
+        <tr></thead>
+        <tbody>
+        {% for featured_dataset in featured_datasets %}
+            <tr>
+            <td>{{ featured_dataset.dataset }}</td>
+            <td>{{ featured_dataset.title }}</td>
+            <td>{{ featured_dataset.content }}</td>
+            <td>{{ featured_dataset.image }}</td>
+            <td>{{ featured_dataset.dataset }}</td>
+            <td><a href="{% url 'featured_dataset_delete' featured_dataset.id %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
