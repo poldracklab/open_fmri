@@ -1,16 +1,11 @@
 #container-right {
     float: right;
-    padding: 20px 15px;
 }
 
 #container-content {
 }
 
-#toc {
-    background-color: #ECEEEF;
-    padding: 20px 15px;
-    border-radius: 20px;
-}
+
 
 #toc li {
     border-top: 1px solid #000000;
@@ -47,4 +42,11 @@ a, ol {
 
 .navbar-nav .nav-item {
     line-height: 55px;
+}
+
+.right-elem {
+    background-color: #ECEEEF;
+    padding: 20px 15px;
+    border-radius: 20px;
+    padding: 20px 15px;
 }

@@ -17,7 +17,9 @@ class DatasetViewTestCase(TestCase):
         self.password = 'pass'
         self.user = User.objects.create_user(
             username='user', email='email@example.com', password=self.password)
-        
+        self.blank_formsets = {        
+        }
+
 
     def test_list_view(self):
         response = self.client.get(reverse('dataset_list'))
@@ -119,7 +121,6 @@ class DatasetViewTestCase(TestCase):
             'task_set-INITIAL_FORMS': 0,
             'task_set-MIN_NUM_FORMS': 0,
             'task_set-MAX_NUM_FORMS': 0,
-
         }
         self.assertTrue(self.client.login(
             username=self.user.username, password=self.password))
