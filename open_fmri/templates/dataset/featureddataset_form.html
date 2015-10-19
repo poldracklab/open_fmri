@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% crispy form form.helper %}
 {% load staticfiles %}
 
 {% block title %}
@@ -7,11 +8,8 @@ Set Featured Dataset
 {% endblock %}
 
 {% block content %}
-    <form method=post>{% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Submit" />
-    </form>
-    <table class="table>
+    {% crispy form %}
+    <table class="table">
         <thead><tr>
             <th>Dataset</th>
             <th>Title</th>

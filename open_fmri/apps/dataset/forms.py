@@ -5,8 +5,11 @@ from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
-from dataset.models import Dataset, Investigator, PublicationPubMedLink, \
-    PublicationDocument, Task
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import ButtonHolder, Field, Layout, Submit
+
+from dataset.models import Dataset, FeaturedDataset, Investigator, \
+    PublicationPubMedLink, PublicationDocument, Task
 
 
 class DatasetForm(ModelForm):
@@ -73,3 +76,20 @@ PublicationPubMedLinkFormSet = inlineformset_factory(
     
 TaskFormSet = inlineformset_factory(
     Dataset, Task, form=TaskForm, extra=1)
+
+class FeaturedDatasetForm(ModelForm):
+    class Meta:
+        model = FeaturedDataset
+        fields = ['dataset', 'image', 'title', 'content']
+    
+    def __init__(self, *args, **kwargs):
+        super(FeaturedDatasetForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('dataset', css_class="form-control"),
+            Field('title', css_class="form-control"),
+            Field('image', css_class="form-control"),
+            Field('content', css_class="form-control"),
+        )
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Add Featured Dataset'))

@@ -9,7 +9,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, \
 
 from braces.views import LoginRequiredMixin
 
-from dataset.forms import DatasetForm, InvestigatorFormSet, \
+from dataset.forms import DatasetForm, FeaturedDatasetForm, InvestigatorFormSet, \
     PublicationDocumentFormSet, PublicationPubMedLinkFormSet, TaskFormSet
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset
@@ -112,7 +112,7 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
 
 class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):
     model = FeaturedDataset
-    fields = ['dataset', 'image', 'title', 'content']
+    form_class = FeaturedDatasetForm
     success_url = reverse_lazy('dataset_list')
 
     def get_context_data(self, **kwargs):
@@ -124,3 +124,4 @@ class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):
 class FeaturedDatasetDelete(LoginRequiredMixin, DeleteView):
     model = FeaturedDataset
     success_url = reverse_lazy('dataset_list')
+
