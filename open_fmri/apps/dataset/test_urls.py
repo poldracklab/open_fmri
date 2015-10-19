@@ -34,12 +34,12 @@ class DataSetUrlTestCase(TestCase):
         self.assertEqual(found.func.__name__, DatasetDelete.as_view().__name__)
     
     def test_featureddataset_edit(self):
-        found = resolve('/dataset/featured_dataset/')
+        found = resolve('/dataset/featured/')
         self.assertEqual(found.func.__name__, 
                          FeaturedDatasetEdit.as_view().__name__)
 
     def test_featureddataset_delete(self):
-        found = resolve('/dataset/featured_dataset/delete/' + 
+        found = resolve('/dataset/featured/delete/' + 
                         str(self.dataset.id))
         self.assertEqual(found.func.__name__, 
                          FeaturedDatasetDelete.as_view().__name__)
