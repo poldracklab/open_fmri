@@ -11,7 +11,6 @@ from crispy_forms.layout import ButtonHolder, Field, Layout, Submit
 from dataset.models import Dataset, FeaturedDataset, Investigator, \
     PublicationPubMedLink, PublicationDocument, Task
 
-
 class DatasetForm(ModelForm):
     class Meta:
         model = Dataset
@@ -25,6 +24,24 @@ class DatasetForm(ModelForm):
             'license_url': TextInput(),
             'aws_link_url': TextInput()
         }
+    
+    def __init__(self, *args, **kwargs):
+        super(DatasetForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('workflow_stage', css_class="form-control"),
+            Field('project_name', css_class="form-control"),
+            Field('summary', css_class="form-control"),
+            Field('sample_size', css_class="form-control"),
+            Field('scanner_type', css_class="form-control"),
+            Field('accession_number', css_class="form-control"),
+            Field('acknowledgements', css_class="form-control"),
+            Field('license_title', css_class="form-control"),
+            Field('license_url', css_class="form-control"),
+            Field('aws_link_title', css_class="form-control"),
+            Field('aws_link_url', css_class="form-control")
+        )
+        self.helper.form_method = 'post'
 
 class InvestigatorForm(ModelForm):
     class Meta:

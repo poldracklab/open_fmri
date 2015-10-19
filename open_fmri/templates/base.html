@@ -52,6 +52,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
+                            <li><a class="dropdown-item" href="/admin/flatpages/flatpage/">Manage Static Pages</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </ul>
@@ -74,7 +75,7 @@
 
         <div id="container-content" class="col-md-8">
         {% block content %}
-        <p>Base Template</p>
+            <p>Base Template</p>
         {% endblock content %}
         </div>
 
@@ -87,10 +88,12 @@
                 {% endfor %}
                 </ol>
             </div>
+            
             {% if featured_dataset %}
             <div id="featured-dataset-container" class="right-elem">
-                <h3>Featured Dataset</h3>
-                <a href="{% url 'dataset_detail' featured_dataset.dataset.id %}">{{ featured_dataset.title }}</a><br/>
+                <h3>Featured Dataset:</h3>
+                <h4><a href="{% url 'dataset_detail' featured_dataset.dataset.id %}">{{ featured_dataset.title }}</a></h4><br/>
+                <img src="{{ featured_dataset.image.url }}" class="img-responsive" />
                 {{ featured_dataset.content }}
             </div>
             {% endif %}
