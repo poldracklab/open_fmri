@@ -43,13 +43,23 @@
               <a class="nav-link nav-item" href=""></a>
             </nav>
         
-            <nav class="nav navbar-nav pull-right">
+            <ul class="nav navbar-nav pull-right">
                 {% if user.is_authenticated %}
-                    <a class="nav-link nav-item" href="{% url 'logout' %}">Logout</a>
+                    <li class="dropdown">
+                        <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            &#9776;
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </ul>
+                    </li>
                 {% else %}
                     <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
                 {% endif %}
-            </nav>
+            </ul>
           </div>
         </div>
       </nav>
@@ -61,6 +71,13 @@
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
           {% endfor %}
         {% endif %}
+
+        <div id="container-content" class="col-md-8">
+        {% block content %}
+        <p>Base Template</p>
+        {% endblock content %}
+        </div>
+
         <div id="container-right" class="col-md-4">
             <div id="toc" class="right-elem">
                 <h3>Find Out More:</h3>
@@ -78,11 +95,6 @@
             </div>
             {% endif %}
         </div>
-        <div id="container-content" class="col-md-8">
-        {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-        {% endblock content %}
-        </div>
 
     </div> <!-- /container -->
 
@@ -90,6 +102,7 @@
     {% block javascript %}
     <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
     <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     {% endblock javascript %}
   </body>

@@ -1,5 +1,4 @@
 #container-right {
-    float: right;
 }
 
 #container-content {
@@ -39,6 +38,14 @@ a, ol {
     width: 100%;
 }
 
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-menu {
+    background-color: #373a3c;
+}
+
 .navbar-nav .nav-item {
     line-height: 55px;
 }
@@ -46,6 +53,5 @@ a, ol {
 .right-elem {
     background-color: #ECEEEF;
     padding: 20px 15px;
-    border-radius: 20px;
-    padding: 20px 15px;
+    border-radius: 10px;
 }
