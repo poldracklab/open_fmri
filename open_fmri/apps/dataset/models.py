@@ -59,6 +59,9 @@ class Revision(models.Model):
     dataset = models.ForeignKey('Dataset')
     revision_number = models.CharField(max_length=200)
     notes = models.TextField()
+    
+    def __str__(self):
+        return self.revision_number
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
