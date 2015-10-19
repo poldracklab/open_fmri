@@ -39,6 +39,7 @@
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
             <nav class="nav navbar-nav">
               <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
+              <a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a>
               <a class="nav-link nav-item" href=""></a>
             </nav>
         
@@ -69,11 +70,13 @@
                 {% endfor %}
                 </ol>
             </div>
+            {% if feautured_dataset %}
             <div id="featured-dataset-container" class="right-elem">
                 <h3>Featured Dataset</h3>
                 <a href="{% url 'dataset_detail' featured_dataset.dataset.id %}">{{ featured_dataset.title }}</a><br/>
                 {{ featured_dataset.content }}
             </div>
+            {% endif %}
         </div>
         <div id="container-content" class="col-md-8">
         {% block content %}
