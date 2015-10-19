@@ -70,7 +70,7 @@
                 {% endfor %}
                 </ol>
             </div>
-            {% if feautured_dataset %}
+            {% if featured_dataset %}
             <div id="featured-dataset-container" class="right-elem">
                 <h3>Featured Dataset</h3>
                 <a href="{% url 'dataset_detail' featured_dataset.dataset.id %}">{{ featured_dataset.title }}</a><br/>
