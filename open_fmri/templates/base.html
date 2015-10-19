@@ -93,7 +93,9 @@
             <div id="featured-dataset-container" class="right-elem">
                 <h3>Featured Dataset:</h3>
                 <h4><a href="{% url 'dataset_detail' featured_dataset.dataset.id %}">{{ featured_dataset.title }}</a></h4><br/>
-                <img src="{{ featured_dataset.image.url }}" class="img-responsive" />
+                {% if featured_dataset.image %}
+                    <img src="{{ featured_dataset.image.url }}" class="img-responsive" />
+                {% endif %}
                 {{ featured_dataset.content }}
             </div>
             {% endif %}
