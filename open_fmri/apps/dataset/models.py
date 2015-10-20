@@ -55,13 +55,21 @@ class Task(models.Model):
     dataset = models.ForeignKey('Dataset')
 
 class Revision(models.Model):
-    previous_revision = models.ForeignKey('Revision')
+    previous_revision = models.ForeignKey('Revision', null=True)
     dataset = models.ForeignKey('Dataset')
     revision_number = models.CharField(max_length=200)
     notes = models.TextField()
+    date_set = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.revision_number
+
+    def save(self, *args, **kwargs):
+        try:
+            self.previous_revision = Revision.objects.filter(dataset=self.dataset).order_by('-date_set')[0]
+        except:
+            self.previous_revision = None
+        super(Revision, self).save(*args, **kwargs)
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
