@@ -106,7 +106,11 @@ class PublicationDocumentFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(PublicationDocumentFormSetHelper, self).__init__(*args, **kwargs)
         self.layout = Layout(
-            Field('document', css_class="form-control"),
+            Fieldset(
+                "Publication Document",
+                Field('document', css_class="form-control"),
+                css_class="fieldset-control form-control"
+            )
         )
         self.form_tag = False
 
@@ -116,10 +120,10 @@ class RevisionFormSetHelper(FormHelper):
         self.layout = Layout(
             Fieldset(
                 "Revision Information",
-                'revision_number',
-                'notes',
-                css_class="form-control"
-            )
+                Field('revision_number', css_class="form-control"),
+                Field('notes', css_class="form-control"),
+                css_class="fieldset-control form-control"
+            ),
         )
         self.form_tag = False
 

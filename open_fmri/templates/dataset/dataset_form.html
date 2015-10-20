@@ -104,7 +104,7 @@
 {{ block.super }}
     <script>
     $(document).ready(function() {
-        $('#id_revision .form-control').formset({
+        $('#id_revision .fieldset-control').formset({
             addText: 'Add Revision',
             deleteText: 'Remove',
             prefix: '{{ revision_formset.prefix }}',
@@ -123,7 +123,7 @@
 
     
     $(document).ready(function() {
-        $('#id_publication_document .control-group').formset({
+        $('#id_publication_document .fieldset-control').formset({
             addText: 'Add Publication Document',
             deleteText: 'Remove',
             prefix: 'id_publication_document_set',
