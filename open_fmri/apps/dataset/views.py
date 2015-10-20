@@ -9,8 +9,10 @@ from django.views.generic import CreateView, DeleteView, DetailView, \
 
 from braces.views import LoginRequiredMixin
 
-from dataset.forms import DatasetForm, FeaturedDatasetForm, InvestigatorFormSet, \
-    PublicationDocumentFormSet, PublicationPubMedLinkFormSet, TaskFormSet
+from dataset.forms import DatasetForm, FeaturedDatasetForm, \
+    InvestigatorFormSet, PublicationDocumentFormSet, \
+    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
+    RevisionFormSet, RevisionFormSetHelper, TaskFormSet 
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset
 
@@ -35,9 +37,13 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
         context = super(DatasetCreate, self).get_context_data(**kwargs)
         context['investigator_formset'] = InvestigatorFormSet()
         context['publication_document_formset'] = PublicationDocumentFormSet()
+        context['publication_document_formset_helper'] = \
+            PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet()
         context['task_formset'] = TaskFormSet()
+        context['revision_formset'] = RevisionFormSet(instance=self.object)
+        context['revision_formset_helper'] = RevisionFormSetHelper()
         return context
 
     def form_valid(self, form):
@@ -78,9 +84,13 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
             instance=self.object)
         context['publication_document_formset'] = PublicationDocumentFormSet(
             instance=self.object)
+        context['publication_document_formset_helper'] = \
+            PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet(instance=self.object)
         context['task_formset'] = TaskFormSet(instance=self.object)
+        context['revision_formset'] = RevisionFormSet(instance=self.object)
+        context['revision_formset_helper'] = RevisionFormSetHelper()
         return context
 
     def form_valid(self, form):
@@ -100,6 +110,11 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
             self.request.POST, instance=self.object)
         if publication_pubmed_link_formset.is_valid():
             publication_pubmed_link_formset.save()
+
+        revision_formset = RevisionFormSet(self.request.POST, 
+            instance=self.object)
+        if revision_formset.is_valid():
+            revision_formset.save()
         
         task_formset = TaskFormSet(self.request.POST, self.request.FILES,
             instance=self.object)

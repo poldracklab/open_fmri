@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% crispy form form.helper %}
 {% load staticfiles %}
 
 {% block title %}
@@ -16,7 +15,12 @@
     <table class= "dataset_form table table-bordered">
     {{ form.as_table }}
     </table>
-    
+
+    <div id="id_revision">
+    {% crispy revision_formset revision_formset_helper %}
+    </div>
+
+   
     <table id="id_investigator_table" class="table">
         {% for form in investigator_formset %}
             <tr>
@@ -32,20 +36,9 @@
         {% endfor %}
     </table>
     
-    <table id="id_publication_document_table" class="table">
-        {% for form in publication_document_formset %}
-            <tr>
-            <td>
-                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
-                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                {{ form.document.label_tag }}
-            </td>
-            <td>
-                {{ form.document }}
-            </td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div id="id_publication_document">
+        {% crispy publication_document_formset publication_document_formset_helper %}
+    </div>
 
     <table id="id_publication_pubmed_link_table" class="table">
         {% for form in publication_pubmed_link_formset %}
@@ -104,11 +97,21 @@
     {{ publication_document_formset.management_form }}
     {{ publication_pubmed_link_formset.management_form }}
     {{ task_formset.management_form }}
+    {{ revision_formset.management_form }}
     </form>
 {% endblock %}
 {% block javascript %}
 {{ block.super }}
     <script>
+    $(document).ready(function() {
+        $('#id_revision .form-control').formset({
+            addText: 'Add Revision',
+            deleteText: 'Remove',
+            prefix: '{{ revision_formset.prefix }}',
+            formCssClass: '{{ revision_formset.prefix }}'
+        });
+    })
+
     $(document).ready(function() {
         $('#id_investigator_table tr').formset({
             addText: 'Add Investigator',
@@ -120,11 +123,11 @@
 
     
     $(document).ready(function() {
-        $('#id_publication_document_table tr').formset({
+        $('#id_publication_document .control-group').formset({
             addText: 'Add Publication Document',
             deleteText: 'Remove',
-            prefix: '{{ publication_document_formset.prefix }}',
-            formCssClass: '{{ publication_document_formset.prefix }}'
+            prefix: 'id_publication_document_set',
+            formCssClass: 'id_publication_document_set'
         });
     })
 

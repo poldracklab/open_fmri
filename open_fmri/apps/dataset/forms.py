@@ -6,10 +6,10 @@ from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Field, Layout, Submit
+from crispy_forms.layout import ButtonHolder, Field, Fieldset, Layout, Submit
 
 from dataset.models import Dataset, FeaturedDataset, Investigator, \
-    PublicationPubMedLink, PublicationDocument, Task
+    PublicationPubMedLink, PublicationDocument, Revision, Task
 
 class DatasetForm(ModelForm):
     class Meta:
@@ -62,6 +62,11 @@ class PublicationPubMedLinkForm(ModelForm):
             'url': TextInput()
         }
 
+class RevisionForm(ModelForm):
+    class Meta:
+        model = Revision
+        fields = ['revision_number', 'notes']
+
 class TaskForm(ModelForm):
     cogat_id = forms.ChoiceField()
 
@@ -91,8 +96,32 @@ PublicationDocumentFormSet = inlineformset_factory(
 PublicationPubMedLinkFormSet = inlineformset_factory(
     Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
     
+RevisionFormSet = inlineformset_factory(
+    Dataset, Revision, form=RevisionForm, extra=1)
+
 TaskFormSet = inlineformset_factory(
     Dataset, Task, form=TaskForm, extra=1)
+
+class PublicationDocumentFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(PublicationDocumentFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Field('document', css_class="form-control"),
+        )
+        self.form_tag = False
+
+class RevisionFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(RevisionFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "Revision Information",
+                'revision_number',
+                'notes',
+                css_class="form-control"
+            )
+        )
+        self.form_tag = False
 
 class FeaturedDatasetForm(ModelForm):
     class Meta:
@@ -110,3 +139,7 @@ class FeaturedDatasetForm(ModelForm):
         )
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Add Featured Dataset'))
+
+
+
+
