@@ -46,7 +46,6 @@ class DatasetViewTestCase(TestCase):
     
     Printing out the context data shows the fields within the form. Disabling 
     for now
-
     def test_create_view_login_blank_data(self):
         self.assertTrue(self.client.login(
             username=self.user.username, password=self.password))

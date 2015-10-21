@@ -77,7 +77,7 @@ class TaskForm(ModelForm):
     def get_cogat_tasks(self):
         cogat_tasks = requests.get('http://cognitiveatlas.org/api/v-alpha/task')
         tasks_json = cogat_tasks.json()
-        tasks_choices = []
+        tasks_choices = [("", "---------")]
         for elem in tasks_json:
             tasks_choices.append((elem['id'], elem['name']))
         
@@ -121,7 +121,7 @@ class RevisionFormSetHelper(FormHelper):
             Fieldset(
                 "Revision Information",
                 Field('revision_number', css_class="form-control"),
-                Field('notes', css_class="form-control"),
+                Field('notes', css_class="form-control", rows=3),
                 css_class="fieldset-control form-control"
             ),
         )

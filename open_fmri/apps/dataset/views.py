@@ -68,7 +68,7 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             instance=dataset)
         if task_formset.is_valid():
             task_formset.save()
-
+        
         return super(DatasetCreate, self).form_valid(form)
 
 class DatasetUpdate(LoginRequiredMixin, UpdateView):
@@ -121,6 +121,8 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         if task_formset.is_valid():
             task_formset.save()
         else:
+            form_empty_permitted = task_formset.forms[-1].empty_permitted
+            form_has_changed = task_formset.forms[-1].changed_data
             raise forms.ValidationError(task_formset.errors)
             
         return super(DatasetUpdate, self).form_valid(form)
