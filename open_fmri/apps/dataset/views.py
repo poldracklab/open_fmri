@@ -10,9 +10,10 @@ from django.views.generic import CreateView, DeleteView, DetailView, \
 from braces.views import LoginRequiredMixin
 
 from dataset.forms import DatasetForm, FeaturedDatasetForm, \
-    InvestigatorFormSet, PublicationDocumentFormSet, \
-    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
-    RevisionFormSet, RevisionFormSetHelper, TaskFormSet 
+    InvestigatorFormSet, InvestigatorFormSetHelper, \
+    PublicationDocumentFormSet, PublicationDocumentFormSetHelper, \
+    PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, \
+    RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset
 
@@ -36,12 +37,16 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(DatasetCreate, self).get_context_data(**kwargs)
         context['investigator_formset'] = InvestigatorFormSet()
+        context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['publication_document_formset'] = PublicationDocumentFormSet()
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet()
+        context['publication_pubmed_link_formset_helper'] = \
+            PublicationPubMedLinkFormSetHelper()
         context['task_formset'] = TaskFormSet()
+        context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
         return context
@@ -82,13 +87,17 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         context = super(DatasetUpdate, self).get_context_data(**kwargs)
         context['investigator_formset'] = InvestigatorFormSet(
             instance=self.object)
+        context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['publication_document_formset'] = PublicationDocumentFormSet(
             instance=self.object)
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
             PublicationPubMedLinkFormSet(instance=self.object)
+        context['publication_pubmed_link_formset_helper'] = \
+            PublicationPubMedLinkFormSetHelper()
         context['task_formset'] = TaskFormSet(instance=self.object)
+        context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
         return context

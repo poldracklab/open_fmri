@@ -11,93 +11,43 @@
 {% endblock %}
 
 {% block content %}
+    {% if object.pk %}
+        <h2>Update Dataset</h2>
+    {% else %}
+        <h2>Create Dataset</h2>
+    {% endif %}
+
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-    <table class= "dataset_form table table-bordered">
-    {{ form.as_table }}
-    </table>
+    {% crispy form %}
 
     <div id="id_revision">
     {% crispy revision_formset revision_formset_helper %}
     </div>
 
+    <div id="id_investigator">
+        {% crispy investigator_formset investigator_formset_helper %}
+    </div>
    
-    <table id="id_investigator_table" class="table">
-        {% for form in investigator_formset %}
-            <tr>
-            <td>
-                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
-                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                {{ form.investigator.label_tag }}
-            </td>
-            <td>
-                {{ form.investigator }}
-            </td>
-            </tr>
-        {% endfor %}
-    </table>
-    
     <div id="id_publication_document">
         {% crispy publication_document_formset publication_document_formset_helper %}
     </div>
 
-    <table id="id_publication_pubmed_link_table" class="table">
-        {% for form in publication_pubmed_link_formset %}
-            <tbody>
-            <tr>
-            <td>
-                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
-                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                {{ form.title.label_tag }}
-            </td>
-            <td>
-                {{ form.title}}
-            </td>
-            </tr>
-            <tr>
-            <td>
-                {{ form.url.label_tag }}
-            </td>
-            <td>
-                {{ form.url }}
-            </td>
-            </tr>
-            </tbody>
-        {% endfor %}
-    </table>
-
-    <table id="id_task_table" class="table">
-        <thead>
-        <tr>
-        {% for field in task_formset.form.base_fields %}
-        <th>
-            {{ field }}
-        </th>
-        {% endfor %}
-        </tr>
-        </thead>
-        {% for form in task_formset %}
-            <tbody>
-            <tr>
-            <td>
-                {% for field in form.hidden_fields %}{{ field }}{% endfor %}
-                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                {{ form.cogat_id }}
-            </td>
-            <td>
-                {{ form.number }}
-            </td>
-            </tr>
-            </tbody>
-        {% endfor %}
-    </table>
-
+    <div id="id_publication_pubmed_link">
+        {% crispy publication_pubmed_link_formset publication_pubmed_link_formset_helper %}
+    </div>
+    
+    <div id="id_publication_document">
+        {% crispy publication_document_formset publication_document_formset_helper %}
+    </div>
     <input class="btn btn-primary" type="submit" value="Save">
 
+    <div id="id_management_forms">
     {{ investigator_formset.management_form }}
     {{ publication_document_formset.management_form }}
     {{ publication_pubmed_link_formset.management_form }}
     {{ task_formset.management_form }}
     {{ revision_formset.management_form }}
+    </div>
     </form>
 {% endblock %}
 {% block javascript %}
@@ -113,7 +63,7 @@
     })
 
     $(document).ready(function() {
-        $('#id_investigator_table tr').formset({
+        $('#id_investigator').formset({
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}',
@@ -132,7 +82,7 @@
     })
 
     $(document).ready(function() {
-        $('#id_publication_pubmed_link_table tbody').formset({
+        $('#id_publication_pubmed_link .fieldset-control').formset({
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}',
@@ -141,7 +91,7 @@
     })
 
     $(document).ready(function() {
-        $('#id_task_table tbody').formset({
+        $('#id_task .fieldset-control').formset({
             addText: 'Add Task',
             deleteText: 'Remove',
             prefix: '{{ task_formset.prefix }}',

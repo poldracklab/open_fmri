@@ -31,17 +31,17 @@ class DatasetForm(ModelForm):
         self.helper.layout = Layout(
             Field('workflow_stage', css_class="form-control"),
             Field('project_name', css_class="form-control"),
-            Field('summary', css_class="form-control"),
+            Field('summary', css_class="form-control", rows=3),
             Field('sample_size', css_class="form-control"),
-            Field('scanner_type', css_class="form-control"),
+            Field('scanner_type', css_class="form-control", rows=1),
             Field('accession_number', css_class="form-control"),
-            Field('acknowledgements', css_class="form-control"),
+            Field('acknowledgements', css_class="form-control", rows=3),
             Field('license_title', css_class="form-control"),
             Field('license_url', css_class="form-control"),
             Field('aws_link_title', css_class="form-control"),
             Field('aws_link_url', css_class="form-control")
         )
-        self.helper.form_method = 'post'
+        self.form_tag = False
 
 class InvestigatorForm(ModelForm):
     class Meta:
@@ -102,6 +102,14 @@ RevisionFormSet = inlineformset_factory(
 TaskFormSet = inlineformset_factory(
     Dataset, Task, form=TaskForm, extra=1)
 
+class InvestigatorFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(InvestigatorFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Field('investigator', css_class="form-control")
+        )
+        self.form_tag = False
+
 class PublicationDocumentFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(PublicationDocumentFormSetHelper, self).__init__(*args, **kwargs)
@@ -109,6 +117,20 @@ class PublicationDocumentFormSetHelper(FormHelper):
             Fieldset(
                 "Publication Document",
                 Field('document', css_class="form-control"),
+                css_class="fieldset-control form-control"
+            )
+        )
+        self.form_tag = False
+
+class PublicationPubMedLinkFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(PublicationPubMedLinkFormSetHelper, self).__init__(*args, 
+            **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "PubMed Link",
+                Field('title', css_class="form-control"),
+                Field('url', css_class="form-control"),
                 css_class="fieldset-control form-control"
             )
         )
@@ -122,6 +144,19 @@ class RevisionFormSetHelper(FormHelper):
                 "Revision Information",
                 Field('revision_number', css_class="form-control"),
                 Field('notes', css_class="form-control", rows=3),
+                css_class="fieldset-control form-control"
+            ),
+        )
+        self.form_tag = False
+
+class TaskFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(TaskFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "Cognitive Atlas Task",
+                Field('cogat_id', css_class="form-control"),
+                Field('number', css_class="form-control"),
                 css_class="fieldset-control form-control"
             ),
         )
