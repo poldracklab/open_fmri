@@ -173,7 +173,7 @@ class UserCreateDataset(CreateView):
     model = Dataset
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
-    template_name = "user_dataset_form.html"
+    template_name = "dataset/user_dataset_form.html"
     
     def form_valid(self, form):
         form.save()

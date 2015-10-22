@@ -58,7 +58,7 @@ class UserDatasetForm(ModelForm):
         ]
     
     def __init__(self, *args, **kwargs):
-        super(DatasetForm, self).__init__(*args, **kwargs)
+        super(UserDatasetForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('project_name', css_class="form-control"),
