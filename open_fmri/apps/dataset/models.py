@@ -5,7 +5,6 @@ MAX_TITLE_LENGTH = 255
 
 class Dataset(models.Model):
     
-    
     WORKFLOW_STAGE_CHOICES = (
         ('SUBMITTED', 'Submitted'),
         ('IN_PROCESS', 'In Process'),
@@ -86,6 +85,12 @@ class FeaturedDataset(models.Model):
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     content = models.TextField()
     date_featured = models.DateField(auto_now_add=True)
-
+    
     def __str__(self):
         return self.title
+
+class UserDataRequest(models.Model):
+    user_email_address = models.EmailField()
+    request_sent = models.DateTimeField(auto_now_add=True)
+    url_token = models.CharField(max_length=200, blank=True)
+    
