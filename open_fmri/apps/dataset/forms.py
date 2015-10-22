@@ -1,4 +1,5 @@
 import requests
+import smtplib
 
 from django import forms
 from django.forms import ModelForm
@@ -243,10 +244,12 @@ class UserDataRequestForm(ModelForm):
     
     def save(self, fail_silently=False):
         try:
-            #build token
+            data_request = super(UserDataRequestForm, self).save()
+            data_request.url_token = salted_hmac(data_request.request_sent, 
+                                             data_request.user_email_address)
+            data_request.save()
+            return data_request
             #send_mail()    
-            super(UserDataRequestForm, self).save(fail_silently)
-            #save token
         except smtplib.SMTPException:
             pass
             
