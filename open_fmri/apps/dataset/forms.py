@@ -6,7 +6,8 @@ from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Field, Fieldset, Layout, Submit
+from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
+    Layout, Row, Submit
 
 from dataset.models import Dataset, FeaturedDataset, Investigator, \
     PublicationPubMedLink, PublicationDocument, Revision, Task
@@ -17,7 +18,7 @@ class DatasetForm(ModelForm):
         fields = [
             'workflow_stage', 'project_name', 'summary', 'sample_size', 
             'scanner_type', 'accession_number', 'acknowledgements', 
-            'license_title', 'license_url', 'aws_link_title', 'aws_link_url' 
+            'license_title', 'license_url'  
         ]
         
         widgets = {
@@ -38,10 +39,8 @@ class DatasetForm(ModelForm):
             Field('acknowledgements', css_class="form-control", rows=3),
             Field('license_title', css_class="form-control"),
             Field('license_url', css_class="form-control"),
-            Field('aws_link_title', css_class="form-control"),
-            Field('aws_link_url', css_class="form-control")
         )
-        self.form_tag = False
+        self.helper.form_tag = False
 
 class InvestigatorForm(ModelForm):
     class Meta:
@@ -65,7 +64,10 @@ class PublicationPubMedLinkForm(ModelForm):
 class RevisionForm(ModelForm):
     class Meta:
         model = Revision
-        fields = ['revision_number', 'notes']
+        fields = ['revision_number', 'notes', 'aws_link_title', 'aws_link_url']
+        widgets = {
+            'aws_link_url': TextInput()
+        }
 
 class TaskForm(ModelForm):
     cogat_id = forms.ChoiceField()
@@ -88,25 +90,32 @@ class TaskForm(ModelForm):
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
 InvestigatorFormSet = inlineformset_factory(
-    Dataset, Investigator, form=InvestigatorForm, extra=1)
+    Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
 
 PublicationDocumentFormSet = inlineformset_factory(
-    Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1) 
+    Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1, 
+    can_delete=True) 
 
 PublicationPubMedLinkFormSet = inlineformset_factory(
-    Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1)
+    Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1, 
+    can_delete=True)
     
 RevisionFormSet = inlineformset_factory(
-    Dataset, Revision, form=RevisionForm, extra=1)
+    Dataset, Revision, form=RevisionForm, extra=1, can_delete=True)
 
 TaskFormSet = inlineformset_factory(
-    Dataset, Task, form=TaskForm, extra=1)
+    Dataset, Task, form=TaskForm, extra=1, can_delete=True)
 
 class InvestigatorFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(InvestigatorFormSetHelper, self).__init__(*args, **kwargs)
         self.layout = Layout(
-            Field('investigator', css_class="form-control")
+            Fieldset(
+                "",
+                Field('investigator', css_class="form-control"),
+                Field('DELETE', css_class='form-control'),
+                css_class="fieldset-control form-control"
+            )
         )
         self.form_tag = False
 
@@ -117,6 +126,7 @@ class PublicationDocumentFormSetHelper(FormHelper):
             Fieldset(
                 "Publication Document",
                 Field('document', css_class="form-control"),
+                Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
             )
         )
@@ -131,6 +141,7 @@ class PublicationPubMedLinkFormSetHelper(FormHelper):
                 "PubMed Link",
                 Field('title', css_class="form-control"),
                 Field('url', css_class="form-control"),
+                Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
             )
         )
@@ -143,7 +154,12 @@ class RevisionFormSetHelper(FormHelper):
             Fieldset(
                 "Revision Information",
                 Field('revision_number', css_class="form-control"),
+                Column(
+                    Field('aws_link_title', css_class="form-control"),
+                    Field('aws_link_url', css_class="form-control"),
+                ),
                 Field('notes', css_class="form-control", rows=3),
+                Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
             ),
         )
@@ -157,6 +173,7 @@ class TaskFormSetHelper(FormHelper):
                 "Cognitive Atlas Task",
                 Field('cogat_id', css_class="form-control"),
                 Field('number', css_class="form-control"),
+                Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
             ),
         )

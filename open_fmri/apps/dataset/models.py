@@ -61,6 +61,9 @@ class Revision(models.Model):
     notes = models.TextField()
     date_set = models.DateTimeField(auto_now_add=True)
     
+    aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
+    aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
+    
     def __str__(self):
         return self.revision_number
 

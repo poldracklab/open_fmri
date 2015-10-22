@@ -28,6 +28,11 @@ class DatasetDelete(LoginRequiredMixin, DeleteView):
 
 class DatasetDetail(DetailView):
     model = Dataset
+    
+    def get_context_data(self, **kwargs):
+        context = super(DatasetDetail, self).get_context_data(**kwargs)
+        context['revisions'] = self.object.revision_set.order_by('-date_set')
+        return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
     model = Dataset
@@ -132,6 +137,7 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         else:
             form_empty_permitted = task_formset.forms[-1].empty_permitted
             form_has_changed = task_formset.forms[-1].changed_data
+            total_forms = task_formset.total_form_count()
             raise forms.ValidationError(task_formset.errors)
             
         return super(DatasetUpdate, self).form_valid(form)
