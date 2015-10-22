@@ -16,9 +16,9 @@ class DatasetForm(ModelForm):
     class Meta:
         model = Dataset
         fields = [
-            'workflow_stage', 'project_name', 'summary', 'sample_size', 
-            'scanner_type', 'accession_number', 'acknowledgements', 
-            'license_title', 'license_url'  
+            'workflow_stage', 'status', 'project_name', 'summary', 
+            'sample_size', 'scanner_type', 'accession_number', 
+            'acknowledgements', 'license_title', 'license_url'  
         ]
         
         widgets = {
@@ -31,6 +31,7 @@ class DatasetForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('workflow_stage', css_class="form-control"),
+            Field('status', css_class="form-control"),
             Field('project_name', css_class="form-control"),
             Field('summary', css_class="form-control", rows=3),
             Field('sample_size', css_class="form-control"),
@@ -41,6 +42,28 @@ class DatasetForm(ModelForm):
             Field('license_url', css_class="form-control"),
         )
         self.helper.form_tag = False
+
+class UserDatasetForm(ModelForm):
+    class Meta:
+        model = Dataset
+        fields = [
+            'project_name', 'summary', 'sample_size', 'scanner_type', 
+            'acknowledgements'
+        ]
+    
+    def __init__(self, *args, **kwargs):
+        super(DatasetForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('project_name', css_class="form-control"),
+            Field('summary', css_class="form-control", rows=3),
+            Field('sample_size', css_class="form-control"),
+            Field('scanner_type', css_class="form-control", rows=1),
+            Field('accession_number', css_class="form-control"),
+            Field('acknowledgements', css_class="form-control", rows=3),
+        )
+        self.helper.form_tag = False
+
 
 class InvestigatorForm(ModelForm):
     class Meta:

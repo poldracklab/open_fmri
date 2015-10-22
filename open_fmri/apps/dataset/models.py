@@ -13,20 +13,26 @@ class Dataset(models.Model):
         ('SHARED', 'Shared'),
         ('REVIEW', 'Review')
     )
+    STATUS_CHOICES = (
+        ('PUBLISHED', 'Published'),
+        ('UNPUBLISHED', 'Unpublished')
+    )
     workflow_stage = models.CharField(choices=WORKFLOW_STAGE_CHOICES,
                                       default='SUBMITTED', max_length=200)
+    status = models.CharField(choices=STATUS_CHOICES, default='UNPUBLISHED', 
+                              max_length=200)
     project_name = models.CharField(max_length=MAX_TITLE_LENGTH)
     summary = models.TextField()
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
     accession_number = models.CharField(max_length=200, blank=True)
     acknowledgements = models.TextField(blank=True)
-
+    
     # These three fields are for any papers associated with the dataset
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
                                      default="PPDL")
     license_url = models.TextField(validators=[URLValidator()], blank=True)
-
+    
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
     
@@ -41,7 +47,7 @@ class PublicationPubMedLink(models.Model):
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     url = models.TextField(validators=[URLValidator()])
     dataset = models.ForeignKey('Dataset')
-    
+
 class PublicationDocument(models.Model):
     document = models.FileField()
     dataset = models.ForeignKey('Dataset')
@@ -58,7 +64,7 @@ class Revision(models.Model):
     previous_revision = models.ForeignKey('Revision', null=True)
     dataset = models.ForeignKey('Dataset')
     revision_number = models.CharField(max_length=200)
-    notes = models.TextField()
+    notes = models.TextField(blank=True)
     date_set = models.DateTimeField(auto_now_add=True)
     
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)

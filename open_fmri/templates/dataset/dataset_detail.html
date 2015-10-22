@@ -30,10 +30,8 @@
 <p><a href="{{ object.license_url }}">{{ object.license_title }}</a></p>
 <h4>Accession Number:</h4>
 <p>{{ object.accession_number }}</p>
-<h4>AWS Link</h4>
-<p><a href="{{ object.aws_link_url }}">{{ object.aws_link_title }}</a></p>
 {% for revision in revisions %}
-<h4>Revision {{ revision.revision }} <small>Date Set: {{ revision.date_set }}</small></h4>
+<h4>Revision {{ revision.revision_number }} <small>Date Set: {{ revision.date_set }}</small></h4>
 <p><a href="{{ revision.aws_link_url }}">{{ revision.aws_link_title }}</a></p>
 {% endfor %}
 <div id="disqus_thread"></div>

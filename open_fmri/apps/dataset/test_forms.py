@@ -19,7 +19,8 @@ class DatasetFormTestCase(TestCase):
             'summary': 'summary',
             'sample_size': 2,
             'license_title': 'PPDL',
-            'workflow_stage': 'SUBMITTED'
+            'workflow_stage': 'SUBMITTED',
+            'status': 'UNPUBLISHED'
         })
         self.assertTrue(form.is_valid())
         dataset = form.save()
@@ -28,6 +29,7 @@ class DatasetFormTestCase(TestCase):
         self.assertEqual(dataset.sample_size, 2)
         self.assertEqual(dataset.license_title, 'PPDL')
         self.assertEqual(dataset.workflow_stage, 'SUBMITTED')
+        self.assertEqual(dataset.status, 'UNPUBLISHED')
 
     def test_blank_data(self):
         form = DatasetForm({})

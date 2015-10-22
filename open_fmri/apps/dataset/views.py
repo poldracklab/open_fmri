@@ -13,7 +13,8 @@ from dataset.forms import DatasetForm, FeaturedDatasetForm, \
     InvestigatorFormSet, InvestigatorFormSetHelper, \
     PublicationDocumentFormSet, PublicationDocumentFormSetHelper, \
     PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, \
-    RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper
+    RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, \
+    UserDatasetForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset
 
@@ -21,6 +22,12 @@ requests_cache.install_cache('test_cache')
 
 class DatasetList(ListView):
     model = Dataset
+    def get_queryset(self, **kwargs):
+        if not self.request.user.is_authenticated():
+            queryset = Dataset.objects.filter(status='PUBLISHED')
+            return queryset
+        else:
+            return super(DatasetList, self).get_queryset(**kwargs)
 
 class DatasetDelete(LoginRequiredMixin, DeleteView):
     model = Dataset
@@ -157,3 +164,13 @@ class FeaturedDatasetDelete(LoginRequiredMixin, DeleteView):
     model = FeaturedDataset
     success_url = reverse_lazy('dataset_list')
 
+class UserCreateDataset(CreateView):
+    model = Dataset
+    form_class = UserDatasetForm
+    success_url = reverse_lazy('dataset_list')
+    template_name = "user_dataset_form.html"
+    
+    def form_valid(self, form):
+        form.save()
+        # Could email the admin back here
+        return super(UserDatasetCreate, self).form_valid(form)
