@@ -14,9 +14,9 @@ from dataset.forms import DatasetForm, FeaturedDatasetForm, \
     PublicationDocumentFormSet, PublicationDocumentFormSetHelper, \
     PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, \
     RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, \
-    UserDatasetForm
+    UserDatasetForm, UserDataRequestForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationPubMedLink, FeaturedDataset
+    PublicationPubMedLink, FeaturedDataset, UserDataRequest
 
 requests_cache.install_cache('test_cache')
 
@@ -162,6 +162,11 @@ class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):
 
 class FeaturedDatasetDelete(LoginRequiredMixin, DeleteView):
     model = FeaturedDataset
+    success_url = reverse_lazy('dataset_list')
+
+class UserDataRequestCreate(LoginRequiredMixin, CreateView):
+    model = UserDataRequest
+    form_class = UserDataRequestForm
     success_url = reverse_lazy('dataset_list')
 
 class UserCreateDataset(CreateView):

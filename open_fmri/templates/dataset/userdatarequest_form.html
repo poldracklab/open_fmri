@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+{% if object.pk %}
+    Update User Data Request
+{% else %}
+    Create User Data Request
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

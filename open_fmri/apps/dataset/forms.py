@@ -4,13 +4,14 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
+from django.utils.crypto import salted_hmac
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
     Layout, Row, Submit
 
 from dataset.models import Dataset, FeaturedDataset, Investigator, \
-    PublicationPubMedLink, PublicationDocument, Revision, Task
+    PublicationPubMedLink, PublicationDocument, Revision, Task, UserDataRequest
 
 class DatasetForm(ModelForm):
     class Meta:
@@ -43,6 +44,10 @@ class DatasetForm(ModelForm):
         )
         self.helper.form_tag = False
 
+'''
+    A Subset of the normal dataset form. This is the form that will be exposed
+    to people wishing to upload data to the site.
+'''
 class UserDatasetForm(ModelForm):
     class Meta:
         model = Dataset
@@ -62,8 +67,6 @@ class UserDatasetForm(ModelForm):
             Field('accession_number', css_class="form-control"),
             Field('acknowledgements', css_class="form-control", rows=3),
         )
-        self.helper.form_tag = False
-
 
 class InvestigatorForm(ModelForm):
     class Meta:
@@ -219,6 +222,31 @@ class FeaturedDatasetForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Add Featured Dataset'))
 
-
-
-
+'''
+    This form is used to send out links to views containing UserDatasetForms. 
+    Provided the email address passess validation a message containing a 
+    hased link will be sent in the overridden save function.
+'''
+class UserDataRequestForm(ModelForm):
+    class Meta:
+        model = UserDataRequest
+        fields = ['user_email_address']
+        
+    def __init__(self, *args, **kwargs):
+        super(UserDataRequestForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('user_email_address', css_class="form-control")
+        )
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Send Request for Information'))
+    
+    def save(self, fail_silently=False):
+        try:
+            #build token
+            #send_mail()    
+            super(UserDataRequestForm, self).save(fail_silently)
+            #save token
+        except smtplib.SMTPException:
+            pass
+            
