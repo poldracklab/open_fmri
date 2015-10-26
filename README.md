@@ -14,3 +14,21 @@ $docker-compose build
 $docker-compose up
 ```
 
+### Email settings
+In env_example there are the 4 main email environment variables used by the 
+project. The only other additional settings that may need to be set are either
+EMAIL_USE_SSL or EMAIL_USE_TLS. These are both set to false by default and can
+be set to True in the Django settings file being used depending on the 
+configuration of the SMTP server being sent through.
+
+### Contact Form
+The contact form relies on the MANAGERS setting in the Django settings file 
+being used. MANAGERS should be set equal to an array of tuples containing the
+name and email address that contact form mail should be sent to:
+
+```
+MANAGERS = (
+    ("test name", "test@example.org), 
+    ("test name jr.", "testjr@example.com)
+)
+```

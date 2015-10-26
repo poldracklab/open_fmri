@@ -2,6 +2,7 @@ import requests
 import smtplib
 
 from django import forms
+from django.core.mail import send_mail
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
@@ -226,7 +227,9 @@ class FeaturedDatasetForm(ModelForm):
 '''
     This form is used to send out links to views containing UserDatasetForms. 
     Provided the email address passess validation a message containing a 
-    hased link will be sent in the overridden save function.
+    hased link will be sent in the overridden save function. Using the 
+    date field for salt allows for multiple forms with unique urls to be sent
+    to the same email address.
 '''
 class UserDataRequestForm(ModelForm):
     class Meta:
@@ -248,8 +251,11 @@ class UserDataRequestForm(ModelForm):
             data_request.token = salted_hmac(data_request.request_sent, 
                                              data_request.user_email_address)
             data_request.save()
+            subject = ""
+            body = ""
+            send_mail(subject, body, 'admin@example.com', 
+                      [data_request.user_email_address], fail_silently)
             return data_request
-            #send_mail()    
         except smtplib.SMTPException:
-            pass
+            raise smtplib.SMTPException
             
