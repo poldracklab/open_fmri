@@ -5,7 +5,7 @@ POSTGRES_NAME=postgres
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 
-DJANGO_SETTINGS_MODULE=open_fmri.settings.local
+DJANGO_SETTINGS_MODULE=open_fmri.settings.base
 DJANGO_SECRET_KEY="a dumb secret key"
 DJANGO_ALLOWED_HOSTS="*"
 
