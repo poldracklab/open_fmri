@@ -3,7 +3,8 @@ import requests_cache
 
 from django import forms
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.utils.crypto import constant_time_compare, salted_hmac
 from django.views.generic import CreateView, DeleteView, DetailView, \
     ListView, UpdateView
 
@@ -174,7 +175,12 @@ class UserCreateDataset(CreateView):
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
     template_name = "dataset/user_dataset_form.html"
-    
+
+    def dispatch(self, *args, **kwargs):
+        token = self.kwargs.get('token') 
+        user_data_request = get_object_or_404(UserDataRequest, token=token)
+        return super(UserCreateDataset, self).dispatch(*args, **kwargs)
+
     def form_valid(self, form):
         form.save()
         # Could email the admin back here

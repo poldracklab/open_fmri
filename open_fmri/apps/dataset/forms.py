@@ -245,7 +245,7 @@ class UserDataRequestForm(ModelForm):
     def save(self, fail_silently=False):
         try:
             data_request = super(UserDataRequestForm, self).save()
-            data_request.url_token = salted_hmac(data_request.request_sent, 
+            data_request.token = salted_hmac(data_request.request_sent, 
                                              data_request.user_email_address)
             data_request.save()
             return data_request
