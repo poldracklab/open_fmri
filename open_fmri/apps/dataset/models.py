@@ -92,5 +92,5 @@ class FeaturedDataset(models.Model):
 class UserDataRequest(models.Model):
     user_email_address = models.EmailField()
     request_sent = models.DateTimeField(auto_now_add=True)
-    url_token = models.CharField(max_length=200, blank=True)
+    token = models.CharField(max_length=200, blank=True)
     
