@@ -3,9 +3,11 @@ import smtplib
 
 from django import forms
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
+from django.template.loader import render_to_string
 from django.utils.crypto import salted_hmac
 
 from crispy_forms.helper import FormHelper
@@ -249,10 +251,14 @@ class UserDataRequestForm(ModelForm):
         try:
             data_request = super(UserDataRequestForm, self).save()
             data_request.token = salted_hmac(data_request.request_sent, 
-                                             data_request.user_email_address)
+                                             data_request.user_email_address).hexdigest()
             data_request.save()
-            subject = ""
-            body = ""
+            subject = "Request for data from OpenfMRI.org"
+            body = render_to_string(
+                "dataset/user_data_request_email_body.txt", 
+                {'url': reverse('user_create_dataset',
+                                args=[data_request.token])}
+            )
             send_mail(subject, body, 'admin@example.com', 
                       [data_request.user_email_address], fail_silently)
             return data_request
