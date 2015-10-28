@@ -6,6 +6,7 @@ from django.contrib.flatpages import views
 
 import contact.urls
 import dataset.urls
+from dataset.views import DatasetList
 
 urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
@@ -13,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^dataset/', include(dataset.urls)),
     url(r'^contact/', include('contact.urls')),
+    url(r'^$', DatasetList.as_view()),
     url(r'^(?P<url>.*/)$', views.flatpage),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
