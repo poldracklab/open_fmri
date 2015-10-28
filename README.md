@@ -14,11 +14,18 @@ $docker-compose build
 $docker-compose up
 ```
 
+There is no administrative user created by default so one will need to be 
+generated:
+```
+docker-compose run uwsgi python /app/manage.py createsuperuser
+```
+
 ### Email settings
 In env_example there are the 4 main email environment variables used by the 
-project. The only other additional settings that may need to be set are either
-EMAIL_USE_SSL or EMAIL_USE_TLS. These are both set to false by default and can
-be set to True in the Django settings file being used depending on the 
+project. When these are set in .env they should not have quotation marks 
+around them. The only other additional settings that may need to be set are 
+either EMAIL_USE_SSL or EMAIL_USE_TLS. These are both set to false by default 
+and can be set to True in the Django settings file being used depending on the 
 configuration of the SMTP server being sent through.
 
 ### Contact Form
