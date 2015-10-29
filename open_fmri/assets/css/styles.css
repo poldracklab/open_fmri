@@ -1,12 +1,5 @@
-#main {
-    background-image: url("../images/banner_about.png");
-    background-position: center top;
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-.dataset-list-main {
-    background-image: url("../images/banner_view_data.png");
+#container-header {
+    background: rgba(0, 0, 0, 0) url("../images/banner_bg_small.png") repeat-x scroll center;
 }
 
 #toc li {
@@ -39,12 +32,10 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.dropdown-menu {
-    background-color: #373a3c;
-}
-
 .navbar-nav .nav-item {
     line-height: 87px;
+    font-size: 18px;
+    font-family: sans-serif;
 }
 
 .right-elem {

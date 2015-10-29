@@ -20,7 +20,7 @@
     <link rel="icon" type="image/gif" href="{% static 'img/favicon.gif' %}">
 
     {% block css %}
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     {% endblock %}
 
@@ -31,19 +31,11 @@
         <nav class="navbar navbar-static-top">
         <div class="container">
             <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
-            <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            &#9776;
-            </button>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
-                <nav class="nav navbar-nav">
-                    <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
-                    <a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a>
-                    <a class="nav-link nav-item" href=""></a>
-                </nav>
-
-                <ul class="nav navbar-nav pull-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                    <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
+                    <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
+                    <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -51,6 +43,7 @@
                         <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
                             <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
                             <li><a class="dropdown-item" href="/admin/flatpages/flatpage/">Manage Static Pages</a></li>
                             <li><a class="dropdown-item" href="{% url 'user_data_request' %}">Create User Data Request</a></li>
@@ -61,11 +54,16 @@
                     {% else %}
                         <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
                     {% endif %}
+
                 </ul>
-            </div>
         </div>
         </nav>
     </div>
+
+{% comment %}
+
+
+{% endcomment %}
 
     <div class="container" id="main">
         {% if messages %}
@@ -73,6 +71,10 @@
                 <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
             {% endfor %}
         {% endif %}
+
+        <div id="container-header" class="">
+            <img src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
+        </div>
 
         <div id="container-content" class="col-md-8">
         {% block content %}
