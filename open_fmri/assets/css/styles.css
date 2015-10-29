@@ -26,6 +26,11 @@ a, ol {
     padding: 0;
 }
 
+body {
+    background-image: url("../images/background-repeat.png");
+    border-top: 16px solid #0e9985;
+}
+
 .dropdown-item {
     color: rgba(255, 255, 255, 0.5);
 }
@@ -35,7 +40,7 @@ a, ol {
 }
 
 .navbar-nav .nav-item {
-    line-height: 55px;
+    line-height: 87px;
 }
 
 .right-elem {
