@@ -1,9 +1,13 @@
-#container-right {
+#main {
+    background-image: url("../images/banner_about.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    position: relative;
 }
 
-#container-content {
+.dataset-list-main {
+    background-image: url("../images/banner_view_data.png");
 }
-
 
 #toc li {
     border-top: 1px solid #000000;

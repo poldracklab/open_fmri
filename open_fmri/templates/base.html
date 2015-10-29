@@ -3,7 +3,7 @@
 {% get_flatpages as flatpages %}
 <!DOCTYPE html>
 <html lang="en" ng-app>
-  <head>
+<head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta name="description" content="{% block description %}{% endblock %}" />
     <meta name="keywords" content="{% block keywords %}{% endblock %}" />
@@ -24,31 +24,31 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     {% endblock %}
 
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="m-b">
-      <nav class="navbar navbar-static-top">
+        <nav class="navbar navbar-static-top">
         <div class="container">
-         <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
-          <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+            <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
+            <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
             &#9776;
-          </button>
+            </button>
 
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
-            <nav class="nav navbar-nav">
-              <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
-              <a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a>
-              <a class="nav-link nav-item" href=""></a>
-            </nav>
-        
-            <ul class="nav navbar-nav pull-right">
-                {% if user.is_authenticated %}
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
+                <nav class="nav navbar-nav">
+                    <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
+                    <a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a>
+                    <a class="nav-link nav-item" href=""></a>
+                </nav>
+
+                <ul class="nav navbar-nav pull-right">
+                    {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            &#9776;
-                            <span class="caret"></span>
+                        &#9776;
+                        <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
@@ -58,20 +58,20 @@
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </ul>
                     </li>
-                {% else %}
-                    <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
-                {% endif %}
-            </ul>
-          </div>
+                    {% else %}
+                        <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-      </nav>
+        </nav>
     </div>
 
-    <div class="container">
+    <div class="container" id="main">
         {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
-          {% endfor %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
         {% endif %}
 
         <div id="container-content" class="col-md-8">
@@ -111,5 +111,5 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     {% endblock javascript %}
-  </body>
+</body>
 </html>
