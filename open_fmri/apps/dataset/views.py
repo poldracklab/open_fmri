@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
 from django.views.generic import CreateView, DeleteView, DetailView, \
-    ListView, UpdateView
+    ListView, UpdateView, TemplateView
 
 from braces.views import LoginRequiredMixin
 
@@ -190,3 +190,15 @@ class UserCreateDataset(CreateView):
         form.save()
         # Could email the admin back here
         return super(UserDatasetCreate, self).form_valid(form)
+
+class Index(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(Index, self).get_context_data(**kwargs)
+        context['num_datasets'] = len(Dataset.objects.all())
+        total = 0
+        for x in Dataset.objects.all():
+            total += x.subjects
+        context['num_subjects'] =  total
+        return context

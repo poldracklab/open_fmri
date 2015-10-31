@@ -43,7 +43,7 @@
                         <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                            <li><a class="dropdown-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
                             <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
                             <li><a class="dropdown-item" href="/admin/flatpages/flatpage/">Manage Static Pages</a></li>
                             <li><a class="dropdown-item" href="{% url 'user_data_request' %}">Create User Data Request</a></li>
@@ -52,7 +52,7 @@
                         </ul>
                     </li>
                     {% else %}
-                        <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
+                    <li><a class="nav-link nav-item" href="{% url 'login' %}">Login</a></li>
                     {% endif %}
 
                 </ul>
@@ -60,11 +60,7 @@
         </nav>
     </div>
 
-{% comment %}
-
-
-{% endcomment %}
-
+    <div id="{% block header-background %}container-bg{% endblock %}">
     <div class="container" id="main">
         {% if messages %}
             {% for message in messages %}
@@ -73,7 +69,9 @@
         {% endif %}
 
         <div id="container-header" class="">
-            <img src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
+            <img id="header-img" src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
+            {% block header %}
+            {% endblock %}
         </div>
 
         <div id="container-content" class="col-md-8">
@@ -84,7 +82,7 @@
 
         <div id="container-right" class="col-md-4">
             <div id="toc" class="right-elem">
-                <h3>Find Out More:</h3>
+                <h3 class="block-title">Find Out More:</h3>
                 <ol>
                 {% for page in flatpages %}
                     <li><a href="{{ page.url }}">{{ page.title }} ‣</a></li>
@@ -105,6 +103,7 @@
         </div>
 
     </div> <!-- /container -->
+    <div>
 
 
     {% block javascript %}
