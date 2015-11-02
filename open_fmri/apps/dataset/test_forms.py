@@ -1,5 +1,6 @@
 import random
 
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
@@ -7,10 +8,11 @@ from django.test import TestCase
 from model_mommy import mommy as ModelFactory
 
 from dataset.forms import DatasetForm, InvestigatorForm, \
-    PublicationDocumentForm, PublicationPubMedLinkForm, TaskForm
+    PublicationDocumentForm, PublicationPubMedLinkForm, TaskForm, \
+    UserDataRequestForm
 
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationPubMedLink, Task
+    PublicationPubMedLink, Task, UserDataRequest
 
 class DatasetFormTestCase(TestCase):
     def test_valid_data(self):
@@ -90,3 +92,23 @@ class TaskTestCase(TestCase):
         form = TaskForm({})
         self.assertFalse(form.is_valid())
 
+class UserDataRequestTest(TestCase):
+    def test_valid_data(self):
+        user_data_request = ModelFactory.make('UserDataRequest')
+        to_address = user_data_request.user_email_address
+        form = UserDataRequestForm(
+            {'user_email_address': to_address}
+        )
+        user_data_request = form.save()
+        self.assertTrue(form.is_valid())
+        self.assertIn(user_data_request.token, mail.outbox[0].body)
+        self.assertIn(to_address, mail.outbox[0].to)
+
+    def test_invalid_data(self):
+        to_address = "not a real email address"
+        form = UserDataRequestForm({'user_email_address': to_address})
+        self.assertFalse(form.is_valid())
+
+    def test_blank_data(self):
+        form = UserDataRequestForm({})
+        self.assertFalse(form.is_valid())
