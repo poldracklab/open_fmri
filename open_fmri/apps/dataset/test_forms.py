@@ -92,7 +92,7 @@ class TaskTestCase(TestCase):
         form = TaskForm({})
         self.assertFalse(form.is_valid())
 
-class UserDataRequestTest(TestCase):
+class UserDataRequestTestCase(TestCase):
     def test_valid_data(self):
         user_data_request = ModelFactory.make('UserDataRequest')
         to_address = user_data_request.user_email_address
