@@ -46,11 +46,6 @@
     </div>
     <input class="btn btn-primary" type="submit" value="Save">
 
-    {{ investigator_formset.management_form }}
-    {{ publication_document_formset.management_form }}
-    {{ publication_pubmed_link_formset.management_form }}
-    {{ task_formset.management_form }}
-    {{ revision_formset.management_form }}
     </form>
 {% endblock %}
 {% block javascript %}
@@ -61,7 +56,7 @@
     form_id = 0
 
     $(document).ready(function() {
-        $("select[id$='0-cogat_id']").select2();
+        //$("select[id$='0-cogat_id']").select2();
     });
 
     function updateCogatSelect(row) {
@@ -113,7 +108,6 @@
             deleteText: 'Remove',
             prefix: '{{ task_formset.prefix }}',
             formCssClass: 'task_set',
-            added: updateCogatSelect
         });
     })
 
