@@ -10,6 +10,11 @@
 {% endif %}
 {% endblock %}
 
+{% block css %}
+{{ block.super }}
+<link href="{% static 'css/select2.min.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     {% if object.pk %}
         <h2>Update Dataset</h2>
@@ -50,7 +55,21 @@
 {% endblock %}
 {% block javascript %}
 {{ block.super }}
+    <script src="{% static 'js/select2.min.js' %}"></script>
     <script>
+
+    form_id = 0
+
+    $(document).ready(function() {
+        $("select[id$='0-cogat_id']").select2();
+    });
+
+    function updateCogatSelect(row) {
+        form_id++;
+        select_id = 'id_task_set-' + form_id + '-cogat_id';
+        $(select_id).select2();
+    }
+    
     $(document).ready(function() {
         $('#id_revision .fieldset-control').formset({
             addText: 'Add Revision',
@@ -94,6 +113,7 @@
             deleteText: 'Remove',
             prefix: '{{ task_formset.prefix }}',
             formCssClass: 'task_set',
+            added: updateCogatSelect
         });
     })
 
