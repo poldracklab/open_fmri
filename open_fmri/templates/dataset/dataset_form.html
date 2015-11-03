@@ -53,16 +53,15 @@
     <script src="{% static 'js/select2.min.js' %}"></script>
     <script>
 
-    form_id = 0
-
+    var task_template;
     $(document).ready(function() {
-        //$("select[id$='0-cogat_id']").select2();
+        task_template = $('.task_set:last').clone(true)
+        $("select[id$='-cogat_id']").select2();
     });
 
     function updateCogatSelect(row) {
-        form_id++;
-        select_id = 'id_task_set-' + form_id + '-cogat_id';
-        $(select_id).select2();
+        select_elem = row.find("select[id$='-cogat_id']");
+        select_elem.select2();
     }
     
     $(document).ready(function() {
@@ -98,7 +97,7 @@
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}',
-            formCssClass: '{{ publication_pubmed_link_formset.prefix }}'
+            formCssClass: '{{ publication_pubmed_link_formset.prefix }}',
         });
     })
 
@@ -108,6 +107,8 @@
             deleteText: 'Remove',
             prefix: '{{ task_formset.prefix }}',
             formCssClass: 'task_set',
+            added: updateCogatSelect,
+            formTemplate: task_template
         });
     })
 

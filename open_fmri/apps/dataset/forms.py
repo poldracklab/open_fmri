@@ -204,7 +204,7 @@ class TaskFormSetHelper(FormHelper):
                 Field('cogat_id', css_class="form-control"),
                 Field('number', css_class="form-control"),
                 Field('DELETE', css_class='form-control'),
-                css_class="fieldset-control form-control"
+                css_class="fieldset-control form-control task_set"
             ),
         )
         self.form_tag = False
