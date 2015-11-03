@@ -56,6 +56,7 @@
     var task_template;
     $(document).ready(function() {
         task_template = $('.task_set:last').clone(true)
+        task_template.find('input:hidden[id $= "-DELETE"]').remove();
         $("select[id$='-cogat_id']").select2();
     });
 
@@ -81,7 +82,6 @@
             formCssClass: '{{ investigator_formset.prefix }}'
         });
     })
-
     
     $(document).ready(function() {
         $('#id_publication_document .fieldset-control').formset({
