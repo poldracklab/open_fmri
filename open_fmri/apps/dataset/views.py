@@ -75,7 +75,7 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
         if publication_document_formset.is_valid():
-            investigator_formset.save()
+            publication_document_formset.save()
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
@@ -131,7 +131,7 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=self.object)
         if publication_document_formset.is_valid():
-            investigator_formset.save()
+            publication_document_formset.save()
         
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=self.object)
