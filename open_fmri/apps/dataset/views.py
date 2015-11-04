@@ -83,7 +83,7 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             publication_pubmed_link_formset.save()
 
         revision_formset = RevisionFormSet(self.request.POST, 
-            instance=self.object)
+            instance=dataset)
         if revision_formset.is_valid():
             revision_formset.save()
         
