@@ -30,7 +30,9 @@ class Dataset(models.Model):
     # These three fields are for any papers associated with the dataset
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
                                      default="PPDL")
-    license_url = models.TextField(validators=[URLValidator()], blank=True)
+    default_license_url = "http://opendatacommons.org/licenses/pddl/1.0/"
+    license_url = models.TextField(validators=[URLValidator()], blank=True, 
+                                   default=default_license_url)
     
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
