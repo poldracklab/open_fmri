@@ -86,3 +86,5 @@ open_fmri/assets-src/vendor/
 *.key
 *.crt
 *.pem
+
+.htpasswd
