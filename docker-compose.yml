@@ -1,7 +1,13 @@
+postgres_data:
+    image: busybox
+    volumes:
+        - /var/lib/postgres
+    command: /bin/sh
+
 postgres:
     image: postgres:9.4
-    volumes:
-        - /data/test/postgres:/var/lib/postgresql/data
+    volumes_from:
+        - postgres_data
     env_file: .env
     expose:
         - "5432"

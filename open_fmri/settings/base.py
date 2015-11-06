@@ -121,7 +121,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/var/www/static'
+STATIC_ROOT = '/var/www/static/'
 
 MEDIA_ROOT = root('assets', 'uploads')
 MEDIA_URL = '/media/'
