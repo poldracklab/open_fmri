@@ -22,4 +22,4 @@ deployment:
           revision_type: S3
           s3_location:
             bucket: openfmri_circleci
-            key_pattern: {SHORT_COMMIT}-{BUILD_NUM}
+            key_pattern: apps/rev-{SHORT_COMMIT}-{BUILD_NUM}
