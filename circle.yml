@@ -8,3 +8,18 @@ test:
     - coverage run --source=dataset manage.py test
   post:
     - coveralls
+
+deployment:
+  staging:
+    branch: master
+    codedeploy:
+      openfmri_django:
+        application_root: /
+        deployment-group: openfmri_django_deploy_group
+        deployment_config: CodeDeployDefault.OneAtATime
+        region: us-west-2
+        revision_location:
+          revision_type: S3
+          s3_location:
+            bucket: openfmri_circleci
+            key_pattern: {SHORT_COMMIT}-{BUILD_NUM}
