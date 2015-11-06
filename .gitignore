@@ -81,3 +81,8 @@ node_modules/
 # bower packages
 open_fmri/assets-src/vendor/
 .sass-cache/
+
+#keys and certs
+*.key
+*.crt
+*.pem
