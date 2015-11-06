@@ -7,21 +7,21 @@ The nginx.conf and docker-compose.yml expects a couple of files to exist that
 are not in the repo. A self signed signature will need to be generated, the 
 following command assumes you are in the project's base directory:
 
-'''
+```
 sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout ./nginx.key -out ./nginx.crt
-'''
+```
 
 Next is the htpasswd file that provides password protection for the site: 
-'''
+```
 htpasswd -n a_user > ./.htpasswd
-'''
+```
 
 Alternatively the auth lines in nginx conf can be removed with out affecting 
 the project. Two lines that can be removed are:
-'''
+```
             auth_basic "";
             auth_basic_user_file /etc/nginx/.passwd;
-'''
+```
 
 
 ### Docker Usage
