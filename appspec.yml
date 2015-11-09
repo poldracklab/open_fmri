@@ -12,13 +12,13 @@ permissions:
 hooks:
   ApplicationStop:
     - location: scripts/stop_container.sh
-      timeout: 20
+      timeout: 60
       runas: ec2-user
   AfterInstall:
     - location: scripts/after_install.sh
-      timeout: 10
+      timeout: 60
       runas: ec2-user
   ApplicationStart:
     - location: scripts/start_container.sh
-      timeout: 10
+      timeout: 60
       runas: ec2-user

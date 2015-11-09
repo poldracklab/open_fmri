@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
 cd /home/ec2-user/open_fmri
 sudo yum install -y docker apg
 # docker-compose is not in our repositories so we need to download it
