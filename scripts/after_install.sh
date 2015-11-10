@@ -18,11 +18,11 @@ sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyo
 # just a deterent from the site being wandered upon right now. For actual 
 # security with have proper logins setup in Django
 PASS=$(apg -n 1)
-echo $PASS > ../.user_pass
-htpasswd -nb admin $PASS > ./.htpasswd
+sudo echo $PASS > ../.user_pass
+sudo htpasswd -nb admin $PASS > ./.htpasswd
 
 # set up environment variables used by docker
-mv env_example .env
-sed -i 's/postgres_pass/$(apg -n 1 -m 100)/g' .env
-sed -i 's/secret_key/$(apg -n 1 -m 100)/g' .env
+sudo mv env_example .env
+sudo sed -i 's/postgres_pass/$(apg -n 1 -m 100)/g' .env
+sudo sed -i 's/secret_key/$(apg -n 1 -m 100)/g' .env
 
