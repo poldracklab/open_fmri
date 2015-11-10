@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # generate self signed certs used by nginx
-sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
+sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=/" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
 sudo chown -R ec2-user. /home/ec2-user/open_fmri
 
 sudo yum-config-manager --enable epel
