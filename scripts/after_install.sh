@@ -30,5 +30,5 @@ sudo htpasswd -nb admin $PASS > /home/ec2-user/open_fmri/.htpasswd
 
 # set up environment variables used by docker
 sudo mv /home/ec2-user/open_fmri/env_example /home/ec2-user/open_fmri/.env
-sudo sed -i 's/postgres_pass/$(apg -n 1 -m 100)/g' /home/ec2-user/open_fmri/.env
-sudo sed -i 's/secret_key/$(apg -n 1 -m 100)/g' /home/ec2-user/open_fmri/.env
+sudo sed -i "s/postgres_pass/$(apg -n 1 -m 100)/g" /home/ec2-user/open_fmri/.env
+sudo sed -i "s/secret_key/$(apg -n 1 -m 100)/g" /home/ec2-user/open_fmri/.env
