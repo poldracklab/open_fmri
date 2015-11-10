@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-chown -R ec2-user. /home/ec2-user/open_fmri
+sudo chown -R ec2-user. /home/ec2-user/open_fmri
 cd /home/ec2-user/open_fmri
 sudo yum-config-manager --enable epel
 sudo yum install -y docker apg
