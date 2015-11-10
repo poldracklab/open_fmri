@@ -7,6 +7,12 @@ sudo yum install -y docker apg
 sudo sh -c 'curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 sudo chmod +x /usr/local/bin/docker-compose
 
+# lets add ec2-user to docker group to let docker-compose calls succeed
+sudo usermod -aG docker ec2-user
+
+# trick to reload group perms without starting new shell
+exec sudo su -l $USER
+
 # when docker is installed it sets its self to start in init.d on boot but it 
 # may not be running yet.
 sudo /etc/init.d/docker start
