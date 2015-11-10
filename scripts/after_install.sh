@@ -10,7 +10,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 # lets add ec2-user to docker group to let docker-compose calls succeed
 sudo usermod -aG docker ec2-user
 
-exec sudo su -l $USER
 cd /home/ec2-user/open_fmri
 
 # when docker is installed it sets its self to start in init.d on boot but it 
