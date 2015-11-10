@@ -19,6 +19,7 @@ sudo /etc/init.d/docker start
 
 # generate self signed certs used by nginx
 sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout ./nginx.key -out ./nginx.crt
+chown ec2-user. nginx.key nginx.crt
 
 # use apg to generate a password and write it plain text to a file in our home 
 # directory and then use it to generate a htpasswd file. Password protection is
