@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+# generate self signed certs used by nginx
+sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
 sudo chown -R ec2-user. /home/ec2-user/open_fmri
+
 sudo yum-config-manager --enable epel
 sudo yum install -y docker apg
 # docker-compose is not in our repositories so we need to download it
@@ -16,9 +19,6 @@ cd /home/ec2-user/open_fmri
 # may not be running yet.
 sudo /etc/init.d/docker start
 
-# generate self signed certs used by nginx
-sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
-chown ec2-user. /home/ec2-user/open_fmri/nginx.key /home/ec2-user/open_fmri/nginx.crt
 
 # use apg to generate a password and write it plain text to a file in our home 
 # directory and then use it to generate a htpasswd file. Password protection is
