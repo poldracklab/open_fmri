@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 sudo chown -R ec2-user. /home/ec2-user/open_fmri
-cd /home/ec2-user/open_fmri
 sudo yum-config-manager --enable epel
 sudo yum install -y docker apg
 # docker-compose is not in our repositories so we need to download it
@@ -11,8 +10,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 # lets add ec2-user to docker group to let docker-compose calls succeed
 sudo usermod -aG docker ec2-user
 
-# trick to reload group perms without starting new shell
 exec sudo su -l $USER
+cd /home/ec2-user/open_fmri
 
 # when docker is installed it sets its self to start in init.d on boot but it 
 # may not be running yet.
