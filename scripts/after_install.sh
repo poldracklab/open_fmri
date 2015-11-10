@@ -5,7 +5,7 @@ sudo yum-config-manager --enable epel
 sudo yum install -y docker apg
 # docker-compose is not in our repositories so we need to download it
 sudo sh -c 'curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
-sudo chmod +x /user/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
 # when docker is installed it sets its self to start in init.d on boot but it 
 # may not be running yet.
