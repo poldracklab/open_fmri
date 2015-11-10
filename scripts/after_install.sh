@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cd /home/ec2-user/open_fmri
+sudo yum-config-manager --enable epel
 sudo yum install -y docker apg
 # docker-compose is not in our repositories so we need to download it
 sudo curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
