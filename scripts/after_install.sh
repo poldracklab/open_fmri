@@ -22,6 +22,6 @@ htpasswd -nb admin $PASS > ./.htpasswd
 
 # set up environment variables used by docker
 mv env_example .env
-sed -i '' 's/postgres_pass/$(apg -n 1 -m 100)/g' .env
-sed -i '' 's/secret_key/$(apg -n 1 -m 100)/g' .env
+sed -i 's/postgres_pass/$(apg -n 1 -m 100)/g' .env
+sed -i 's/secret_key/$(apg -n 1 -m 100)/g' .env
 
