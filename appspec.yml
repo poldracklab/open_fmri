@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.0
 os: linux
 files:
     - source: ./
@@ -10,6 +10,9 @@ permissions:
       group: ec2-user
       mode: 644
 hooks:
+  ApplicationStop: 
+    - location: scripts/stop_container.sh 
+      timeout: 60 
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 60
