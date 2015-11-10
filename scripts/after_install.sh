@@ -17,7 +17,7 @@ cd /home/ec2-user/open_fmri
 sudo /etc/init.d/docker start
 
 # generate self signed certs used by nginx
-sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/nginx.crt
+sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
 chown ec2-user. /home/ec2-user/open_fmri/nginx.key /home/ec2-user/open_fmri/nginx.crt
 
 # use apg to generate a password and write it plain text to a file in our home 
