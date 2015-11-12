@@ -199,6 +199,6 @@ class Index(TemplateView):
         context['num_datasets'] = len(Dataset.objects.all())
         total = 0
         for x in Dataset.objects.all():
-            total += x.subjects
+            total += x.sample_size
         context['num_subjects'] =  total
         return context

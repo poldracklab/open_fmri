@@ -16,6 +16,6 @@ urlpatterns = patterns('',
     url(r'^dataset/', include(dataset.urls)),
     url(r'^contact/', include('contact.urls')),
     url(r'^$', DatasetList.as_view()),
-    url(r'^/front/$', Index.as_view(), name='index'),
+    url(r'^front/$', Index.as_view(), name='index'),
     url(r'^(?P<url>.*/)$', views.flatpage),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
