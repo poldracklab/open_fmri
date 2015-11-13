@@ -3,15 +3,26 @@
 }
 
 #container-bg-front {
-    background: rgba(0, 0, 0, 0) url("../images/banner_bg.png") repeat-x scroll;
+    background: rgba(0, 0, 0, 0) url("../images/banner_bg.png") repeat-x scroll center top;
+}
+
+#container-header {
+    position: relative;
 }
 
 #container-content {
     padding-top: 2em;
+    width: 100%;
 }
 
 #container-right {
     padding-top: 2em;
+}
+
+#header-banner {
+    position: absolute;
+    padding-top: 139px;
+    margin: 0 auto;
 }
 
 #toc li {
@@ -28,12 +39,90 @@
     line-height: 2em;
 }
 
+.content-block {
+}
+
+.content-block-button {
+    -moz-border-bottom-colors: none !important;
+    -moz-border-left-colors: none !important;
+    -moz-border-right-colors: none !important;
+    -moz-border-top-colors: none !important;
+    background: #0e9985 none repeat scroll 0 0;
+    border-color: #51b8b3 -moz-use-text-color -moz-use-text-color !important;
+    border-image: none !important;
+    border-radius: 3px;
+    border-style: solid none none !important;
+    border-width: 5px medium medium !important;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block !important;
+    font-family: Oxygen,sans-serif !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    padding: 3px 20px !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: auto !important;
+}
+
+.content-block-button:hover {
+    background: #983c70 none repeat scroll 0 0;
+    border-top: 3px solid #b26d94 !important;
+    margin-bottom: 2px;
+}
+
+.content-block-text {
+    font-family: Droid Sans,sans-serif;
+    font-size: 13px;
+    line-height: 1.5em;
+    margin: 1.5em 0;
+}
+
+.content-block-title {
+    color: #273c65;
+    display: inline-block;
+    font-family: Oxygen,sans-serif !important;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 15px 0 0;
+    position: relative;
+    text-decoration: none;
+    top: 5px;
+    line-height: 1.5em;
+}
+
 .dropdown-item {
     color: rgba(255, 255, 255, 0.5);
 }
 
 .form-control {
     height: auto;
+}
+
+.header-block {
+    background: rgba(44, 44, 45, 0.8);
+    border-radius: 10px;
+    height: 264px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.header-block-title {
+    color: white;
+    font-size: 58px;
+    line-height: 1.2em;
+    fonr-weight: 300;
+    font-family: Oxygen,sans-serif !important;
+}
+.header-block-copy {
+    color: white;
+    font-size: 18px;
+    font-family: Droid Sans,sans-serif;
+}
+
+.header-block-stats {
+    color: #15a691;
+    font-size: 18px;
 }
 
 .navbar-nav .nav-item {
@@ -66,6 +155,11 @@ a, ol {
 body {
     background-image: url("../images/background-repeat.png");
     border-top: 16px solid #0e9985;
+}
+
+hrml {
+    font-size: 100%;
+    font-family: Verdana,Tahoma,"DejaVu Sans",sans-serif;
 }
 
 legend {
