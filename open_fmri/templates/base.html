@@ -27,7 +27,7 @@
 
 <body>
     <div class="m-b">
-        <nav class="navbar navbar-static-top">
+        <nav class="navbar navbar-static-top" id="navbar-header">
         <div class="container">
             <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
                 <ul class="nav navbar-nav navbar-right">
@@ -104,22 +104,64 @@
         {% endblock container-right %}
 
     </div> <!-- /container -->
-    <div id="footer">
-        <div id="footer-top row">
-        </div>
-        <nav class="navbar navbar-default navbar-right">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img alt="OpenfMRI" src="{% static 'images/footerlogo.png' %}">
-                </a>
-                <ul class="nav navbar-nav">
-                    <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
-                    <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
-                    <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
-                    <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
-                </ul>
+    <div id="footer" class="">
+        <div id="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6 col-md-4 footer-block">
+                        <div class="footer-block-title">FAQs</div>
+                        <div class="footer-block-content">
+                            <ul>
+                            <li type="square">
+                            <a href="#share">Why should I freely share my data?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#different">How is this different from other data sharing efforts?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#issues">What about human subjects issues?</a>
+                            </li>
+                            <li type="square">
+                            <a href="">How do you extract datasets?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#licensed">How are the data licensed?</a>
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-4 footer-block">
+                        <div class="footer-block-title">Credits</div>
+                        <div class="footer-block-content">
+                            The OpenfMRI project is managed by the 
+                            <a href="http://www.poldracklab.org">Poldrack Lab</a>
+                            and 
+                            <a href="http://reproducibility.stanford.edu">Center for Reproducible Neuroscience</a>
+                            at Stanford University, with computing resources provided by the
+                            <a href="http://www.tacc.utexas.edu">Texas Advanced Computing Center</a>
+                            and
+                            <a href="http://aws.amazon.com/public-data-sets/"> Amazon.com</a>
+                            . It is funded by grants from the National Science Foundation, National Institute for Drug Abuse, and Laura and John Arnold Foundation.
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
+        </div>
+        <div id="footer-bottom">
+            <nav class="navbar navbar-default" id="navbar-footer">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <img alt="OpenfMRI" src="{% static 'images/footerlogo.png' %}">
+                    </a>
+                    <ul class="nav navbar-nav navbar-right nav-footer">
+                        <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                        <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
+                        <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
+                        <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
+                    </ul>
+                </div>
+            </nav>
+        <div>
     </div>
     <div>
 
