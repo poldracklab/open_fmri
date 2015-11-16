@@ -20,6 +20,7 @@ class Dataset(models.Model):
                                       default='SUBMITTED', max_length=200)
     status = models.CharField(choices=STATUS_CHOICES, default='UNPUBLISHED', 
                               max_length=200)
+    curated = models.NullBooleanField(default=False, null=True)
     project_name = models.CharField(max_length=MAX_TITLE_LENGTH)
     summary = models.TextField()
     sample_size = models.IntegerField()

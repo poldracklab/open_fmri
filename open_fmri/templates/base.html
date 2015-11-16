@@ -38,8 +38,10 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
             <nav class="nav navbar-nav">
-              <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
-              <a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a>
+              {% if user.is_authenticated %}
+                <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
+              {% endif %}
+              <a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a>
               <a class="nav-link nav-item" href=""></a>
             </nav>
         

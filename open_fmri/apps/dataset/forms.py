@@ -23,7 +23,7 @@ class DatasetForm(ModelForm):
         fields = [
             'workflow_stage', 'status', 'project_name', 'summary', 
             'sample_size', 'scanner_type', 'accession_number', 
-            'acknowledgements', 'license_title', 'license_url'  
+            'acknowledgements', 'license_title', 'license_url', 'curated' 
         ]
         
         widgets = {
@@ -37,6 +37,7 @@ class DatasetForm(ModelForm):
         self.helper.layout = Layout(
             Field('workflow_stage', css_class="form-control"),
             Field('status', css_class="form-control"),
+            Field('curated', css_class="form-control"),
             Field('project_name', css_class="form-control"),
             Field('summary', css_class="form-control", rows=3),
             Field('sample_size', css_class="form-control"),

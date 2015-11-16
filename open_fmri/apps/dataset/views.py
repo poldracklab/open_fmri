@@ -97,9 +97,7 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
 class DatasetUpdate(LoginRequiredMixin, UpdateView):
     model = Dataset
     form_class = DatasetForm
-
-    def get_success_url(self):
-        return reverse('dataset_update', kwargs={'pk': self.object.id})
+    success_url = reverse_lazy('dataset_list')
 
     def get_context_data(self, **kwargs):
         context = super(DatasetUpdate, self).get_context_data(**kwargs)
