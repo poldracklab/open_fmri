@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
+<h3>Note:</h3>
+<p> 
+    User accounts are no longer necessary to upload data to the site and old accounts have been disabled. 
+    To get started on the submission process simply fill out the form 
+    <a href="{% url 'contact_form' %}"> here</a>.
+</p>
 <form method="post" action="">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Log In" />

@@ -29,12 +29,14 @@
     <div class="m-b">
         <nav class="navbar navbar-static-top" id="navbar-header">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
+            <a class="navbar-brand" href="/"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
                 <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
                     <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                    {% endif %}
                     <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
                     <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
-                    <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
+                    <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a></li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -104,7 +106,7 @@
         {% endblock container-right %}
 
     </div> <!-- /container -->
-    <div id="footer" class="">
+    <div id="footer" class="footer">
         <div id="footer-top">
             <div class="container">
                 <div class="row">
@@ -113,19 +115,19 @@
                         <div class="footer-block-content">
                             <ul>
                             <li type="square">
-                            <a href="#share">Why should I freely share my data?</a>
+                            <a href="/faq/#share">Why should I freely share my data?</a>
                             </li>
                             <li type="square">
-                            <a href="#different">How is this different from other data sharing efforts?</a>
+                            <a href="/faq/#different">How is this different from other data sharing efforts?</a>
                             </li>
                             <li type="square">
-                            <a href="#issues">What about human subjects issues?</a>
+                            <a href="/faq/#issues">What about human subjects issues?</a>
                             </li>
                             <li type="square">
-                            <a href="">How do you extract datasets?</a>
+                            <a href="/how-to-extract-data/">How do you extract datasets?</a>
                             </li>
                             <li type="square">
-                            <a href="#licensed">How are the data licensed?</a>
+                            <a href="/faq/#licensed">How are the data licensed?</a>
                             </li>
                             </ul>
                         </div>
@@ -154,10 +156,9 @@
                         <img alt="OpenfMRI" src="{% static 'images/footerlogo.png' %}">
                     </a>
                     <ul class="nav navbar-nav navbar-right nav-footer">
-                        <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
                         <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
                         <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
-                        <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
+                        <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a></li>
                     </ul>
                 </div>
             </nav>
