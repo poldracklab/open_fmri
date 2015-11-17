@@ -29,7 +29,7 @@
     <div class="m-b">
         <nav class="navbar navbar-static-top" id="navbar-header">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
+            <a class="navbar-brand" href="/"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>

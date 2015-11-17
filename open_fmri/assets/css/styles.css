@@ -111,6 +111,9 @@
     
 #footer {
     margin-top: 30px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 
 #footer a:hover {
