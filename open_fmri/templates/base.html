@@ -30,10 +30,6 @@
         <nav class="navbar navbar-static-top" id="navbar-header">
         <div class="container">
             <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
-            <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-              &#9776;
-            </button>
-          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
@@ -61,7 +57,6 @@
                     {% endif %}
 
                 </ul>
-            </div>
         </div>
         </nav>
     </div>
@@ -80,7 +75,7 @@
             <img id="header-img" src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
         </div>
 
-        <div id="container-content" class="col-md-8">
+        <div id="container-content" class="{% block container-content-class %}col-md-8{% endblock %}">
         {% block content %}
             <p>Base Template</p>
         {% endblock content %}
