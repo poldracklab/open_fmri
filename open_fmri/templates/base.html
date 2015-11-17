@@ -3,7 +3,7 @@
 {% get_flatpages as flatpages %}
 <!DOCTYPE html>
 <html lang="en" ng-app>
-  <head>
+<head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta name="description" content="{% block description %}{% endblock %}" />
     <meta name="keywords" content="{% block keywords %}{% endblock %}" />
@@ -20,39 +20,35 @@
     <link rel="icon" type="image/gif" href="{% static 'img/favicon.gif' %}">
 
     {% block css %}
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     {% endblock %}
+</head>
 
-  </head>
-
-  <body>
+<body>
     <div class="m-b">
-      <nav class="navbar navbar-dark navbar-static-top bg-inverse">
+        <nav class="navbar navbar-static-top" id="navbar-header">
         <div class="container">
-         <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/grey_scale_logo.png' %}" alt="OpenfMRI"></a> 
-          <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            &#9776;
-          </button>
-
-          <!-- Collect the nav links, forms, and other content for toggling -->
+            <a class="navbar-brand" href="{% url 'dataset_list' %}"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
+            <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+              &#9776;
+            </button>
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
-            <nav class="nav navbar-nav">
-              {% if user.is_authenticated %}
-                <a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a>
-              {% endif %}
-              <a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a>
-              <a class="nav-link nav-item" href=""></a>
-            </nav>
-        
-            <ul class="nav navbar-nav pull-right">
-                {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                    {% endif %}
+                    <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
+                    <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
+                    <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a></li>
+                    {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            &#9776;
-                            <span class="caret"></span>
+                        &#9776;
+                        <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
                             <li><a class="dropdown-item" href="{% url 'featureddataset_edit' %}">Set Featured Dataset</a></li>
                             <li><a class="dropdown-item" href="/admin/flatpages/flatpage/">Manage Static Pages</a></li>
                             <li><a class="dropdown-item" href="{% url 'user_data_request' %}">Create User Data Request</a></li>
@@ -60,21 +56,29 @@
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </ul>
                     </li>
-                {% else %}
-                    <a class="nav-link nav-item" href="{% url 'login' %}">Login</a>
-                {% endif %}
-            </ul>
-          </div>
+                    {% else %}
+                    <li><a class="nav-link nav-item" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
         </div>
-      </nav>
+        </nav>
     </div>
 
-    <div class="container">
+    <div id="{% block header-background %}container-bg{% endblock %}">
+    <div class="container" id="main">
         {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
-          {% endfor %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
         {% endif %}
+
+        <div id="container-header" class="">
+            {% block header %}
+            {% endblock %}
+            <img id="header-img" src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
+        </div>
 
         <div id="container-content" class="col-md-8">
         {% block content %}
@@ -82,9 +86,10 @@
         {% endblock content %}
         </div>
 
+        {% block container-right %}
         <div id="container-right" class="col-md-4">
             <div id="toc" class="right-elem">
-                <h3>Find Out More:</h3>
+                <h3 class="block-title">Find Out More:</h3>
                 <ol>
                 {% for page in flatpages %}
                     <li><a href="{{ page.url }}">{{ page.title }} ‣</a></li>
@@ -103,8 +108,69 @@
             </div>
             {% endif %}
         </div>
+        {% endblock container-right %}
 
     </div> <!-- /container -->
+    <div id="footer" class="">
+        <div id="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 footer-block">
+                        <div class="footer-block-title">FAQs</div>
+                        <div class="footer-block-content">
+                            <ul>
+                            <li type="square">
+                            <a href="#share">Why should I freely share my data?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#different">How is this different from other data sharing efforts?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#issues">What about human subjects issues?</a>
+                            </li>
+                            <li type="square">
+                            <a href="">How do you extract datasets?</a>
+                            </li>
+                            <li type="square">
+                            <a href="#licensed">How are the data licensed?</a>
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 footer-block">
+                        <div class="footer-block-title">Credits</div>
+                        <div class="footer-block-content">
+                            The OpenfMRI project is managed by the 
+                            <a href="http://www.poldracklab.org">Poldrack Lab</a>
+                            and 
+                            <a href="http://reproducibility.stanford.edu">Center for Reproducible Neuroscience</a>
+                            at Stanford University, with computing resources provided by the
+                            <a href="http://www.tacc.utexas.edu">Texas Advanced Computing Center</a>
+                            and
+                            <a href="http://aws.amazon.com/public-data-sets/"> Amazon.com</a>
+                            . It is funded by grants from the National Science Foundation, National Institute for Drug Abuse, and Laura and John Arnold Foundation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer-bottom">
+            <nav class="navbar navbar-default" id="navbar-footer">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <img alt="OpenfMRI" src="{% static 'images/footerlogo.png' %}">
+                    </a>
+                    <ul class="nav navbar-nav navbar-right nav-footer">
+                        <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                        <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
+                        <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
+                        <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Contact</a></li>
+                    </ul>
+                </div>
+            </nav>
+        <div>
+    </div>
+    <div>
 
 
     {% block javascript %}
@@ -113,5 +179,5 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     {% endblock javascript %}
-  </body>
+</body>
 </html>

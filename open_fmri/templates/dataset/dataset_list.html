@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}
     Datasets
 {% endblock %}
@@ -8,7 +9,12 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
 {% endblock %}
 
+{% block header-image %}
+{% static 'images/banner_view_data.png' %}
+{% endblock %}
+
 {% block content %}
+<h1 class="title">Datasets</h1>
 <table id="dataset-list-table" class="table table-bordered">
 <thead>
 <tr>
@@ -28,7 +34,7 @@
 <tbody>
 {% for dataset in object_list %}
     <tr>
-    <td><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
+    <td class="first_td"><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
     <td>
     <ol>
     {% for investigator in dataset.investigator_set.all %}

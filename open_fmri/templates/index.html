@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block header-background %}container-bg-front{% endblock %}
+
+{% block header-image %}
+{% static 'images/scans1.png' %}
+{% endblock %}
+
+{% block header %}
+<div id="header-banner">
+    <div class="header-block">
+        <div class="header-block-title">Freedom to Share</div>
+        <div class="header-block-copy">
+            <p>OpenfMRI.org is a project dedicated to the free and open sharing of</br>
+            functional magnetic resonance imaging (fMRI) datasets, including raw data.</p>
+        </div>
+        <div class="header-block-stats">
+            Number of currently avaliable datasets: {{ num_datasets }}<br/>
+            Number of subjects across all datasets: {{ num_subjects }}<br/>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 content-block">
+        <img src="{% static 'images/magnifier.png' %}">
+        <div>
+            <div class="content-block-title">View Data Sets</div><br/>
+            <p class="content-block-text">
+                Functional magnetic resonance imaging (fMRI) datasets, including raw data, are openly available to the research community.
+            </p>
+            <p><a class="button content-block-button" href="{% url 'dataset_list' %}">View Data</a></p>
+        </div>
+    </div>
+    <div class="col-md-4 content-block">
+        <img src="{% static 'images/blueprint.png' %}">
+        <div>
+            <div class="content-block-title">Data Organization</div><br/> 
+            <p class="content-block-text">
+                Data stored in the OpenfMRI database conforms to a data organization scheme so that file naming remains consistent across all studies.
+            </p>
+            <p><a class="button content-block-button" href="">View Scheme</a></p>
+        </div>
+    </div>
+    <div class="col-md-4 content-block">
+        <img src="{% static 'images/puzzle.png' %}">
+        <div>
+            <div class="content-block-title">About the Project</div><br/>
+            <p class="content-block-text">
+                The OpenfMRI project has provided a resource for researchers to make their fMRI data openly available to the research community.
+            </p>
+            <p><a class="button content-block-button" href="">Read More</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block container-right %}
+{% endblock %}
+

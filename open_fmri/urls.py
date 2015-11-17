@@ -7,7 +7,7 @@ from django.views.generic.base import RedirectView
 
 import contact.urls
 import dataset.urls
-from dataset.views import DatasetList
+from dataset.views import DatasetList, Index
 
 urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
@@ -19,5 +19,6 @@ urlpatterns = patterns('',
         RedirectView.as_view(url='http://bids.neuroimaging.io', permanent=True),
         name='data-organization'),
     url(r'^$', DatasetList.as_view()),
+    url(r'^front/$', Index.as_view(), name='index'),
     url(r'^(?P<url>.*/)$', views.flatpage),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
