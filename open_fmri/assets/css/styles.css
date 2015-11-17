@@ -12,11 +12,25 @@
 
 #container-content {
     padding-top: 2em;
-    width: 100%;
 }
 
 #container-right {
     padding-top: 2em;
+}
+
+#dataset-list-table .first_td {
+    background-color: #d4e6ff;
+}
+#dataset-list-table tr {
+    background-color: #eee;
+}
+
+#dataset-list-table th {
+    background-color: #269885;
+}
+
+#dataset-list-table a {
+    color: #273c65;
 }
 
 #header-banner {
@@ -244,3 +258,5 @@ legend {
 ol {
     list-style-type: none;
 }
+
+

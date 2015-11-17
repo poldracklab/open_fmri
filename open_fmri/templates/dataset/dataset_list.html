@@ -29,7 +29,7 @@
 <tbody>
 {% for dataset in object_list %}
     <tr>
-    <td><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
+    <td class="first_td"><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
     <td>
     <ol>
     {% for investigator in dataset.investigator_set.all %}
@@ -63,7 +63,6 @@ $(document).ready(function() {
             "visible": false
         }],
         "bLengthChange": false,        
-        "fixedHeader": true,
         "pageLength": 25,
         });
 });
