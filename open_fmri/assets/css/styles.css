@@ -29,6 +29,10 @@
     background-color: #269885;
 }
 
+#dataset-list-table thead th {
+    color: white;
+}
+
 #dataset-list-table a {
     color: #273c65;
 }
