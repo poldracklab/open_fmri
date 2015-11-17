@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}
     Datasets
 {% endblock %}
@@ -6,6 +7,10 @@
 {% block css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block header-image %}
+{% static 'images/banner_view_data.png' %}
 {% endblock %}
 
 {% block content %}

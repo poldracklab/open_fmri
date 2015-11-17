@@ -123,7 +123,11 @@
     padding-bottom: 50px;
 }
 
-#footer-top .footer-block-title,.footer-block-content,a {
+#footer-top .footer-block-title a {
+    color: white;
+}
+
+#footer-top ,.footer-block-content a {
     color: white;
 }
 
