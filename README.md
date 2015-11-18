@@ -11,16 +11,16 @@ following command assumes you are in the project's base directory:
 sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout ./nginx.key -out ./nginx.crt
 ```
 
-Next is the htpasswd file that provides password protection for the site: 
+Password protection can be enabled by uncommenting the following lines in the 
+nginx.conf:
 ```
-htpasswd -n a_user > ./.htpasswd
+            #auth_basic "";
+            #auth_basic_user_file /etc/nginx/.passwd;
 ```
 
-Alternatively the auth lines in nginx conf can be removed with out affecting 
-the project. Two lines that can be removed are:
+An htpasswd file will need to be created in the projects root directory:
 ```
-            auth_basic "";
-            auth_basic_user_file /etc/nginx/.passwd;
+htpasswd -n a_user > ./.htpasswd
 ```
 
 

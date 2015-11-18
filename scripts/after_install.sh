@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+project_path=/home/ec2-user/open_fmri/
+
 # generate self signed certs used by nginx
-sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=/" -keyout /home/ec2-user/open_fmri/nginx.key -out /home/ec2-user/open_fmri/nginx.crt
-sudo chown -R ec2-user. /home/ec2-user/open_fmri
+if [ ! -e ${project_path}nginx.key ] || [ ! -e ${project_path}nginx.crt ]
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=/" -keyout ${project_path}nginx.key -out ${project_path}nginx.crt
+fi
+sudo chown -R ec2-user. ${project_path}
 
 sudo yum-config-manager --enable epel
 sudo yum install -y docker apg httpd-tools
@@ -13,22 +17,19 @@ sudo chmod +x /usr/local/bin/docker-compose
 # lets add ec2-user to docker group to let docker-compose calls succeed
 sudo usermod -aG docker ec2-user
 
-cd /home/ec2-user/open_fmri
+cd ${project_path}
 
 # when docker is installed it sets its self to start in init.d on boot but it 
 # may not be running yet.
 sudo /etc/init.d/docker start
 
-
-# use apg to generate a password and write it plain text to a file in our home 
-# directory and then use it to generate a htpasswd file. Password protection is
-# just a deterent from the site being wandered upon right now. For actual 
-# security with have proper logins setup in Django
-PASS=$(apg -n 1)
-sudo echo $PASS > /home/ec2-user/.user_pass
-sudo htpasswd -nb admin $PASS > /home/ec2-user/open_fmri/.htpasswd
+if [ ! -e ${project_path}.htpasswd ]
+    touch ${project_path}.htpasswd
+fi
 
 # set up environment variables used by docker
-sudo mv /home/ec2-user/open_fmri/env_example /home/ec2-user/open_fmri/.env
-sudo sed -i "s/postgres_pass/$(apg -n 1 -m 100)/g" /home/ec2-user/open_fmri/.env
-sudo sed -i "s/secret_key/$(apg -n 1 -m 100)/g" /home/ec2-user/open_fmri/.env
+if [ ! -e ${project_path}.env ]
+    sudo mv ${project_path}env_example ${project_path}.env
+    sudo sed -i "s/postgres_pass/$(apg -n 1 -m 100)/g" ${project_path}.env
+    sudo sed -i "s/secret_key/$(apg -n 1 -m 100)/g" ${project_path}.env
+fi
