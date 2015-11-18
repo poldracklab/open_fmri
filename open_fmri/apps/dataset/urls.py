@@ -4,7 +4,7 @@ from dataset.views import DatasetCreate, DatasetDelete, DatasetDetail, \
     DatasetList, DatasetUpdate, FeaturedDatasetEdit, FeaturedDatasetDelete, \
     UserCreateDataset, UserDataRequestCreate
 
-from dataset.api_views import DatasetAPIList
+from dataset.api_views import DatasetAPIList, DatasetAPIDetail
 
 urlpatterns = patterns('',
     url(r'^new/$', DatasetCreate.as_view(), name='dataset_create'),
@@ -25,4 +25,5 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^api/$', DatasetAPIList.as_view(), name='dataset_api_list'),
+    url(r'^api/(?P<pk>\d+)$', DatasetAPIDetail.as_view(), name='dataset_api_detail'),
 )

@@ -8,3 +8,8 @@ from dataset.serializers import DatasetSerializer
 class DatasetAPIList(generics.ListAPIView):
     queryset = Dataset.objects.all()
     serializer_class = DatasetSerializer
+
+class DatasetAPIDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Dataset.objects.all()
+    serializer_class = DatasetSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
