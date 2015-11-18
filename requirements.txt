@@ -4,6 +4,7 @@ django-contact-form
 django-ckeditor
 django-crispy-forms
 django-model-utils
+djangorestframework
 model_mommy
 pillow
 psycopg2
