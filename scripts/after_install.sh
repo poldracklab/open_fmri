@@ -4,8 +4,10 @@ project_path=/home/ec2-user/open_fmri/
 
 # generate self signed certs used by nginx
 if [ ! -e ${project_path}nginx.key ] || [ ! -e ${project_path}nginx.crt ]
-    sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=/" -keyout ${project_path}nginx.key -out ${project_path}nginx.crt
+    then
+        sudo openssl req -x509 -nodes -newkey rsa:2048 -subj "/C=US/ST=/L=/O=/CN=/" -keyout ${project_path}nginx.key -out ${project_path}nginx.crt
 fi
+
 sudo chown -R ec2-user. ${project_path}
 
 sudo yum-config-manager --enable epel
@@ -24,12 +26,14 @@ cd ${project_path}
 sudo /etc/init.d/docker start
 
 if [ ! -e ${project_path}.htpasswd ]
-    touch ${project_path}.htpasswd
+    then
+        touch ${project_path}.htpasswd
 fi
 
 # set up environment variables used by docker
 if [ ! -e ${project_path}.env ]
-    sudo mv ${project_path}env_example ${project_path}.env
-    sudo sed -i "s/postgres_pass/$(apg -n 1 -m 100)/g" ${project_path}.env
-    sudo sed -i "s/secret_key/$(apg -n 1 -m 100)/g" ${project_path}.env
+    then
+        sudo mv ${project_path}env_example ${project_path}.env
+        sudo sed -i "s/postgres_pass/$(apg -n 1 -m 100)/g" ${project_path}.env
+        sudo sed -i "s/secret_key/$(apg -n 1 -m 100)/g" ${project_path}.env
 fi
