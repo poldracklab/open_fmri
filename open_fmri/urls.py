@@ -19,5 +19,6 @@ urlpatterns = patterns('',
         RedirectView.as_view(url='http://bids.neuroimaging.io', permanent=True),
         name='data-organization'),
     url(r'^$', Index.as_view(), name='index'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^(?P<url>.*/)$', views.flatpage),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
