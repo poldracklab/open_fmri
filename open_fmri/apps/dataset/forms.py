@@ -14,7 +14,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
     Layout, Row, Submit
 
-from dataset.models import Dataset, FeaturedDataset, Investigator, \
+from dataset.models import Dataset, FeaturedDataset, Investigator, Link, \
     PublicationPubMedLink, PublicationDocument, Revision, Task, UserDataRequest
 
 class DatasetForm(ModelForm):
@@ -78,6 +78,19 @@ class InvestigatorForm(ModelForm):
         model = Investigator
         fields = ['investigator']
 
+class LinkForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LinkForm, self).__init__(*args, **kwargs)
+        dataset = self.instance.dataset_id
+        queryset = Revision.objects.filter(dataset=dataset)
+        self.fields['revision'].queryset = queryset
+    class Meta:
+        model = Link
+        fields = ['title', 'url', 'revision']
+        widgets = {
+            'url': TextInput()
+        }
+
 class PublicationDocumentForm(ModelForm):
     class Meta:
         model = PublicationDocument
@@ -123,9 +136,12 @@ class TaskForm(ModelForm):
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
 
+LinkFormSet = inlineformset_factory(
+    Dataset, Link, form=LinkForm, extra=1, can_delete=True)
+
 PublicationDocumentFormSet = inlineformset_factory(
     Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1, 
-    can_delete=True) 
+    can_delete=True)
 
 PublicationPubMedLinkFormSet = inlineformset_factory(
     Dataset, PublicationPubMedLink, form=PublicationPubMedLinkForm, extra=1, 
@@ -145,6 +161,21 @@ class InvestigatorFormSetHelper(FormHelper):
                 "",
                 Field('investigator', css_class="form-control"),
                 Field('DELETE', css_class='form-control'),
+                css_class="fieldset-control form-control"
+            )
+        )
+        self.form_tag = False
+
+class LinkFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(LinkFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "Link",
+                Field('title', css_class="form-control"),
+                Field('url', css_class="form-control"),
+                Field('revision', css_class="form-control"),
+                Field('DELETE', css_class="form-control"),
                 css_class="fieldset-control form-control"
             )
         )

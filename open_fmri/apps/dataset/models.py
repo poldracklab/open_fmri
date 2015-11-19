@@ -85,6 +85,12 @@ class Revision(models.Model):
             self.previous_revision = None
         super(Revision, self).save(*args, **kwargs)
 
+class Link(models.Model):
+    title = models.CharField(max_length=MAX_TITLE_LENGTH)
+    url = models.TextField(validators=[URLValidator()])
+    dataset = models.ForeignKey('Dataset')
+    revision = models.ForeignKey('Revision', blank=True)
+
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
     image = models.ImageField(blank=True)

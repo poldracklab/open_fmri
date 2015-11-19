@@ -11,11 +11,12 @@ from django.views.generic import CreateView, DeleteView, DetailView, \
 from braces.views import LoginRequiredMixin
 
 from dataset.forms import DatasetForm, FeaturedDatasetForm, \
-    InvestigatorFormSet, InvestigatorFormSetHelper, \
-    PublicationDocumentFormSet, PublicationDocumentFormSetHelper, \
-    PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, \
-    RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, \
-    UserDatasetForm, UserDataRequestForm
+    InvestigatorFormSet, InvestigatorFormSetHelper, LinkFormSet, \
+    LinkFormSetHelper, PublicationDocumentFormSet, \
+    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
+    PublicationPubMedLinkFormSetHelper, RevisionFormSet, \
+    RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm, \
+    UserDataRequestForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset, UserDataRequest
 
@@ -51,6 +52,8 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
         context = super(DatasetCreate, self).get_context_data(**kwargs)
         context['investigator_formset'] = InvestigatorFormSet()
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
+        context['link_formset'] = LinkFormSet()
+        context['link_formset_helper'] = LinkFormSetHelper()
         context['publication_document_formset'] = PublicationDocumentFormSet()
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
@@ -71,6 +74,10 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             self.request.FILES, instance=dataset)
         if investigator_formset.is_valid():
             investigator_formset.save()
+
+        link_formset = LinkFormSet(self.request.POST, instance=dataset)
+        if link_formset.is_valid():
+            link_formset.save()
 
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
@@ -104,6 +111,8 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
         context['investigator_formset'] = InvestigatorFormSet(
             instance=self.object)
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
+        context['link_formset'] = LinkFormSet(instance=self.object)
+        context['link_formset_helper'] = LinkFormSetHelper()
         context['publication_document_formset'] = PublicationDocumentFormSet(
             instance=self.object)
         context['publication_document_formset_helper'] = \
@@ -125,6 +134,10 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
             self.request.FILES, instance=self.object)
         if investigator_formset.is_valid():
             investigator_formset.save()
+
+        link_formset = LinkFormSet(self.request.POST, instance=self.object)
+        if link_formset.is_valid():
+            link_formset.save()
 
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=self.object)

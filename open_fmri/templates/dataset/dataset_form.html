@@ -25,6 +25,10 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
+    <div id="id_link">
+    {% crispy link_formset link_formset_helper %}
+    </div>
+
     <div id="id_revision">
     {% crispy revision_formset revision_formset_helper %}
     </div>
@@ -64,7 +68,15 @@
         select_elem = row.find("select[id$='-cogat_id']");
         select_elem.select2();
     }
-    
+     $(document).ready(function() {
+        $('#id_link .fieldset-control').formset({
+            addText: 'Add Link',
+            deleteText: 'Remove',
+            prefix: '{{ link_formset.prefix }}',
+            formCssClass: '{{ link_formset.prefix }}'
+        });
+    })   
+
     $(document).ready(function() {
         $('#id_revision .fieldset-control').formset({
             addText: 'Add Revision',
