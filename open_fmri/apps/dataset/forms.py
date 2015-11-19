@@ -82,7 +82,7 @@ class LinkForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(LinkForm, self).__init__(*args, **kwargs)
         dataset = self.instance.dataset_id
-        queryset = Revision.objects.filter(dataset=dataset)
+        queryset = Revision.objects.filter(dataset_id=dataset)
         self.fields['revision'].queryset = queryset
     class Meta:
         model = Link

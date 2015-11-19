@@ -89,7 +89,7 @@ class Link(models.Model):
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     url = models.TextField(validators=[URLValidator()])
     dataset = models.ForeignKey('Dataset')
-    revision = models.ForeignKey('Revision', blank=True)
+    revision = models.ForeignKey('Revision', blank=True, null=True)
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
