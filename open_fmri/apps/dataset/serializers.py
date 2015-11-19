@@ -1,0 +1,49 @@
+from rest_framework import serializers
+
+from dataset.models import Dataset, Investigator, PublicationDocument, \
+    PublicationPubMedLink, Revision, Task
+
+class InvestigatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Investigator
+        fields = ['investigator']
+
+class PublicationDocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PublicationDocument
+        fields = ['document']
+
+class PublicationPubMedLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PublicationPubMedLink
+        fields = ['title', 'url']
+
+class RevisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Revision
+        fields = ['revision_number', 'notes', 'aws_link_title', 'aws_link_url']
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['cogat_id', 'number']
+
+class DatasetSerializer(serializers.ModelSerializer):
+    
+    investigator_set = InvestigatorSerializer(read_only=True, many=True)
+    publicationdocument_set = serializers.StringRelatedField()
+    publicationpubmedlink_set = PublicationPubMedLinkSerializer(read_only=True,
+                                                                many=True)
+    task_set = TaskSerializer(read_only=True, many=True)
+    revision_set = RevisionSerializer(read_only=True, many=True)
+    class Meta:
+        model = Dataset
+        fields = [
+            'workflow_stage', 'status', 'project_name', 'summary', 
+            'sample_size', 'scanner_type', 'accession_number', 
+            'acknowledgements', 'license_title', 'license_url', 'curated',
+            'publicationdocument_set', 'publicationpubmedlink_set', 'task_set',
+            'revision_set', 'investigator_set'
+        ]
+
+

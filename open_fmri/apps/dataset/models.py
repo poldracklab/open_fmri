@@ -54,6 +54,9 @@ class PublicationDocument(models.Model):
     document = models.FileField()
     dataset = models.ForeignKey('Dataset')
 
+    def __str__(self):
+        return self.document
+
 # Form will hit the cogat api, we will only record the cogat id for the task 
 # so we can find it again and the name for display purposes
 class Task(models.Model):

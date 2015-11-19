@@ -39,8 +39,9 @@ PROJECT_APPS = (
 
 THIRD_PARTY_APPS = (
     'ckeditor',
-    'crispy_forms',
     'contact_form',
+    'crispy_forms',
+    'rest_framework',
 )
 
 INSTALLED_APPS += PROJECT_APPS
