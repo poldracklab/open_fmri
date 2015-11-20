@@ -38,6 +38,18 @@ class DatasetDelete(LoginRequiredMixin, DeleteView):
 class DatasetDetail(DetailView):
     model = Dataset
     
+    def get_object(self):
+        acc_num = self.kwargs.get('acc_num')
+        if acc_num:
+            try:
+                obj = Dataset.objects.get(accession_number=acc_num)
+            except queryset.model.DoesNotExist:
+                raise Http404(_("No %(verbose_name)s found matching the query") %
+                              {'verbose_name': queryset.model._meta.verbose_name})
+            return obj
+        else:
+            return super(DatasetDetail, self).get_object()
+
     def get_context_data(self, **kwargs):
         context = super(DatasetDetail, self).get_context_data(**kwargs)
         context['revisions'] = self.object.revision_set.order_by('-date_set')
