@@ -25,7 +25,7 @@ htpasswd -n a_user > ./.htpasswd
 
 
 ### Docker Usage
-env_example will need to be renamed to .env. The Posgres environment variables
+env_example will need to be renamed to .env. The Postgres environment variables
 are used both by the uwsgi and postgres container. The postgres container will
 use them to initialize a database and user password, while the uwsgi container
 uses them for authentication against the postgres server. It is recommended 
