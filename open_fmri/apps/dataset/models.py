@@ -22,11 +22,11 @@ class Dataset(models.Model):
                               max_length=200)
     curated = models.NullBooleanField(default=False, null=True)
     project_name = models.CharField(max_length=MAX_TITLE_LENGTH)
-    summary = models.TextField()
+    summary = models.TextField(null=True)
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
-    accession_number = models.CharField(max_length=200, blank=True)
-    acknowledgements = models.TextField(blank=True)
+    accession_number = models.CharField(max_length=200, blank=True, null=True)
+    acknowledgements = models.TextField(null=True, blank=True)
     
     # These three fields are for any papers associated with the dataset
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
@@ -35,8 +35,10 @@ class Dataset(models.Model):
     license_url = models.TextField(validators=[URLValidator()], blank=True, 
                                    default=default_license_url)
     
-    aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
-    aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
+    aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True, 
+                                      null=True)
+    aws_link_url = models.TextField(validators=[URLValidator()], blank=True,
+                                    null=True)
     
     def __str__(self):
         return self.project_name
