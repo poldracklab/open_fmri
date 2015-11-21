@@ -25,26 +25,36 @@
     <a href="{{ pubmed_link.url }}">{{ pubmed_link.title }}</a>
 {% endfor %}
 
-{% for document in object.publicationdocument.all %}
+{% for document in object.publicationdocument_set.all %}
     {{ document }}
 {% endfor %}
+
 {% endif %}
 
 <h4>Sample Size:</h4>
 <p>{{ object.sample_size }}</p>
+
 <h4>Scanner Type:</h4>
 <p>{{ object.scanner_type }}</p>
+
 <h4>License:</h4>
 <p><a href="{{ object.license_url }}">{{ object.license_title }}</a></p>
+
 <h4>Accession Number:</h4>
 <p>{{ object.accession_number }}</p>
+
 {% for revision in revisions %}
 <h4>Revision: {{ revision.revision_number }} <small>Date Set: {{ revision.date_set }}</small></h4>
 <p><a href="{{ revision.aws_link_url }}">{{ revision.aws_link_title }}</a></p>
 {% endfor %}
+
+<h4>Linked Data:</h4>
+{% for link in object.link_set.all %}
+    <a href="{{ link.url }}">{{ link.title }}</a><br>
+{% endfor %}
+
 <div id="disqus_thread"></div>
 {% endblock %}
-
 
 {% block javascript %}
 {{ block.super }}
