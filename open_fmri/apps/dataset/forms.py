@@ -10,6 +10,8 @@ from django.forms.widgets import TextInput
 from django.template.loader import render_to_string
 from django.utils.crypto import salted_hmac
 
+from ckeditor.widgets import CKEditorWidget
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
     Layout, Row, Submit
@@ -28,7 +30,8 @@ class DatasetForm(ModelForm):
         
         widgets = {
             'license_url': TextInput(),
-            'aws_link_url': TextInput()
+            'aws_link_url': TextInput(),
+            'summary': CKEditorWidget()
         }
     
     def __init__(self, *args, **kwargs):
