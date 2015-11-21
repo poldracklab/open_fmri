@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^edit/(?P<pk>\d+)$', DatasetUpdate.as_view(), name='dataset_update'),
     url(r'^view/(?P<pk>\d+)$', DatasetDetail.as_view(), name='dataset_detail'),
     # this url maintains backwards compatability with old site detail view
-    url(r'^(?P<acc_num>ds\d+[a-zA-Z]?)$', DatasetDetail.as_view(), name='dataset_detail'),
+    url(r'^(?P<acc_num>ds\d+[a-zA-Z]?)/$', DatasetDetail.as_view(), name='dataset_detail'),
     url(r'^delete/(?P<pk>\d+)$', DatasetDelete.as_view(), 
         name='dataset_delete'),
     url(r'^featured/delete/(?P<pk>\d+)$', 
