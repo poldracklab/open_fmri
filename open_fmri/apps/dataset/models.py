@@ -1,3 +1,5 @@
+import os
+
 from django.core.validators import URLValidator
 from django.db import models
 
@@ -52,12 +54,18 @@ class PublicationPubMedLink(models.Model):
     url = models.TextField(validators=[URLValidator()])
     dataset = models.ForeignKey('Dataset')
 
+def get_upload_path(instance, filename):
+    return instance.dataset.accession_number + "/" + filename
+
 class PublicationDocument(models.Model):
-    document = models.FileField()
+    document = models.FileField(upload_to=get_upload_path)
     dataset = models.ForeignKey('Dataset')
 
     def __str__(self):
-        return self.document
+        return self.document.url
+
+    def filename(self):
+        return os.path.basename(self.document.name)
 
 # Form will hit the cogat api, we will only record the cogat id for the task 
 # so we can find it again and the name for display purposes
