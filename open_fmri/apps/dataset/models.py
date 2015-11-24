@@ -70,8 +70,9 @@ class PublicationDocument(models.Model):
 # Form will hit the cogat api, we will only record the cogat id for the task 
 # so we can find it again and the name for display purposes
 class Task(models.Model):
-    cogat_id = models.TextField()
+    cogat_id = models.TextField(null=True, blank=True)
     name = models.TextField(blank=True)
+    url = models.TextField(validators=[URLValidator()], blank=True, null=True)
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')
 

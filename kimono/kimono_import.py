@@ -3,13 +3,16 @@ import json
 from dataset.models import Dataset, Investigator, Link, PublicationDocument, \
     PublicationPubMedLink, Task
 
+from cognitiveatlas.api import get_task
 
 def data_import():
-    fp = open("kimonoData.json")
-    pubmed_fp = open("pubmed_links.json")
-    
+    fp = open("kimono/kimonoData.json")
+    pubmed_fp = open("kimono/pubmed_links.json")
+    task_fp = open("kimono/tasks.json")
+
     old_json = json.load(fp)
     pubmed_json = json.load(pubmed_fp)
+    task_json = json.load(task_fp)
 
     for col_1 in old_json['results']['collection1']:
         url = col_1['url']
@@ -56,6 +59,26 @@ def data_import():
                 pubmed_link.dataset = new_dataset
                 pubmed_link.save()
    
+        for task in task_json['results']['collection1']:
+            if task.get('url') == url:
+                task_url = task['property2']['href']
+                name = task['property2']['text']
+                number = task['property6'].split(' ')[0]
+                id = None
+                try:
+                    id = get_task(name=name).json[0]['id']
+                except:
+                    print('\n\n')
+                    print(url)
+                    print('\n\n')
+                new_task = Task()
+                new_task.url = task_url
+                new_task.name = name
+                new_task.number = int(number)
+                new_task.cogat_id = id
+                new_task.dataset = new_dataset
+                new_task.save()
+        
 '''
 ['acknowlegments', 'pubmedlink', 'property12', 'index', 'sample_size', 'url', 'accession_number', 'scanner', 'license', 'document', 'title', 'task']
 '''
