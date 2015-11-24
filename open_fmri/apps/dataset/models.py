@@ -27,7 +27,7 @@ class Dataset(models.Model):
     summary = models.TextField(null=True)
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
-    accession_number = models.CharField(max_length=200, blank=True, null=True)
+    accession_number = models.CharField(max_length=60, unique=True)
     acknowledgements = models.TextField(null=True, blank=True)
     
     # These three fields are for any papers associated with the dataset
