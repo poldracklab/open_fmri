@@ -27,5 +27,6 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^api/$', DatasetAPIList.as_view(), name='dataset_api_list'),
+    url(r'^api/(?P<acc_num>ds\d+[a-zA-Z]?)/$', DatasetAPIDetail.as_view(), name='dataset_api_detail'),
     url(r'^api/(?P<pk>\d+)$', DatasetAPIDetail.as_view(), name='dataset_api_detail'),
 )

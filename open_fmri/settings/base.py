@@ -10,14 +10,20 @@ root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
 sys.path.insert(0, root('apps'))
 
+ADMINS = (
+    ('Ross Blair', 'rblair2@stanford.edu'),
+)
+MANAGERS = ADMINS
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG, 'FALSE')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
 
-ALLOWED_HOSTS = []
+
+
 
 # Application definition
 
