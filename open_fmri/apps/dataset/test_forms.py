@@ -20,6 +20,7 @@ class DatasetFormTestCase(TestCase):
             'project_name': 'project name',
             'summary': 'summary',
             'sample_size': 2,
+            'accession_number': 'ds0000madeup',
             'license_title': 'PPDL',
             'workflow_stage': 'SUBMITTED',
             'status': 'UNPUBLISHED'

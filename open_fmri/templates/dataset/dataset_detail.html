@@ -19,14 +19,17 @@
 <p>{{ object.acknowledgements }}</p>
 {% endif %}
 
-{% if opbject.publicationdocument.all or object.publicationpubmedlink_set.all %}
-<h4>Publications:</h4>
+{% if object.publicationpubmedlink_set.all %}
+<h4>External Publication Links:</h4>
 {% for pubmed_link in object.publicationpubmedlink_set.all %}
-    <a href="{{ pubmed_link.url }}">{{ pubmed_link.title }}</a>
+    <a href="{{ pubmed_link.url }}">{{ pubmed_link.title }}</a><br/>
 {% endfor %}
-
+<br/>
+{% endif %}
+{% if object.publicationdocument.all %}
+<h4>Uploaded Publication Documents:</h4>
 {% for document in object.publicationdocument_set.all %}
-    {{ document }}
+    <a href="{{ document.document.url }}">{{ document.filename }}</a><br/>
 {% endfor %}
 
 {% endif %}
