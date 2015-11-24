@@ -11,11 +11,11 @@ following command assumes you are in the project's base directory:
 sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout ./nginx.key -out ./nginx.crt
 ```
 
-Password protection can be enabled by uncommenting the following lines in the 
-nginx.conf:
+Password protection can be enabled by the following lines in the 
+nginx.conf in the location / section above the uwsgi_pass :
 ```
-            #auth_basic "";
-            #auth_basic_user_file /etc/nginx/.passwd;
+            auth_basic "";
+            auth_basic_user_file /etc/nginx/.passwd;
 ```
 
 An htpasswd file will need to be created in the projects root directory:
