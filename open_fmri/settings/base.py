@@ -138,6 +138,11 @@ EMAIL_PORT = os.environ["EMAIL_PORT"]
 EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+    },
+}
 
 # .local.py overrides all the common settings.
 try:

@@ -37,7 +37,7 @@ nginx:
         - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
         - ./nginx.crt:/etc/nginx/nginx.crt:ro
         - ./nginx.key:/etc/nginx/nginx.key:ro
-        - ./.htpasswd:/etc/nginx/.passwd:ro
+        #- ./.htpasswd:/etc/nginx/.passwd:ro
     links:
         - uwsgi
     ports:

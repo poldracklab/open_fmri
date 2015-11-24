@@ -1,3 +1,5 @@
+import os
+
 from django.core.validators import URLValidator
 from django.db import models
 
@@ -25,7 +27,7 @@ class Dataset(models.Model):
     summary = models.TextField(null=True)
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
-    accession_number = models.CharField(max_length=200, blank=True, null=True)
+    accession_number = models.CharField(max_length=60, unique=True)
     acknowledgements = models.TextField(null=True, blank=True)
     
     # These three fields are for any papers associated with the dataset
@@ -52,18 +54,25 @@ class PublicationPubMedLink(models.Model):
     url = models.TextField(validators=[URLValidator()])
     dataset = models.ForeignKey('Dataset')
 
+def get_upload_path(instance, filename):
+    return instance.dataset.accession_number + "/" + filename
+
 class PublicationDocument(models.Model):
-    document = models.FileField()
+    document = models.FileField(upload_to=get_upload_path)
     dataset = models.ForeignKey('Dataset')
 
     def __str__(self):
-        return self.document
+        return self.document.url
+
+    def filename(self):
+        return os.path.basename(self.document.name)
 
 # Form will hit the cogat api, we will only record the cogat id for the task 
 # so we can find it again and the name for display purposes
 class Task(models.Model):
-    cogat_id = models.TextField()
+    cogat_id = models.TextField(null=True, blank=True)
     name = models.TextField(blank=True)
+    url = models.TextField(validators=[URLValidator()], blank=True, null=True)
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')
 
