@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 class="title">{{ object.project_name }}</h1>
-<p>{{ object.summary }}</p>
+<p>{{ object.summary|safe }}</p>
 <h4>Investigators:</h4>
 <ul>
 {% for investigator in object.investigator_set.all %}
