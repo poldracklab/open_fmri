@@ -11,8 +11,8 @@ from dataset.views import DatasetCreate
 
 class DatasetViewTestCase(TestCase):
     def setUp(self):
-        self.dataset = ModelFactory.make('Dataset')
-        self.featureddataset = ModelFactory.make('FeaturedDataset')
+        self.dataset = ModelFactory.make('Dataset', accession_number='ds999999z')
+        self.featureddataset = ModelFactory.make('FeaturedDataset', dataset=self.dataset)
         self.request_factory = RequestFactory()
         self.password = 'pass'
         self.user = User.objects.create_user(
@@ -68,7 +68,7 @@ class DatasetViewTestCase(TestCase):
             'project_name': 'unique', 
             'summary': self.dataset.summary,
             'sample_size': self.dataset.sample_size,
-            'accession_number': 'dsmadeup',
+            'accession_number': 'ds999999z',
             'workflow_stage': 'SUBMITTED',
             'status': 'UNPUBLISHED',
             'curated': False,
@@ -102,27 +102,28 @@ class DatasetViewTestCase(TestCase):
         self.assertTrue(self.client.login(
             username=self.user.username, password=self.password))
         response = self.client.post(reverse('dataset_create'), data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_update_view_nologin(self):
         response = self.client.get(reverse('dataset_update', 
-                                           args=[self.dataset.id]))
+                                           args=[self.dataset.accession_number]))
         self.assertEqual(response.status_code, 302)
 
     def test_update_view_login(self):
         self.assertTrue(self.client.login(
             username=self.user.username, password=self.password))
         response = self.client.get(reverse('dataset_update', 
-                                           args=[self.dataset.id]))
+                                           args=[self.dataset.accession_number]))
         self.assertEqual(response.status_code, 200)
 
     def test_update_view_login_valid_data(self):
-        dataset = ModelFactory.make('Dataset')
+        dataset = ModelFactory.make('Dataset', accession_number='ds999999z')
+        dataset.save()
         data = {
             'project_name': 'unique', 
             'summary': self.dataset.summary,
             'sample_size': self.dataset.sample_size,
-            'accession_number': 'dsmadeup',
+            'accession_number': 'ds99999z',
             'workflow_stage': 'SUBMITTED',
             'status': 'UNPUBLISHED',
             'curated': False,
@@ -155,7 +156,7 @@ class DatasetViewTestCase(TestCase):
         self.assertTrue(self.client.login(
             username=self.user.username, password=self.password))
         response = self.client.post(
-            reverse('dataset_update', args=[dataset.id]), data)
+            reverse('dataset_update', args=[dataset.accession_number]), data)
         self.assertEqual(response.status_code, 302)
 
 
@@ -165,7 +166,7 @@ class DatasetViewTestCase(TestCase):
     '''
     def test_detail_view(self):
         response = self.client.get(reverse('dataset_detail', 
-                                           args=[self.dataset.id]))
+                                           args=[self.dataset.accession_number]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.dataset.project_name)
         self.assertContains(response, self.dataset.summary)

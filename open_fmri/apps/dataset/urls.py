@@ -13,45 +13,30 @@ urlpatterns = patterns('',
         name='dataset_create'
     ),
     url(
-        r'^edit/(?P<pk>\d+)$',
+        r'^edit/(?P<pk>ds\d+[a-zA-Z]?)$',
         DatasetUpdate.as_view(),
         name='dataset_update'
-    ),
-    url(
-        r'^edit/(?P<acc_num>ds\d+[a-zA-Z]?)$',
-        DatasetUpdate.as_view(),
-        name='dataset_update'
-    ),
-    url(
-        r'^view/(?P<pk>\d+)$',
-        DatasetDetail.as_view(),
-        name='dataset_detail'
     ),
     # this url maintains backwards compatability with old site detail view
     url(
-        r'^(?P<acc_num>ds\d+[a-zA-Z]?)/$',
+        r'^(?P<pk>ds\d+[a-zA-Z]?)/$',
         DatasetDetail.as_view(),
         name='dataset_detail'
     ),
     url(
-        r'^delete/(?P<pk>\d+)$',
+        r'^delete/(?P<pk>ds\d+[a-zA-Z]?)$', 
         DatasetDelete.as_view(), 
         name='dataset_delete'
-    ),
-    url(
-        r'^delete/(?P<acc_num>ds\d+[a-zA-Z]?)/$', 
-        DatasetDelete.as_view(), 
-        name='dataset_delete'
-    ),
-    url(
-        r'^featured/delete/(?P<pk>\d+)$', 
-        FeaturedDatasetDelete.as_view(),
-        name='featureddataset_delete'
     ),
     url(
         r'^featured/$',
         FeaturedDatasetEdit.as_view(), 
         name='featureddataset_edit'
+    ),
+    url(
+        r'^featured/delete/(?P<pk>\d+)$', 
+        FeaturedDatasetDelete.as_view(),
+        name='featureddataset_delete'
     ),
     url(
         r'^user_data_request/new/$',
@@ -77,11 +62,7 @@ urlpatterns += patterns('',
         name='dataset_api_list'
     ),
     url(
-        r'^api/(?P<acc_num>ds\d+[a-zA-Z]?)/$',
-        DatasetAPIDetail.as_view(),
-        name='dataset_api_detail'
-    ),
-    url(r'^api/(?P<pk>\d+)$',
+        r'^api/(?P<pk>ds\d+[a-zA-Z]?)/$',
         DatasetAPIDetail.as_view(),
         name='dataset_api_detail'
     ),

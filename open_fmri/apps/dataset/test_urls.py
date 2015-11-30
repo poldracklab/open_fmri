@@ -13,9 +13,10 @@ class DataSetUrlTestCase(TestCase):
         self.dataset = Dataset.objects.create(
             project_name = 'project name',
             summary = 'project summary',
+            accession_number = 'ds999999z',
             sample_size = 2
         )
-        self.featured_dataset = ModelFactory.make('FeaturedDataset')
+        self.featured_dataset = ModelFactory.make('FeaturedDataset', dataset=self.dataset)
     
     def test_dataset_list(self):
         found = resolve('/dataset/')
@@ -26,11 +27,11 @@ class DataSetUrlTestCase(TestCase):
         self.assertEqual(found.func.__name__, DatasetCreate.as_view().__name__)
 
     def test_dataset_update(self):
-        found = resolve('/dataset/edit/' + str(self.dataset.id))
+        found = resolve('/dataset/edit/' + str(self.dataset.accession_number))
         self.assertEqual(found.func.__name__, DatasetUpdate.as_view().__name__)
 
     def test_dataset_delete(self):
-        found = resolve('/dataset/delete/' + str(self.dataset.id))
+        found = resolve('/dataset/delete/' + str(self.dataset.accession_number))
         self.assertEqual(found.func.__name__, DatasetDelete.as_view().__name__)
     
     def test_featureddataset_edit(self):
@@ -40,6 +41,6 @@ class DataSetUrlTestCase(TestCase):
 
     def test_featureddataset_delete(self):
         found = resolve('/dataset/featured/delete/' + 
-                        str(self.dataset.id))
+                        str(self.featured_dataset.id))
         self.assertEqual(found.func.__name__, 
                          FeaturedDatasetDelete.as_view().__name__)

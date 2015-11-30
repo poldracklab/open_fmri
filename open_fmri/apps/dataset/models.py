@@ -27,7 +27,7 @@ class Dataset(models.Model):
     summary = models.TextField(null=True)
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
-    accession_number = models.CharField(max_length=60, unique=True)
+    accession_number = models.CharField(max_length=60, primary_key=True)
     acknowledgements = models.TextField(null=True, blank=True)
     
     # These three fields are for any papers associated with the dataset
@@ -75,6 +75,9 @@ class Task(models.Model):
     url = models.TextField(validators=[URLValidator()], blank=True, null=True)
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')
+
+    def get_url(self):
+        return "http://www.cognitiveatlas.org/id/" + self.cogat_id
 
 class Revision(models.Model):
     previous_revision = models.ForeignKey('Revision', null=True)

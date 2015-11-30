@@ -7,6 +7,7 @@ from dataset.models import Dataset, Revision
 class RevisionTestCase(TestCase):
     def setUp(self):
         self.dataset = ModelFactory.make('Dataset')
+        self.dataset.accession_number = 'ds999999z'
         self.revision_1 = ModelFactory.make('Revision', dataset=self.dataset)
 
     def test_one_revision(self):
