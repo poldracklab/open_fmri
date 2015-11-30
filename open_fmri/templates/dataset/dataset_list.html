@@ -26,7 +26,7 @@
 <th> Scanner Type </th>
 <th> License </th>
 {% if user.is_authenticated %}
-<th></th>
+<th> Status </th>
 <th></th>
 {% endif %}
 </tr>
@@ -42,14 +42,17 @@
     {% endfor %}
     </ol>
     </td>
-    <td>{{ dataset.accession_number }} </td>
-    <td>{{ dataset.summary }} </td>
-    <td>{{ dataset.sample_size }} </td>
-    <td>{{ dataset.scanner_type }} </td>
-    <td>{{ dataset.license_title }} </td>
+    <td>{{ dataset.accession_number }}</td>
+    <td>{{ dataset.summary }}</td>
+    <td>{{ dataset.sample_size }}</td>
+    <td>{{ dataset.scanner_type }}</td>
+    <td>{{ dataset.license_title }}</td>
     {% if user.is_authenticated %}
-        <td> <a href="{% url 'dataset_update' dataset.id %}">Edit</a> </td>
-        <td> <a href="{% url 'dataset_delete' dataset.id %}">Delete</a> </td>
+        <td>{{ dataset.get_status_display }}</td>
+        <td> 
+            <a href="{% url 'dataset_update' dataset.id %}">Edit</a><br/>
+            <a href="{% url 'dataset_delete' dataset.id %}">Delete</a>
+        </td>
     {% endif %}
     </tr>
 {% endfor %} 

@@ -54,6 +54,9 @@
 <h4>Accession Number:</h4>
 <p>{{ object.accession_number }}</p>
 
+<h4>Curated:</h4>
+<p>{{ object.curated|yesno:"Yes,No,Unknown" }}</p>
+
 {% for revision in revisions %}
 <h4>Revision: {{ revision.revision_number }} <small>Date Set: {{ revision.date_set }}</small></h4>
 <p><a href="{{ revision.aws_link_url }}">{{ revision.aws_link_title }}</a></p>
