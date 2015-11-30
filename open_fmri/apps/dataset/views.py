@@ -219,9 +219,9 @@ class Index(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
-        context['num_datasets'] = len(Dataset.objects.all())
+        context['num_datasets'] = len(Dataset.objects.filter(status='PUBLISHED'))
         total = 0
-        for x in Dataset.objects.all():
+        for x in Dataset.objects.filter(status='PUBLISHED'):
             total += x.sample_size
         context['num_subjects'] =  total
         return context
