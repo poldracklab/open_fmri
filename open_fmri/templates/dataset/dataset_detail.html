@@ -11,7 +11,7 @@
 {% if object.task_set.all %}
     <h4>Tasks:</h4>
     {% for task in object.task_set.all %}
-        <p><a href="{{ task.url }}">{{ task.name }}</a></p>
+        <p><a href="{{ task.url }}">{{ task.number|stringformat:"03d" }} {{ task.name }}</a></p>
     {% endfor %}
 {% endif %}
 
