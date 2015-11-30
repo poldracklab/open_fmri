@@ -7,6 +7,14 @@
 {% block content %}
 <h1 class="title">{{ object.project_name }}</h1>
 <p>{{ object.summary|safe }}</p>
+
+{% if object.task_set.all %}
+    <h4>Tasks:</h4>
+    {% for task in object.task_set.all %}
+        <p><a href="{{ task.url }}">{{ task.name }}</a></p>
+    {% endfor %}
+{% endif %}
+
 <h4>Investigators:</h4>
 <ul>
 {% for investigator in object.investigator_set.all %}
@@ -26,7 +34,7 @@
 {% endfor %}
 <br/>
 {% endif %}
-{% if object.publicationdocument.all %}
+{% if object.publicationdocument_set.all %}
 <h4>Uploaded Publication Documents:</h4>
 {% for document in object.publicationdocument_set.all %}
     <a href="{{ document.document.url }}">{{ document.filename }}</a><br/>
