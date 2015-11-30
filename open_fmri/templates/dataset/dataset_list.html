@@ -34,7 +34,7 @@
 <tbody>
 {% for dataset in object_list %}
     <tr>
-    <td class="first_td"><a href="{% url 'dataset_detail' dataset.id %}">{{ dataset.project_name }}</a></td>
+    <td class="first_td"><a href="{% url 'dataset_detail' dataset.accession_number %}">{{ dataset.project_name }}</a></td>
     <td>
     <ol>
     {% for investigator in dataset.investigator_set.all %}
@@ -50,8 +50,8 @@
     {% if user.is_authenticated %}
         <td>{{ dataset.get_status_display }}</td>
         <td> 
-            <a href="{% url 'dataset_update' dataset.id %}">Edit</a><br/>
-            <a href="{% url 'dataset_delete' dataset.id %}">Delete</a>
+            <a href="{% url 'dataset_update' dataset.accession_number %}">Edit</a><br/>
+            <a href="{% url 'dataset_delete' dataset.accession_number %}">Delete</a>
         </td>
     {% endif %}
     </tr>
