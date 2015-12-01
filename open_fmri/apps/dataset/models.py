@@ -94,9 +94,6 @@ class Task(models.Model):
     number = models.IntegerField()
     dataset = models.ForeignKey('Dataset')
 
-    def get_url(self):
-        return "http://www.cognitiveatlas.org/id/" + self.cogat_id
-
 class Revision(models.Model):
     previous_revision = models.ForeignKey('Revision', null=True)
     dataset = models.ForeignKey('Dataset')
