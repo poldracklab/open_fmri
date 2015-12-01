@@ -8,10 +8,14 @@ MAX_TITLE_LENGTH = 255
 
 #200 is a place holder minimum number for now
 def acc_num_gen():
-    max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
-    max_val = max_agg['accession_number__max']
-    match = re.search('\d+', max_val)
-    int_val = int(max_val[match.span()[0]:match.span()[1]])
+    try:
+        max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
+        max_val = max_agg['accession_number__max']
+        match = re.search('\d+', max_val)
+        int_val = int(max_val[match.span()[0]:match.span()[1]])
+    except (TypeError, AttributeError):
+        int_val = 0
+    
     if int_val < 200:
         int_val = 200
     else:
