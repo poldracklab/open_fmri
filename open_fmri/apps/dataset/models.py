@@ -1,9 +1,22 @@
 import os
+import re
 
 from django.core.validators import URLValidator
 from django.db import models
 
 MAX_TITLE_LENGTH = 255
+
+#200 is a place holder minimum number for now
+def acc_num_gen():
+    max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
+    max_val = max_agg['accession_number__max']
+    match = re.search('\d+', max_val)
+    int_val = int(max_val[match.span()[0]:match.span()[1]])
+    if int_val < 200:
+        int_val = 200
+    else:
+        int_val += 1
+    return "ds%06d" % (int_val)
 
 class Dataset(models.Model):
     
@@ -27,7 +40,8 @@ class Dataset(models.Model):
     summary = models.TextField(null=True)
     sample_size = models.IntegerField()
     scanner_type = models.TextField(blank=True)
-    accession_number = models.CharField(max_length=60, primary_key=True)
+    accession_number = models.CharField(max_length=60, primary_key=True,
+                                        default=acc_num_gen)
     acknowledgements = models.TextField(null=True, blank=True)
     
     # These three fields are for any papers associated with the dataset
@@ -44,6 +58,7 @@ class Dataset(models.Model):
     
     def __str__(self):
         return self.project_name
+
 
 class Investigator(models.Model):
     investigator = models.CharField(max_length=200)
