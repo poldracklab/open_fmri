@@ -6,7 +6,6 @@ from django.db import models
 
 MAX_TITLE_LENGTH = 255
 
-#200 is a place holder minimum number for now
 def acc_num_gen():
     try:
         max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
