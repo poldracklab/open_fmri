@@ -31,12 +31,13 @@
         <div class="container">
             <a class="navbar-brand" href="/"><img src="{% static 'images/logo.png' %}" alt="OpenfMRI"></a> 
                 <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
-                    <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
-                    {% endif %}
                     <li><a class="nav-link nav-item" href="{% url 'dataset_list' %}">View Datasets</a></li>
                     <li><a class="nav-link nav-item" href="/faq/">FAQs</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link nav-item" href="{% url 'dataset_create' %}">New Dataset</a></li>
+                    {% else %}
                     <li><a class="nav-link nav-item" href="{% url 'contact_form' %}">Submit a new Dataset</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a class="nav-item  nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
