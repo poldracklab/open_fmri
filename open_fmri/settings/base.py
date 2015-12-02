@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = (
     'ckeditor',
     'contact_form',
     'crispy_forms',
+    'opbeat.contrib.django',
     'rest_framework',
 )
 
@@ -54,6 +55,7 @@ INSTALLED_APPS += PROJECT_APPS
 INSTALLED_APPS += THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = (
+    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -153,6 +155,12 @@ CKEDITOR_CONFIGS = {
     'default': {
         'width': '100%',
     },
+}
+
+OPBEAT = {
+    'ORGANIZATION_ID': os.environ.get('OPBEAT_ORGANIZATION_ID', ''),
+    'APP_ID': os.environ.get('OPBEAT_APP_ID', ''),
+    'SECRET_TOKEN': os.environ.get('OPBEAT_SECRET_TOKEN', ''),
 }
 
 # .local.py overrides all the common settings.

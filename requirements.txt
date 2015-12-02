@@ -1,4 +1,4 @@
-django
+django<1.9
 django-braces
 django-contact-form
 django-ckeditor
@@ -6,6 +6,7 @@ django-crispy-forms
 django-model-utils
 djangorestframework
 model_mommy
+opbeat
 pillow
 psycopg2
 requests
