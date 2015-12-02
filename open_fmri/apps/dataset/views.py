@@ -198,7 +198,7 @@ class UserDataRequestCreate(LoginRequiredMixin, CreateView):
     form_class = UserDataRequestForm
     success_url = reverse_lazy('dataset_list')
 
-class UserCreateDataset(CreateView):
+class UserDatasetCreate(CreateView):
     model = Dataset
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
@@ -207,7 +207,7 @@ class UserCreateDataset(CreateView):
     def dispatch(self, *args, **kwargs):
         token = self.kwargs.get('token') 
         user_data_request = get_object_or_404(UserDataRequest, token=token)
-        return super(UserCreateDataset, self).dispatch(*args, **kwargs)
+        return super(UserDatasetCreate, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         form.save()
