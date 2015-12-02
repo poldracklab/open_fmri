@@ -72,9 +72,10 @@ class UserDatasetForm(ModelForm):
             Field('summary', css_class="form-control", rows=3),
             Field('sample_size', css_class="form-control"),
             Field('scanner_type', css_class="form-control", rows=1),
-            Field('accession_number', css_class="form-control"),
             Field('acknowledgements', css_class="form-control", rows=3),
         )
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
 
 class InvestigatorForm(ModelForm):
     class Meta:
