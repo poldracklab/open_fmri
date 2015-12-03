@@ -25,7 +25,7 @@ class CrispyContactForm(ContactForm):
         try:
             subject = "Information About Your Dataset Has Been Recieved"
             body = "A Data Curator will be in contact with you shortly. "
-            send_mail(subject, body, 'admin@example.com', 
+            send_mail(subject, body, 'admin@openfmri.org', 
                       [self.cleaned_data['email']])
             return contact_form
         except smtplib.SMTPException:
