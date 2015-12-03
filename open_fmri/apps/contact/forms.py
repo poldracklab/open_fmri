@@ -30,3 +30,4 @@ class CrispyContactForm(ContactForm):
             return contact_form
         except smtplib.SMTPException:
             raise smtplib.SMTPException
+        super(CrispyContactForm, self).save()

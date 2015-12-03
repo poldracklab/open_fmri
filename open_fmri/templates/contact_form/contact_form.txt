@@ -1,3 +1,4 @@
-{{ email }}
+Name: {{ name }}
+Email Address: {{ email }}
+Description of Dataset:
 {{ body }}
-

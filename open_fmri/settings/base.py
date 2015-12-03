@@ -15,6 +15,8 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
+DEFAULT_FROM_EMAIL = "admin@openfmri.org"
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 
