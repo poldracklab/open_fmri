@@ -25,6 +25,22 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
+    <div id="id_task">
+        {% crispy task_formset task_formset_helper %}
+    </div>
+
+    <div id="id_investigator">
+        {% crispy investigator_formset investigator_formset_helper %}
+    </div>
+
+     <div id="id_publication_pubmed_link">
+         {% crispy publication_pubmed_link_formset publication_pubmed_link_formset_helper %}
+     </div>
+
+     <div id="id_publication_document">
+         {% crispy publication_document_formset publication_document_formset_helper %}
+     </div>
+
     <div id="id_link">
         {% crispy link_formset link_formset_helper %}
     </div>
@@ -32,22 +48,7 @@
     <div id="id_revision">
         {% crispy revision_formset revision_formset_helper %}
     </div>
-
-    <div id="id_investigator">
-        {% crispy investigator_formset investigator_formset_helper %}
-    </div>
-   
-    <div id="id_publication_document">
-        {% crispy publication_document_formset publication_document_formset_helper %}
-    </div>
-
-    <div id="id_publication_pubmed_link">
-        {% crispy publication_pubmed_link_formset publication_pubmed_link_formset_helper %}
-    </div>
     
-    <div id="id_task">
-        {% crispy task_formset task_formset_helper %}
-    </div>
     <input class="btn btn-primary" type="submit" value="Save">
 
     </form>
