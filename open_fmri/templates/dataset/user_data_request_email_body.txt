@@ -1,1 +1,4 @@
-{{ url }}
+A form to input more information about your dataset is avaliable here:
+https://openfmri.org{{ url }}
+
+If you have any questions about the form please let us know at openfmri@gmail.com
