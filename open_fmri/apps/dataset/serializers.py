@@ -32,7 +32,7 @@ class RevisionSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['cogat_id', 'number', 'name', 'url']
+        fields = ['cogat_id', 'number', 'name']
 
 class DatasetSerializer(serializers.ModelSerializer):
     
@@ -46,8 +46,8 @@ class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dataset
         fields = [
-            'workflow_stage', 'status', 'project_name', 'summary', 
-            'sample_size', 'scanner_type', 'accession_number', 
+            'accession_number', 'project_name', 'summary', 
+            'sample_size', 'scanner_type', 
             'acknowledgements', 'license_title', 'license_url', 'curated',
             'publicationdocument_set', 'publicationpubmedlink_set', 'task_set',
             'revision_set', 'investigator_set', 'link_set'

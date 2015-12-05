@@ -6,7 +6,7 @@ from dataset.models import Dataset
 from dataset.serializers import DatasetSerializer
 
 class DatasetAPIList(generics.ListAPIView):
-    queryset = Dataset.objects.all()
+    queryset = Dataset.objects.filter(status='PUBLISHED')
     serializer_class = DatasetSerializer
 
 class DatasetAPIDetail(generics.RetrieveUpdateDestroyAPIView):
