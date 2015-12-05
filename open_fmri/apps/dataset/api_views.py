@@ -24,4 +24,4 @@ class DatasetAPIDetail(generics.RetrieveUpdateDestroyAPIView):
                               {'verbose_name': queryset.model._meta.verbose_name})
             return obj
         else:
-            return super(DatasetDetail, self).get_object()
+            return super(DatasetAPIDetail, self).get_object()
