@@ -292,10 +292,10 @@ class UserDataRequestForm(ModelForm):
             subject = "Request for data from OpenfMRI.org"
             body = render_to_string(
                 "dataset/user_data_request_email_body.txt", 
-                {'url': reverse('user_create_dataset',
+                {'url': reverse('user_update_dataset',
                                 args=[data_request.token])}
             )
-            send_mail(subject, body, 'admin@example.com', 
+            send_mail(subject, body, 'openfmri@gmail.com', 
                       [data_request.user_email_address], fail_silently)
             return data_request
         except smtplib.SMTPException:
