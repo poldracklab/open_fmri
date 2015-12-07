@@ -3,10 +3,10 @@ import requests_cache
 
 from django import forms
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
 from django.views.generic import CreateView, DeleteView, DetailView, \
-    ListView, UpdateView, TemplateView
+    ListView, UpdateView, TemplateView, View
 
 from braces.views import LoginRequiredMixin
 
@@ -198,21 +198,39 @@ class UserDataRequestCreate(LoginRequiredMixin, CreateView):
     form_class = UserDataRequestForm
     success_url = reverse_lazy('dataset_list')
 
+class UserDatasetUpdate(UpdateView):
+    model = Dataset
+    form_class = UserDatasetForm
+    success_url = reverse_lazy('dataset_list')
+    template_name = "dataset/user_dataset_form.html"
+
+    def get_object(self):
+        token = self.kwargs.get('token') 
+        user_data_request = get_object_or_404(UserDataRequest, token=token)
+        if user_data_request.dataset == None:
+            redirect('user_create_dataset', token=token)
+        else:
+            redirect('user_create_dataset', token=token)
+
 class UserDatasetCreate(CreateView):
     model = Dataset
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
     template_name = "dataset/user_dataset_form.html"
 
+    # Check to make sure the token exists, if not 404
     def dispatch(self, *args, **kwargs):
         token = self.kwargs.get('token') 
         user_data_request = get_object_or_404(UserDataRequest, token=token)
         return super(UserDatasetCreate, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
-        form.save()
-        # Could email the admin back here
+        dataset = form.save()
+        token = self.kwargs.get('token') 
+        user_data_request = get_object_or_404(UserDataRequest, token=token)
+        user_data_request.dataset = dataset
         return super(UserDatasetCreate, self).form_valid(form)
+        
 
 class Index(TemplateView):
     template_name = "index.html"

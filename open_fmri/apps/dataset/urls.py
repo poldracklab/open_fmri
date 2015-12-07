@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from dataset.views import DatasetCreate, DatasetDelete, DatasetDetail, \
     DatasetList, DatasetUpdate, FeaturedDatasetEdit, FeaturedDatasetDelete, \
-    UserDatasetCreate, UserDataRequestCreate
+    UserDatasetCreate, UserDatasetUpdate, UserDataRequestCreate
 
 from dataset.api_views import DatasetAPIList, DatasetAPIDetail
 
@@ -44,9 +44,14 @@ urlpatterns = patterns('',
         name='user_data_request'
     ),
     url(
-        r'^new/(?P<token>.*)$',
+        r'^user/new/(?P<token>.*)/$',
         UserDatasetCreate.as_view(),
         name='user_create_dataset'
+    ),
+    url(
+        r'^user/(?P<token>.*)/$',
+        UserDatasetUpdate.as_view(),
+        name='user_update_dataset'
     ),
     url(
         r'^$',
