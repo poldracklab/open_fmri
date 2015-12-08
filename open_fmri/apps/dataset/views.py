@@ -6,7 +6,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
 from django.views.generic import CreateView, DeleteView, DetailView, \
-    ListView, UpdateView, TemplateView, View
+    ListView, UpdateView, TemplateView, View 
+from django.views.generic.edit import ModelFormMixin, ProcessFormView 
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
 
 from braces.views import LoginRequiredMixin
 
@@ -198,19 +200,45 @@ class UserDataRequestCreate(LoginRequiredMixin, CreateView):
     form_class = UserDataRequestForm
     success_url = reverse_lazy('dataset_list')
 
-class UserDatasetUpdate(UpdateView):
+    def form_valid(self, form):
+        user_request = form.save()
+        dataset = Dataset()
+        dataset.project_name = "Request for " + user_request.user_email_address
+        dataset.save()
+        user_request.dataset = dataset
+        user_request.save()
+        return super(UserDataRequestCreate, self).form_valid(form)
+
+class UserDataset(SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFormView):
     model = Dataset
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
     template_name = "dataset/user_dataset_form.html"
+    
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(UserDataset, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(UserDataset, self).post(request, *args, **kwargs)
 
     def get_object(self):
         token = self.kwargs.get('token') 
         user_data_request = get_object_or_404(UserDataRequest, token=token)
+        return user_data_request.dataset
+
+    ''' alternative method of binding dataset to user data request
+    def form_valid(self, form):
+        dataset = form.save()
+        token = self.kwargs.get('token') 
+        user_data_request = get_object_or_404(UserDataRequest, token=token)
         if user_data_request.dataset == None:
-            redirect('user_create_dataset', token=token)
-        else:
-            redirect('user_create_dataset', token=token)
+            user_data_request.dataset = dataset
+            user_data_request.save()
+        return super(UserDataset, self).form_valid(form)
+    '''
+        
 
 class UserDatasetCreate(CreateView):
     model = Dataset
@@ -228,7 +256,7 @@ class UserDatasetCreate(CreateView):
         dataset = form.save()
         token = self.kwargs.get('token') 
         user_data_request = get_object_or_404(UserDataRequest, token=token)
-        user_data_request.dataset = dataset
+        user_data_request.save()
         return super(UserDatasetCreate, self).form_valid(form)
         
 

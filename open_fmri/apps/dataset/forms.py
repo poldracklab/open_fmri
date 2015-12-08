@@ -63,6 +63,9 @@ class UserDatasetForm(ModelForm):
             'project_name', 'summary', 'sample_size', 'scanner_type', 
             'acknowledgements'
         ]
+        widgets = {
+            'summary': CKEditorWidget(),
+        }
     
     def __init__(self, *args, **kwargs):
         super(UserDatasetForm, self).__init__(*args, **kwargs)
@@ -292,7 +295,7 @@ class UserDataRequestForm(ModelForm):
             subject = "Request for data from OpenfMRI.org"
             body = render_to_string(
                 "dataset/user_data_request_email_body.txt", 
-                {'url': reverse('user_update_dataset',
+                {'url': reverse('user_dataset',
                                 args=[data_request.token])}
             )
             send_mail(subject, body, 'openfmri@gmail.com', 

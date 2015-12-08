@@ -41,7 +41,7 @@ class Dataset(models.Model):
     curated = models.NullBooleanField(default=False, null=True)
     project_name = models.CharField(max_length=MAX_TITLE_LENGTH)
     summary = models.TextField(null=True)
-    sample_size = models.IntegerField()
+    sample_size = models.IntegerField(blank=True, null=True)
     scanner_type = models.TextField(blank=True)
     accession_number = models.CharField(max_length=60, primary_key=True,
                                         default=acc_num_gen)
@@ -135,4 +135,7 @@ class UserDataRequest(models.Model):
     request_sent = models.DateTimeField(auto_now_add=True)
     token = models.CharField(max_length=200, blank=True)
     dataset = models.ForeignKey('Dataset', blank=True, null=True)
+
+    def __str__(self):
+        return self.token
     
