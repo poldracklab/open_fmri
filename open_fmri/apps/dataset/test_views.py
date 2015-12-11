@@ -107,7 +107,7 @@ class DatasetViewTestCase(TestCase):
     def test_update_view_nologin(self):
         response = self.client.get(reverse('dataset_update', 
                                            args=[self.dataset.accession_number]))
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_update_view_login(self):
         self.assertTrue(self.client.login(
