@@ -6,12 +6,60 @@ Contact
 {% endblock %}
 {% block content %}
     <h1>Contact</h1>
+    <form method="post">{% csrf_token %}
+    <p>
+        Requirements for data set submission to OpenfMRI:
+        <br/>
+        <ul>
+            <li>
+            The data when uploaded must be raw and unprocessed. Researchers who 
+            wish to share processed data should use 
+            <a href="http://neurovault.org">http://neurovault.org</a> 
+            instead.
+            <br/><br/>
+            <input type="checkbox" name="unprocessed" required/> 
+            The data to be uploaded is raw and unprocessed.
+            <br/><br/>
+            </li>
+            <li>
+            The dataset must include some form of brain imaging data. All forms of 
+            MRI data are accepted including structural, functional, and diffusion 
+            MRI. Electrophysiological data will be accepted if they accompany a
+            MRI dataset.
+            <br/><br/>
+            <input type="checkbox" name="contains_mri" required/> 
+            The data includes some form of MRI data.
+            <br/><br/>
+            </li>
+            <li>
+            All data must be deidentified prior to submission, with no links from 
+            the dataset to the individuals who were imaged. Tools that can do this 
+            include 
+            <a href="https://pypi.python.org/pypi/pydeface">pydeface</a> 
+            and
+            <a href="https://www.nitrc.org/projects/deid/">DeID</a>
+            <br/><br/>
+            <input type="checkbox" name="contains_mri" required/> 
+            The data is deidentified.
+            <br/><br/>
+            </li>
+            <li>
+            Its strongly recommended that the data be organized acording to the 
+            BIDS standard. Complete documentation for the standard can be found at 
+            <a href="http://bids.neuroimaging.io">http://bids.neuroimaging.io</a>
+            An in browser validator that works with chrome can be found at 
+            <a href="http://incf.github.io/bids-validator/">http://incf.github.io/bids-validator/</a> 
+            </li>
+        </ul>
+    </p>
     <p> 
         On submission a data curator will review the inormation you provide. 
         For eligible datasets we will contact the authors and provide a link 
-        where additional information for the dataset can be submitted if needed. 
+        where additional information for the dataset can be submitted if 
+        needed. 
     </p>
     {% crispy form %}
+    </form>
 {% endblock %}
 
 {% block javascript %}

@@ -16,8 +16,7 @@ class CrispyContactForm(ContactForm):
             Field('email', css_class="form-control"),
             Field('body', css_class="form-control"),
         )
-        self.helper.form_method = 'post'
-        self.helper.field_class = 'form-control'
+        self.helper.form_tag = False
         self.helper.add_input(Submit('submit', 'Send Message'))
 
     def save(self):
