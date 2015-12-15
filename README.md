@@ -8,7 +8,8 @@ are not in the repo. A self signed signature will need to be generated, the
 following command assumes you are in the project's base directory:
 
 ```
-sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout ./nginx.key -out ./nginx.crt
+openssl req -x509 -nodes -newkey rsa:2048 -keyout .ssl/nginx.key -out .ssl/nginx.crt
+openssl dhparam -out .ssl/dhparam.pem 2048
 ```
 
 Password protection can be enabled by the following lines in the 
