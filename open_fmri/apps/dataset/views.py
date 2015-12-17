@@ -89,7 +89,9 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
         new_contact_form = NewContactForm(self.request.POST)
         contact_form = ContactForm(self.request.POST)
         if new_contact_form.is_valid():
-            dataset.contact = new_contact_form.save()
+            new_contact = new_contact_form.save()
+            new_contact.save()
+            dataset.contact = new_contact
         elif contact_form.is_valid():
             dataset.contact = contact_form.cleaned_data['contact']
         else:
