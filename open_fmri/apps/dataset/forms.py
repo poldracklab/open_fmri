@@ -24,7 +24,7 @@ class ContactForm(Form):
     contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
 
     def __init__(self, *args, **kwargs):
-        super(ContactForm, self).__init__(*argsm, **kwargs)
+        super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('contact', css_class="form-control"),
