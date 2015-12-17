@@ -4,7 +4,7 @@ import smtplib
 from django import forms
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm
+from django.forms import Form, ModelForm
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import TextInput
 from django.template.loader import render_to_string
@@ -16,8 +16,45 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
     Layout, Row, Submit
 
-from dataset.models import Dataset, FeaturedDataset, Investigator, Link, \
-    PublicationPubMedLink, PublicationDocument, Revision, Task, UserDataRequest
+from dataset.models import Contact, Dataset, FeaturedDataset, Investigator, \
+    Link, PublicationPubMedLink, PublicationDocument, Revision, Task, \
+    UserDataRequest
+
+class ContactForm(Form):
+    contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
+
+    def __init__(self, *args, **kwargs):
+        super(DatasetContactForm, self).__init__(*argsm, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('contact', css_class="form-control"),
+        )
+        self.helper.form_tag = False
+
+class NewContactForm(ModelForm):
+    class Meta:
+        model = Contact
+        fields = [
+            'name', 'email', 'website'
+        ]
+
+        widgets = {
+            'website': TextInput(),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                "Dataset Contact Information",
+                Field('name', css_class="form-control"),
+                Field('email', css_class="form-control"),
+                Field('website', css_class="form-control"),
+                css_class="fieldset-control form-control task_set"
+            ),
+        )
+        self.helper.form_tag = False
 
 class DatasetForm(ModelForm):
     class Meta:
@@ -52,11 +89,11 @@ class DatasetForm(ModelForm):
         )
         self.helper.form_tag = False
 
-'''
+class UserDatasetForm(ModelForm):
+    '''
     A Subset of the normal dataset form. This is the form that will be exposed
     to people wishing to upload data to the site.
-'''
-class UserDatasetForm(ModelForm):
+    '''
     class Meta:
         model = Dataset
         fields = [
