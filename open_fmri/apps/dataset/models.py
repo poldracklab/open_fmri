@@ -7,6 +7,7 @@ from django.db import models
 MAX_TITLE_LENGTH = 255
 
 def acc_num_gen():
+    """ Automatically generate accession numbers. """
     try:
         max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
         max_val = max_agg['accession_number__max']
@@ -21,6 +22,18 @@ def acc_num_gen():
         int_val += 1
     return "ds%06d" % (int_val)
 
+def get_upload_path(instance, filename):
+    return instance.dataset.accession_number + "/" + filename
+
+class Contact(models.Model):
+    """ Model for point of contact for a dataset """
+    email = models.EmailField(blank=True)
+    name = models.CharField(max_length=200, blank=True)
+    website = models.TextField(validators=[URLValidator()], blank=True)
+    
+    def __str__(self):
+        return self.name
+
 class Dataset(models.Model):
     
     WORKFLOW_STAGE_CHOICES = (
@@ -30,10 +43,12 @@ class Dataset(models.Model):
         ('SHARED', 'Shared'),
         ('REVIEW', 'Review')
     )
+    
     STATUS_CHOICES = (
         ('PUBLISHED', 'Published'),
         ('UNPUBLISHED', 'Unpublished')
     )
+    
     workflow_stage = models.CharField(choices=WORKFLOW_STAGE_CHOICES,
                                       default='SUBMITTED', max_length=200)
     status = models.CharField(choices=STATUS_CHOICES, default='UNPUBLISHED', 
@@ -58,26 +73,34 @@ class Dataset(models.Model):
                                       null=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True,
                                     null=True)
+    contact = models.ForeignKey('Contact', blank=True, null=True)
     
     def __str__(self):
         return self.project_name
 
+class FeaturedDataset(models.Model):
+    dataset = models.ForeignKey('Dataset')
+    date_featured = models.DateField(auto_now_add=True)
+    content = models.TextField()
+    image = models.ImageField(blank=True)
+    title = models.CharField(max_length=MAX_TITLE_LENGTH)
+    
+    def __str__(self):
+        return self.title
 
 class Investigator(models.Model):
-    investigator = models.CharField(max_length=200)
     dataset = models.ForeignKey('Dataset')
+    investigator = models.CharField(max_length=200)
 
-class PublicationPubMedLink(models.Model):
+class Link(models.Model):
+    dataset = models.ForeignKey('Dataset')
+    revision = models.ForeignKey('Revision', blank=True, null=True)
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     url = models.TextField(validators=[URLValidator()])
-    dataset = models.ForeignKey('Dataset')
-
-def get_upload_path(instance, filename):
-    return instance.dataset.accession_number + "/" + filename
 
 class PublicationDocument(models.Model):
-    document = models.FileField(upload_to=get_upload_path)
     dataset = models.ForeignKey('Dataset')
+    document = models.FileField(upload_to=get_upload_path)
 
     def __str__(self):
         return self.document.url
@@ -85,21 +108,17 @@ class PublicationDocument(models.Model):
     def filename(self):
         return os.path.basename(self.document.name)
 
-# Form will hit the cogat api, we will only record the cogat id for the task 
-# so we can find it again and the name for display purposes
-class Task(models.Model):
-    cogat_id = models.TextField(null=True, blank=True)
-    name = models.TextField(blank=True)
-    url = models.TextField(validators=[URLValidator()], blank=True, null=True)
-    number = models.IntegerField()
+class PublicationPubMedLink(models.Model):
     dataset = models.ForeignKey('Dataset')
+    title = models.CharField(max_length=MAX_TITLE_LENGTH)
+    url = models.TextField(validators=[URLValidator()])
 
 class Revision(models.Model):
-    previous_revision = models.ForeignKey('Revision', null=True)
     dataset = models.ForeignKey('Dataset')
-    revision_number = models.CharField(max_length=200)
-    notes = models.TextField(blank=True)
     date_set = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True)
+    previous_revision = models.ForeignKey('Revision', null=True)
+    revision_number = models.CharField(max_length=200)
     
     aws_link_title = models.CharField(max_length=MAX_TITLE_LENGTH, blank=True)
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True)
@@ -114,27 +133,22 @@ class Revision(models.Model):
             self.previous_revision = None
         super(Revision, self).save(*args, **kwargs)
 
-class Link(models.Model):
-    title = models.CharField(max_length=MAX_TITLE_LENGTH)
-    url = models.TextField(validators=[URLValidator()])
+class Task(models.Model):
+    """
+    ModelForm for Task will populate itself via the cogat api. Right now we 
+    rebuild the url from the cogat_id, and the url field is unused.
+    """
     dataset = models.ForeignKey('Dataset')
-    revision = models.ForeignKey('Revision', blank=True, null=True)
-
-class FeaturedDataset(models.Model):
-    dataset = models.ForeignKey('Dataset')
-    image = models.ImageField(blank=True)
-    title = models.CharField(max_length=MAX_TITLE_LENGTH)
-    content = models.TextField()
-    date_featured = models.DateField(auto_now_add=True)
-    
-    def __str__(self):
-        return self.title
-
+    cogat_id = models.TextField(null=True, blank=True)
+    name = models.TextField(blank=True)
+    number = models.IntegerField()
+    url = models.TextField(validators=[URLValidator()], blank=True, null=True)
+ 
 class UserDataRequest(models.Model):
-    user_email_address = models.EmailField()
+    dataset = models.ForeignKey('Dataset', blank=True, null=True)
     request_sent = models.DateTimeField(auto_now_add=True)
     token = models.CharField(max_length=200, blank=True)
-    dataset = models.ForeignKey('Dataset', blank=True, null=True)
+    user_email_address = models.EmailField()
 
     def __str__(self):
         return self.token
