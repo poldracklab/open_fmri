@@ -134,11 +134,13 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(DatasetUpdate, self).get_context_data(**kwargs)
+        context['contact_form'] = ContactForm()
         context['investigator_formset'] = InvestigatorFormSet(
             instance=self.object)
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['link_formset'] = LinkFormSet(instance=self.object)
         context['link_formset_helper'] = LinkFormSetHelper()
+        context['new_contact_form'] = NewContactForm()
         context['publication_document_formset'] = PublicationDocumentFormSet(
             instance=self.object)
         context['publication_document_formset_helper'] = \
