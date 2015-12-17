@@ -27,7 +27,11 @@ class ContactForm(Form):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('contact', css_class="form-control"),
+            Fieldset(
+                "Existing Contacts",
+                Field('contact', css_class="form-control"),
+                css_class="fieldset-control form-control"
+            )
         )
         self.helper.form_tag = False
 
@@ -51,7 +55,7 @@ class NewContactForm(ModelForm):
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
-                css_class="fieldset-control form-control task_set"
+                css_class="fieldset-control form-control"
             ),
         )
         self.helper.form_tag = False
