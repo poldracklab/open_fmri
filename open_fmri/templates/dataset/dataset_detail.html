@@ -22,6 +22,19 @@
 {% endfor %}
 </ul>
 
+{% if object.contact %}
+<h4>Contact Information:</h4>
+    {% if object.contact.name %}
+        Name: {{ object.contact.name }}<br/>
+    {% endif %}
+    {% if object.contact.email %}
+        Email: {{ object.contact.email }}<br/>
+    {% endif %}
+    {% if object.contact.website %}
+        Website: <a href="{{ object.contact.website }}">{{ object.contact.website }}</a><br/>
+    {% endif %}
+{% endif %}
+
 {% if object.acknowledgements %}
 <h4>Acknowledgements and Funding:</h4>
 <p>{{ object.acknowledgements }}</p>
