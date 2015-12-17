@@ -47,7 +47,7 @@ class NewContactForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "Dataset Contact Information",
+                "New Contact Information",
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
