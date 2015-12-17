@@ -48,7 +48,15 @@
     <div id="id_revision">
         {% crispy revision_formset revision_formset_helper %}
     </div>
+
+    <div id="id_contact">
+        {% crispy contact_form %}
+    </div>
     
+     <div id="id_new_contact">
+        {% crispy new_contact_form %}
+    </div>
+
     <input class="btn btn-primary" type="submit" value="Save">
 
     </form>

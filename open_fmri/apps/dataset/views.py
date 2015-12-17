@@ -12,13 +12,13 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 
 from braces.views import LoginRequiredMixin
 
-from dataset.forms import DatasetForm, FeaturedDatasetForm, \
+from dataset.forms import ContactForm, DatasetForm, FeaturedDatasetForm, \
     InvestigatorFormSet, InvestigatorFormSetHelper, LinkFormSet, \
     LinkFormSetHelper, PublicationDocumentFormSet, \
     PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
     PublicationPubMedLinkFormSetHelper, RevisionFormSet, \
     RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm, \
-    UserDataRequestForm
+    UserDataRequestForm, NewContactForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset, UserDataRequest
 
@@ -64,10 +64,12 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(DatasetCreate, self).get_context_data(**kwargs)
+        context['contact_form'] = ContactForm()
         context['investigator_formset'] = InvestigatorFormSet()
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['link_formset'] = LinkFormSet()
         context['link_formset_helper'] = LinkFormSetHelper()
+        context['new_contact_form'] = NewContactForm()
         context['publication_document_formset'] = PublicationDocumentFormSet()
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
@@ -84,6 +86,15 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         dataset = form.save()
         
+        new_contact_form = NewContactForm(self.request.POST)
+        contact_form = ContactForm(self.request.POST)
+        if new_contact_form.is_valid():
+            dataset.contact = new_contact_form.save()
+        elif contact_form.is_valid():
+            dataset.contact = contact_form.cleaned_data['contact']
+        else:
+            pass
+
         investigator_formset = InvestigatorFormSet(self.request.POST,
             self.request.FILES, instance=dataset)
         if investigator_formset.is_valid():
@@ -119,6 +130,7 @@ class DatasetUpdate(LoginRequiredMixin, UpdateView):
     model = Dataset
     form_class = DatasetForm
     success_url = reverse_lazy('dataset_list')
+    
 
     def get_context_data(self, **kwargs):
         context = super(DatasetUpdate, self).get_context_data(**kwargs)
