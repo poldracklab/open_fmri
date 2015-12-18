@@ -69,6 +69,16 @@
 
     <h4>Accession Number:</h4>
     <p>{{ object.accession_number }}</p>
+    
+    <h5>How to cite this dataset:</h5>
+    <p>
+        In addition to any citation requirements in the dataset summary please 
+        use the following to cite this dataset:
+        <blockquote>
+            This data was obtained from the OpenfMRI database. Its accession 
+            number is {{ object.accession_number }}
+        </blockquote>
+    </p> 
 
     <h4>Curated:</h4>
     <p>{{ object.curated|yesno:"Yes,No,Unknown" }}</p>
