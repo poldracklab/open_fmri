@@ -11,7 +11,7 @@ from dataset.views import DatasetCreate
 
 class DatasetViewTestCase(TestCase):
     def setUp(self):
-        self.dataset = ModelFactory.make('Dataset', accession_number='ds999999z')
+        self.dataset = ModelFactory.make('Dataset', accession_number='ds999999z', status="PUBLISHED")
         self.featureddataset = ModelFactory.make('FeaturedDataset', dataset=self.dataset)
         self.request_factory = RequestFactory()
         self.password = 'pass'
