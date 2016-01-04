@@ -3,6 +3,10 @@ dependencies:
     - pip install -r requirements.txt
     - pip install coveralls
 
+machine:
+    environment:
+        SECRET_KEY: CI
+
 test:
   override:
     - coverage run --source=dataset manage.py test
