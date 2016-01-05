@@ -136,6 +136,8 @@ STATIC_ROOT = '/var/www/static/'
 MEDIA_ROOT = root('assets', 'uploads')
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/login/'
+
 # Additional locations of static files
 
 STATICFILES_DIRS = (
