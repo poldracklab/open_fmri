@@ -50,7 +50,8 @@ opensmtpd:
     build: ./opensmtpd/
     volumes:
         - ./opensmtpd/smtpd.conf:/etc/smtpd.conf
-        - ./opensmtpd/authinfo:/etc/authinfo
+        - ./opensmtpd/.forward:/etc/.forward
+        - ./opensmtpd/.credentials:/etc/.credentials
     ports:
         - "0.0.0.0:25:25"
 
