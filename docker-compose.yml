@@ -11,6 +11,7 @@ postgres:
     env_file: .env
     expose:
         - "5432"
+
 uwsgi:
     build: .
     restart: always
@@ -44,3 +45,12 @@ nginx:
     ports:
         - "0.0.0.0:80:80"
         - "0.0.0.0:443:443"
+
+opensmtpd:
+    build: ./opensmtpd/
+    volumes:
+        - ./opensmtpd/smtpd.conf:/etc/smtpd.conf
+        - ./opensmtpd/forward:/etc/.forward
+        - ./opensmtpd/credentials:/etc/.credentials
+    ports:
+        - "0.0.0.0:25:25"
