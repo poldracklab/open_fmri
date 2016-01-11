@@ -2,6 +2,10 @@
 
 project_path=/home/ec2-user/open_fmri/
 
+# Amazon Linux has sendmail running by default. Lets stop and disable it so opensmtpd can bind to the port
+sudo chkconfig sendmail off
+sudo /etc/init.d/sendmail stop
+
 # generate self signed certs used by nginx
 if [ ! -e ${project_path}nginx.key ] || [ ! -e ${project_path}nginx.crt ]
     then
