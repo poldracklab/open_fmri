@@ -91,13 +91,16 @@ class Dataset(models.Model):
                 notify = True
         super(Dataset, self).save(*args, **kwargs)
         if notify:
-            subject = "New dataset avaliable from OpenfMRI.org"
+            subject = "New dataset avaliable on OpenfMRI.org"
             body = render_to_string(
-                "dataset/published_dataset_email_body.txt", 
-                {'dataset': self, 'url': reverse('dataset_detail', self.pk)}
+                "dataset/published_dataset_email_body.html", 
+                {
+                    'dataset': self, 
+                    'url': reverse('dataset_detail', args=[self.pk])
+                }
             )
-            send_mail(subject, body, "news@openfmri.org", 
-                      ["openfmri_pub@lists.stanford.edu"], False)
+            send_mail(subject, "", "news@openfmri.org", 
+                      ["openfmri_pub@lists.stanford.edu"], html_message=body)
 
                 
 
