@@ -1,6 +1,7 @@
 import os
 import re
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
@@ -83,9 +84,12 @@ class Dataset(models.Model):
     def save(self, *args, **kwargs):
         notify = False
         if self.pk is not None:
-            old_status = Dataset.objects.get(pk=self.pk).status
-            if old_status == 'UNPUBLISHED' and self.status == 'PUBLISHED':
-                notify = True
+            try:
+                old_status = Dataset.objects.get(pk=self.pk).status
+                if old_status == 'UNPUBLISHED' and self.status == 'PUBLISHED':
+                    notify = True
+            except ObjectDoesNotExist:
+                pass
         else:
             if self.status == 'PUBLISHED':
                 notify = True

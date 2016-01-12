@@ -1,4 +1,0 @@
-project name:
-{{ dataset.project_name }}
-summary:
-{{ dataset.summary }}
