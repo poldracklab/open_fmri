@@ -1,8 +1,10 @@
 import os
 import re
 
+from django.core.mail import send_mail
 from django.core.validators import URLValidator
 from django.db import models
+from django.template.loader import render_to_string
 
 MAX_TITLE_LENGTH = 255
 
@@ -77,6 +79,27 @@ class Dataset(models.Model):
     
     def __str__(self):
         return self.project_name
+
+    def save(self, *args, **kwargs):
+        notify = False
+        if self.pk is not None:
+            old_status = Dataset.objects.get(pk=self.pk).status
+            if old_status == 'UNPUBLISHED' and self.status == 'PUBLISHED':
+                notify = True
+        else:
+            if self.status == 'PUBLISHED':
+                notify = True
+        super(Dataset, self).save(*args, **kwargs)
+        if notify:
+            subject = "New dataset avaliable from OpenfMRI.org"
+            body = render_to_string(
+                "dataset/published_dataset_email_body.txt", 
+                {'dataset': self}
+            )
+            send_mail(subject, body, 'news@openfmri.org', 
+                      ["openfmri_pub@lists.stanford.edu"], False)
+
+                
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
