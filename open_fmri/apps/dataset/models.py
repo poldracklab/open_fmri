@@ -2,6 +2,7 @@ import os
 import re
 
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from django.db import models
 from django.template.loader import render_to_string
@@ -64,7 +65,6 @@ class Dataset(models.Model):
                                         default=acc_num_gen)
     acknowledgements = models.TextField(null=True, blank=True)
     
-    # These three fields are for any papers associated with the dataset
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
                                      default="PPDL")
     default_license_url = "http://opendatacommons.org/licenses/pddl/1.0/"
@@ -94,9 +94,9 @@ class Dataset(models.Model):
             subject = "New dataset avaliable from OpenfMRI.org"
             body = render_to_string(
                 "dataset/published_dataset_email_body.txt", 
-                {'dataset': self}
+                {'dataset': self, 'url': reverse('dataset_detail', self.pk)}
             )
-            send_mail(subject, body, 'news@openfmri.org', 
+            send_mail(subject, body, "news@openfmri.org", 
                       ["openfmri_pub@lists.stanford.edu"], False)
 
                 
