@@ -1,0 +1,14 @@
+<html>
+<body>
+A new dataset is avaliable here: <a href="https://openfmri.org{{ url }}">https://openfmri.org{{ url }}</a><br>
+
+<p>
+Project Name: {{ dataset.project_name }}
+</p>
+
+<p>
+Summary:<br>
+{{ dataset.summary|safe }}
+</p>
+</body>
+</html>

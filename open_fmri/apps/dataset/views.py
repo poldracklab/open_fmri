@@ -298,6 +298,7 @@ class Index(TemplateView):
         context['num_datasets'] = len(Dataset.objects.filter(status='PUBLISHED'))
         total = 0
         for x in Dataset.objects.filter(status='PUBLISHED'):
-            total += x.sample_size
+            if x.sample_size is not None:
+                total += x.sample_size
         context['num_subjects'] =  total
         return context

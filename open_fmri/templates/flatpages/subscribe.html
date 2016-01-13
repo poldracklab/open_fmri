@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ flatpage.title }}
+{% endblock %}
+{% block content %}
+{{ flatpage.content }}
+ <form method="post" action="https://lists.stanford.edu/mailman/subscribe/openfmri_pub">
+  Your E-mail address: <input name="email" class="form-control"> Your Name (optional):
+  <input name="fullname" class="form-control">
+  <p><input type="submit" name="email-button" value="Subscribe" class="btn btn-primary"></p>
+  </form>
+{% endblock %}
