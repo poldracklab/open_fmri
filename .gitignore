@@ -88,3 +88,8 @@ open_fmri/assets-src/vendor/
 *.pem
 
 .htpasswd
+
+#opensmtpd
+opensmtpd/forward
+opensmtpd/credentials
+opensmtpd/smtpd.conf
