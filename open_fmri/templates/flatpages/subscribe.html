@@ -4,9 +4,22 @@
 {% endblock %}
 {% block content %}
 {{ flatpage.content }}
- <form method="post" action="https://lists.stanford.edu/mailman/subscribe/openfmri_pub">
+ <form method="post" class="subscribe" action="https://lists.stanford.edu/mailman/subscribe/openfmri_pub">
   Your E-mail address: <input name="email" class="form-control"> Your Name (optional):
   <input name="fullname" class="form-control">
   <p><input type="submit" name="email-button" value="Subscribe" class="btn btn-primary"></p>
   </form>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script>
+$(document).ready(function() {
+    $("form.subscribe").submit(function() {
+        var url = $(this).attr('action') + '?' + $(this).serialize();
+        window.location.replace("/subscribed/");
+        return false;
+    });
+});
+</script>
 {% endblock %}
