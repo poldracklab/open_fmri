@@ -17,7 +17,9 @@
 $(document).ready(function() {
     $("form.subscribe").submit(function() {
         var url = $(this).attr('action') + '?' + $(this).serialize();
-        window.location.replace("/subscribed/");
+        $.get(url, function(r){
+        });
+        alert("Confirmation Email Sent");
         return false;
     });
 });
