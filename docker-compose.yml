@@ -45,11 +45,12 @@ nginx:
 
 worker:
     build: .
-    command: command: celery worker -A open_fmri.celery -Q default -n default@%h
+    env_file: .env
     volumes:
-        .:/app
+        - .:/app
     links:
         - uwsgi
+    working_dir: /app
 
 opensmtpd:
     build: ./opensmtpd/
