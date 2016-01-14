@@ -1,5 +1,6 @@
 django<1.9
 django-braces
+django-celery
 django-contact-form
 django-ckeditor
 django-crispy-forms

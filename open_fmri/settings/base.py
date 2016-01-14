@@ -3,7 +3,6 @@ import os
 from os.path import join, abspath, dirname
 
 # PATH vars
-
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
@@ -49,6 +48,7 @@ THIRD_PARTY_APPS = (
     'ckeditor',
     'contact_form',
     'crispy_forms',
+    'djcelery',
     'opbeat.contrib.django',
     'rest_framework',
 )
