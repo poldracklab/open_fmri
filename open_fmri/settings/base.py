@@ -2,6 +2,9 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
+from celery.schedules import crontab
+from kombu import Exchange, Queue
+
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
@@ -164,6 +167,24 @@ OPBEAT = {
     'ORGANIZATION_ID': os.environ.get('OPBEAT_ORGANIZATION_ID', ''),
     'APP_ID': os.environ.get('OPBEAT_APP_ID', ''),
     'SECRET_TOKEN': os.environ.get('OPBEAT_SECRET_TOKEN', ''),
+}
+
+# Celery config
+BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+CELERYBEAT_SCHEDULE = {
+    'Parse Logs': {
+        'task': 'parse_test',
+        'schedule': crontab()
+    },
 }
 
 # .local.py overrides all the common settings.

@@ -10,6 +10,7 @@ model_mommy
 opbeat
 pillow
 psycopg2
+redis
 requests
 requests-cache
 uwsgi

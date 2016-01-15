@@ -43,14 +43,22 @@ nginx:
         - "0.0.0.0:80:80"
         - "0.0.0.0:443:443"
 
+redis:
+    restart: always
+    image: redis
+
 worker:
     build: .
+    command: celery worker -A open_fmri.celery -Q default -n default@%h --loglevel=debug
     env_file: .env
     volumes:
         - .:/app
-    links:
+    volumes_from:
         - uwsgi
+    links:
+        - redis
     working_dir: /app
+
 
 opensmtpd:
     build: ./opensmtpd/
