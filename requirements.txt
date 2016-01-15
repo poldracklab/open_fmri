@@ -11,4 +11,5 @@ pillow
 psycopg2
 requests
 requests-cache
+tweepy
 uwsgi

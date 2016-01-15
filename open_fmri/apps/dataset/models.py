@@ -1,6 +1,9 @@
 import os
 import re
 
+import tweepy
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -95,18 +98,34 @@ class Dataset(models.Model):
                 notify = True
         super(Dataset, self).save(*args, **kwargs)
         if notify:
-            subject = "New dataset avaliable on OpenfMRI.org"
-            body = render_to_string(
-                "dataset/published_dataset_email_body.html", 
-                {
-                    'dataset': self, 
-                    'url': reverse('dataset_detail', args=[self.pk])
-                }
-            )
-            send_mail(subject, "", "news@openfmri.org", 
-                      ["openfmri_pub@lists.stanford.edu"], html_message=body)
+            if settings.EMAIL_NOTIFY:
+                list_serv_notify(self)
+            if settings.TWITTER_NOTIFY:
+                twitter_notify(self)
+            
+def list_serv_notify(dataset):
+    subject = "New dataset avaliable on OpenfMRI.org"
+    body = render_to_string(
+        "dataset/published_dataset_email_body.html", 
+        {
+            'dataset': dataset, 
+            'url': reverse('dataset_detail', args=[dataset.pk])
+        }
+    )
+    send_mail(subject, "", "news@openfmri.org", 
+              ["openfmri_pub@lists.stanford.edu"], html_message=body)
 
-                
+def twitter_notify(dataset):
+    try:
+        auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, 
+                                   settings.TWITTER_CONSUMER_SECRET)
+        auth.set_access_token(settings.TWITTER_ACCESS_TOKEN, 
+                              settings.TWITTER_ACCESS_SECRET)
+        api = tweepy.API(auth)
+        url = reverse('dataset_detail', args=[dataset.pk])
+        api.update_status("New dataset avaliable: " + url)
+    except tweepy.TweepError:
+        pass
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
