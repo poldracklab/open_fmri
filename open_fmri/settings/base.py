@@ -144,10 +144,19 @@ STATICFILES_DIRS = (
     root('assets'),
 )
 
+# If EMAIL_NOTIFY is set to true email notifications on dataset publish will
+# be sent to news@openfmri.org
+EMAIL_NOTIFY = os.environ.get("EMAIL_NOTIFY", False)
 EMAIL_HOST = os.environ.get("EMAIL_HOST", '')
 EMAIL_PORT = os.environ.get("EMAIL_PORT", '')
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
+
+TWITTER_NOTIFY = os.environ.get("TWITTER_NOTIFY", False)
+TWITTER_CONSUMER_KEY = os.environ.get("TWITTER_CONSUMER_KEY", '')
+TWITTER_CONSUMER_SECRET = os.environ.get("TWITTER_CONSUMER_SECRET", '')
+TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", '')
+TWITTER_ACCESS_SECRET = os.environ.get("TWITTER_ACCESS_SECRET", '')
 
 REST_FRAMEWORK = {
 'DEFAULT_AUTHENTICATION_CLASSES': (
