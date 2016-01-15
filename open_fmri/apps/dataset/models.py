@@ -123,7 +123,7 @@ def twitter_notify(dataset):
                               settings.TWITTER_ACCESS_SECRET)
         api = tweepy.API(auth)
         url = reverse('dataset_detail', args=[dataset.pk])
-        api.update_status("New dataset avaliable: " + url)
+        api.update_status("New dataset avaliable: https://openfmri.org" + url)
     except tweepy.TweepError:
         pass
 
