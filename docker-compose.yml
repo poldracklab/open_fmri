@@ -20,6 +20,7 @@ uwsgi:
         - /var/www/static
     links:
         - postgres
+        - redis
     env_file: .env
     command: /app/uwsgi.sh
     expose:
@@ -46,16 +47,19 @@ nginx:
 redis:
     restart: always
     image: redis
+    links:
+        - postgres
 
 worker:
     build: .
-    command: celery worker -A open_fmri.celery -Q default -n default@%h --loglevel=debug
+    command: celery worker -B -A open_fmri -Q default -n default@%h --loglevel=debug
     env_file: .env
     volumes:
         - .:/app
     volumes_from:
         - uwsgi
     links:
+        - postgres
         - redis
     working_dir: /app
 
