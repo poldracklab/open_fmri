@@ -43,8 +43,9 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'dataset',
     'contact',
+    'dataset',
+    'log_parse',
 )
 
 THIRD_PARTY_APPS = (
