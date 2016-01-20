@@ -10,7 +10,7 @@ from celery.utils.log import get_task_logger
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from log_parser.models import LogFile, S3File
+from log_parse.models import LogFile, S3File
 
 logger = get_task_logger(__name__)
 
@@ -71,7 +71,6 @@ def parse_str(contents):
     
     We ignore entries where no bytes are transferred.
     """
-    out_dir = os.environ.get('S3_LOG_PARSE_OUT_DIR')
     parsed_data = {}
     for log_line in contents.splitlines():
         match = s3_line_logpat.match(log_line)
@@ -100,23 +99,16 @@ def parse_str(contents):
                     parsed_data[filename] = 1
     
     for filename in parsed_data:
-        out_file = os.path.join(out_dir, filename)
-        os.makedirs(os.path.dirname(out_file), exist_ok=True)
-        if os.path.exists(out_file):
-            out_fp = open(out_file, 'r+')
-            count = int(out_fp.read())
-            count += parsed_data[filename]
-            out_fp.seek(0)
-            out_fp.write(str(count))
-            out_fp.close()
-        else:
-            out_fp = open(out_file, 'w')
-            out_fp.write(str(parsed_data[filename]))
-            out_fp.close()
-
+        try:
+            s3_file = S3File.objects.get(filename=filename)
+            s3_file.count += parsed_data[filename]
+            s3_file.save()
+        except ObjectDoesNotExist:
+            s3_file = S3File(filename=filename, count=parsed_data[filename])
+            s3_file.save()
 
 @app.task(name='test_parse')
 def test_parse():
-    #parse_log_files()
+    parse_log_files()
     return datetime.now()
 
