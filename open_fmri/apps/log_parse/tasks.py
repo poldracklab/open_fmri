@@ -8,6 +8,10 @@ from boto.s3.connection import S3Connection
 from celery import shared_task, Celery
 from celery.utils.log import get_task_logger
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from log_parser.models import LogFile, S3File
+
 logger = get_task_logger(__name__)
 
 app = Celery('open_fmri')
@@ -27,50 +31,47 @@ s3_names = ("bucket_owner", "bucket", "datetime", "ip", "requestor_id",
 "referer", "user_agent")
 # END
 
-AWS_ACCESS_KEY = os.environ.get('S3_LOG_ACCESS_KEY')
-AWS_SECRET_KEY = os.environ.get('S3_LOG_SECRET_KEY')
-BUCKET_NAME = os.environ.get('S3_LOG_BUCKET')
-PREFIX = os.environ.get('S3_LOG_PREFIX')
-PARSED_FILES = os.environ.get('S3_LOG_PARSED_FILES')
-OUT_DIR = os.environ.get('S3_LOG_PARSE_OUT_DIR')
-
-@app.task(name='test_parse')
-def test_parse():
-    parse_log_files()
-
 def parse_log_files():
     """Parse S3 log files that reside in an S3 bucket
 
     The contents of BUCKET_NAME are iterated over. Already parsed files have 
     their filename added to PARSED_FILES to prevent duplicate parsing.
     """
-    parsed_files = open(PARSED_FILES, 'r+')
-    conn = S3Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-    bucket = conn.get_bucket(BUCKET_NAME)
-    for key in bucket.list(prefix=PREFIX):
-        parsed = False
-        for line in parsed_files:
-            if key.key in line:
-                parsed = True
-                break
+    aws_access_key = os.environ.get('S3_LOG_ACCESS_KEY')
+    aws_secret_key = os.environ.get('S3_LOG_SECRET_KEY')
+    bucket_name = os.environ.get('S3_LOG_BUCKET')
+    prefix = os.environ.get('S3_LOG_PREFIX')
+    parsed_files = os.environ.get('S3_LOG_PARSED_FILES')
+    
+    parsed_files = open(parsed_files, 'r+')
+    conn = S3Connection(aws_access_key, aws_secret_key)
+    bucket = conn.get_bucket(bucket_name)
+    for key in bucket.list(prefix=prefix):
+        try:
+            log_file = LogFile.objects.get(key=key.key)
+            if (log_file.parsed is False) and (log_file.lock is False):
+                log_file.lock = True
+                log_file.save()
+            else:
+                continue
+        except ObjectDoesNotExist:
+            log_file = LogFile(key=key, parsed=False, lock=True)
+            log_file.save()
         
-        if not parsed:
-            print(key.key)
-            contents = str(key.get_contents_as_string())
-            print(contents)
-            parse_str(contents)
-            parsed_files.write(key.key + key.size + '\n')
-
+        contents = str(key.get_contents_as_string())
+        parse_str(contents)
+        
 
 def parse_str(contents):
-    """Writes the download count for a file referenced in an S3 log to a file
+    """Writes the download count for a file referenced in an S3 log to database
     
     Iterates through the contents of a log file. Each unique filename has a 
-    count for each time its seen. For each filename that is seen a local file 
-    with the same name is created and the download count stored in it.
-
-    We ignore entries where no actual bytes are transferred.
+    count for each time its seen. For each filename that is seen an entry in 
+    the database is created and count stored.    
+    
+    We ignore entries where no bytes are transferred.
     """
+    out_dir = os.environ.get('S3_LOG_PARSE_OUT_DIR')
     parsed_data = {}
     for log_line in contents.splitlines():
         match = s3_line_logpat.match(log_line)
@@ -99,7 +100,7 @@ def parse_str(contents):
                     parsed_data[filename] = 1
     
     for filename in parsed_data:
-        out_file = os.path.join(OUT_DIR, filename)
+        out_file = os.path.join(out_dir, filename)
         os.makedirs(os.path.dirname(out_file), exist_ok=True)
         if os.path.exists(out_file):
             out_fp = open(out_file, 'r+')
@@ -112,4 +113,10 @@ def parse_str(contents):
             out_fp = open(out_file, 'w')
             out_fp.write(str(parsed_data[filename]))
             out_fp.close()
+
+
+@app.task(name='test_parse')
+def test_parse():
+    #parse_log_files()
+    return datetime.now()
 
