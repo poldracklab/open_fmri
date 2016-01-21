@@ -264,10 +264,6 @@ class RevisionFormSetHelper(FormHelper):
             Fieldset(
                 "Revision Information",
                 Field('revision_number', css_class="form-control"),
-                Column(
-                    Field('aws_link_title', css_class="form-control"),
-                    Field('aws_link_url', css_class="form-control"),
-                ),
                 Field('notes', css_class="form-control", rows=3),
                 Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
