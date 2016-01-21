@@ -278,6 +278,10 @@ ol {
         background: none;
     }
     
+    #container-bg {
+        background: none;
+    }
+   
     #header-banner {
         position: relative;
         padding-top: 0;
