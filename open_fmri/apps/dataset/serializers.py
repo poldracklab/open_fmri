@@ -30,9 +30,14 @@ class RevisionSerializer(serializers.ModelSerializer):
         fields = ['revision_number', 'notes', 'aws_link_title', 'aws_link_url']
 
 class TaskSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    
     class Meta:
         model = Task
-        fields = ['cogat_id', 'number', 'name']
+        fields = ['cogat_id', 'number', 'name', 'url']
+
+    def get_url(self, task):
+        return "http://www.cognitiveatlas.org/id/" + str(task.cogat_id)
 
 class DatasetSerializer(serializers.ModelSerializer):
     
@@ -52,5 +57,3 @@ class DatasetSerializer(serializers.ModelSerializer):
             'publicationdocument_set', 'publicationpubmedlink_set', 'task_set',
             'revision_set', 'investigator_set', 'link_set'
         ]
-
-
