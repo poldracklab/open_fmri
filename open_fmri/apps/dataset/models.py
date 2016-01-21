@@ -14,7 +14,13 @@ from django.template.loader import render_to_string
 MAX_TITLE_LENGTH = 255
 
 def acc_num_gen():
-    """ Automatically generate accession numbers. """
+    """ 
+    Automatically generate accession numbers.
+
+    The line checking for initial value less than 200 was put into place to 
+    handle the number of exisiting accession numbers in place before automatic 
+    generation was put in place.
+    """
     try:
         max_agg = Dataset.objects.all().aggregate(models.Max('accession_number'))
         max_val = max_agg['accession_number__max']
