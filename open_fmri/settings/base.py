@@ -181,11 +181,9 @@ CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
 )
 
-CELERY_IMPORTS = ('open_fmri.apps.dataset.tasks', )
-
 CELERYBEAT_SCHEDULE = {
     'Parse Logs': {
-        'task': 'test_parse',
+        'task': 'log_parse_task',
         'schedule': crontab()
     },
 }

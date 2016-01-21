@@ -5,9 +5,10 @@ import sys
 from datetime import datetime
 
 from boto.s3.connection import S3Connection
-from celery import shared_task, Celery
+from celery import Celery, task, shared_task
 from celery.utils.log import get_task_logger
 
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 
 from log_parse.models import LogFile, S3File
@@ -31,19 +32,31 @@ s3_names = ("bucket_owner", "bucket", "datetime", "ip", "requestor_id",
 "referer", "user_agent")
 # END
 
+@app.task(name='log_parse_task')
+def log_parse_task():
+    lock_id = "parse_log_files"    
+    acquire_lock = lambda: cache.add(lock_id, 'true')
+    release_lock = lambda: cache.delete(lock_id)
+    
+    if aquire_lock():
+        try:
+            parse_log_files()
+        finally:
+            release_lock()
+    return
+ 
 def parse_log_files():
     """Parse S3 log files that reside in an S3 bucket
 
     The contents of BUCKET_NAME are iterated over. Already parsed files have 
     their filename added to PARSED_FILES to prevent duplicate parsing.
     """
+       
     aws_access_key = os.environ.get('S3_LOG_ACCESS_KEY')
     aws_secret_key = os.environ.get('S3_LOG_SECRET_KEY')
     bucket_name = os.environ.get('S3_LOG_BUCKET')
     prefix = os.environ.get('S3_LOG_PREFIX')
-    parsed_files = os.environ.get('S3_LOG_PARSED_FILES')
     
-    parsed_files = open(parsed_files, 'r+')
     conn = S3Connection(aws_access_key, aws_secret_key)
     bucket = conn.get_bucket(bucket_name)
     for key in bucket.list(prefix=prefix):
@@ -60,6 +73,10 @@ def parse_log_files():
         
         contents = str(key.get_contents_as_string())
         parse_str(contents)
+        
+        log_file.parsed = True
+        log_file.lock = False
+        log_file.save()
         
 
 def parse_str(contents):
@@ -106,9 +123,3 @@ def parse_str(contents):
         except ObjectDoesNotExist:
             s3_file = S3File(filename=filename, count=parsed_data[filename])
             s3_file.save()
-
-@app.task(name='test_parse')
-def test_parse():
-    parse_log_files()
-    return datetime.now()
-
