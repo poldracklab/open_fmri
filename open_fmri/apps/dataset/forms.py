@@ -71,7 +71,6 @@ class DatasetForm(ModelForm):
         
         widgets = {
             'license_url': TextInput(),
-            'aws_link_url': TextInput(),
             'summary': CKEditorWidget()
         }
     
@@ -157,9 +156,6 @@ class RevisionForm(ModelForm):
     class Meta:
         model = Revision
         fields = ['revision_number', 'notes']
-        widgets = {
-            'aws_link_url': TextInput()
-        }
 
 class TaskForm(ModelForm):
     cogat_id = forms.ChoiceField()
