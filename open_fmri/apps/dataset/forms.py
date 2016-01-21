@@ -156,7 +156,7 @@ class PublicationPubMedLinkForm(ModelForm):
 class RevisionForm(ModelForm):
     class Meta:
         model = Revision
-        fields = ['revision_number', 'notes', 'aws_link_title', 'aws_link_url']
+        fields = ['revision_number', 'notes']
         widgets = {
             'aws_link_url': TextInput()
         }
