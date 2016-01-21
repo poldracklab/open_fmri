@@ -286,4 +286,9 @@ ol {
         
     .header-block {
         height: auto;
+    }
+    
+    .navbar-brand {
+        float: none;   
+    }
 }
