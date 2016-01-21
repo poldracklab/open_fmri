@@ -70,10 +70,10 @@
             {% endfor %}
         {% endif %}
 
-        <div id="container-header" class="">
+        <div id="container-header" class="container">
             {% block header %}
             {% endblock %}
-            <img id="header-img" src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
+            <img id="header-img" class="hidden-xs" src="{% block header-image %}{% static 'images/banner_about.png' %}{% endblock %}">
         </div>
 
         <div id="container-content" class="{% block container-content-class %}col-md-8{% endblock %}">

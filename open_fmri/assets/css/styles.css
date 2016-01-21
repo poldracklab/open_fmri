@@ -6,6 +6,7 @@
     background: rgba(0, 0, 0, 0) url("../images/banner_bg.png") repeat-x scroll center top;
 }
 
+   
 #container-header {
     position: relative;
 }
@@ -272,3 +273,17 @@ ol {
         display: none;
 }
 
+@media(max-width: 768px) {
+    #container-bg-front {
+        background: none;
+    }
+    
+    #header-banner {
+        position: relative;
+        padding-top: 0;
+        margin: 0 auto;
+    }
+        
+    .header-block {
+        height: auto;
+}
