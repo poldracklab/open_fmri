@@ -55,6 +55,7 @@ class DatasetDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DatasetDetail, self).get_context_data(**kwargs)
         context['revisions'] = self.object.revision_set.order_by('-date_set')
+        context['no_rev_files'] = self.object.link_set.filter(revision__isnull=True)
         return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
