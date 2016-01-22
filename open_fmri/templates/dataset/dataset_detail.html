@@ -90,6 +90,11 @@
             <a href="{{ link.url }}">{{ link.title }}</a><br>
         {% endfor %}
     {% endfor %}
+    
+    <h4>Other Linked Data:</h4>
+        {% for link in other_links %}
+            <a href="{{ link.url }}">{{ link.title }}</a><br>
+        {% endfor %}
 
 {% else %}
     <h1> 
