@@ -2,8 +2,10 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
-# PATH vars
+from celery.schedules import crontab
+from kombu import Exchange, Queue
 
+# PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
@@ -41,14 +43,16 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'dataset',
     'contact',
+    'dataset',
+    'log_parse',
 )
 
 THIRD_PARTY_APPS = (
     'ckeditor',
     'contact_form',
     'crispy_forms',
+    'djcelery',
     'opbeat.contrib.django',
     'rest_framework',
 )
@@ -174,6 +178,26 @@ OPBEAT = {
     'APP_ID': os.environ.get('OPBEAT_APP_ID', ''),
     'SECRET_TOKEN': os.environ.get('OPBEAT_SECRET_TOKEN', ''),
 }
+
+# Celery config
+BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+if os.environ.get('RUN_TASKS', False):
+    CELERYBEAT_SCHEDULE = {
+        'Parse Logs': {
+            'task': 'log_parse_task',
+            'schedule': crontab()
+        },
+    }
+
 
 # .local.py overrides all the common settings.
 try:

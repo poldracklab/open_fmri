@@ -93,3 +93,6 @@ open_fmri/assets-src/vendor/
 opensmtpd/forward
 opensmtpd/credentials
 opensmtpd/smtpd.conf
+
+#celery
+celerybeat*

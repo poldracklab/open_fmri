@@ -1,5 +1,7 @@
+boto
 django<1.9
 django-braces
+django-celery
 django-contact-form
 django-ckeditor
 django-crispy-forms
@@ -9,6 +11,7 @@ model_mommy
 opbeat
 pillow
 psycopg2
+redis
 requests
 requests-cache
 tweepy

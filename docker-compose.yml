@@ -20,15 +20,13 @@ uwsgi:
         - /var/www/static
     links:
         - postgres
+        - redis
     env_file: .env
     command: /app/uwsgi.sh
     expose:
         - "4000"
     working_dir: /app
 
-#For development well have the nginx.conf and uwsgi params as volumes for easy
-#testing. In development we might remove these volumes and uncomment the add 
-#file lines in the nginx dockerfile to make a more portable image.
 nginx:
     image: nginx:latest
     volumes_from:
@@ -38,13 +36,33 @@ nginx:
         - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
         - .ssl/nginx.crt:/etc/nginx/nginx.crt:ro
         - .ssl/nginx.key:/etc/nginx/nginx.key:ro
-        - .ssl/dhparam.pem:/etc/nginx/dhparam.pem:ro
+        #- .ssl/dhparam.pem:/etc/nginx/dhparam.pem:ro
         #- ./.htpasswd:/etc/nginx/.passwd:ro
     links:
         - uwsgi
     ports:
         - "0.0.0.0:80:80"
         - "0.0.0.0:443:443"
+
+redis:
+    restart: always
+    image: redis
+    links:
+        - postgres
+
+worker:
+    build: .
+    command: celery worker -B -A open_fmri -Q default -n default@%h --loglevel=debug
+    env_file: .env
+    volumes:
+        - .:/app
+    volumes_from:
+        - uwsgi
+    links:
+        - postgres
+        - redis
+    working_dir: /app
+
 
 opensmtpd:
     build: ./opensmtpd/
