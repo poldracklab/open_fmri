@@ -38,7 +38,7 @@ def log_parse_task():
     acquire_lock = lambda: cache.add(lock_id, 'true')
     release_lock = lambda: cache.delete(lock_id)
     
-    if aquire_lock():
+    if acquire_lock():
         try:
             parse_log_files()
         finally:
@@ -68,7 +68,7 @@ def parse_log_files():
             else:
                 continue
         except ObjectDoesNotExist:
-            log_file = LogFile(key=key, parsed=False, lock=True)
+            log_file = LogFile(key=key.key, parsed=False, lock=True)
             log_file.save()
         
         contents = str(key.get_contents_as_string())
