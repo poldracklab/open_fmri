@@ -18,6 +18,7 @@ uwsgi:
     volumes:
         - .:/app 
         - /var/www/static
+        - /Users/rblair/projects/open_fmri_logs/logs:/logs/ 
     links:
         - postgres
         - redis
@@ -36,8 +37,6 @@ nginx:
         - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
         - .ssl/nginx.crt:/etc/nginx/nginx.crt:ro
         - .ssl/nginx.key:/etc/nginx/nginx.key:ro
-        #- .ssl/dhparam.pem:/etc/nginx/dhparam.pem:ro
-        #- ./.htpasswd:/etc/nginx/.passwd:ro
     links:
         - uwsgi
     ports:
