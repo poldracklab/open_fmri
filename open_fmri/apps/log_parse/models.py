@@ -9,3 +9,4 @@ class LogFile(models.Model):
 class S3File(models.Model):
     filename = models.TextField(unique=True)
     count = models.IntegerField()
+    dataset = models.ForeignKey('dataset.Dataset', null=True)

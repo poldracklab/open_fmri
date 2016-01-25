@@ -181,12 +181,14 @@ CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
 )
 
-CELERYBEAT_SCHEDULE = {
-    'Parse Logs': {
-        'task': 'log_parse_task',
-        'schedule': crontab()
-    },
-}
+if os.environ.get('RUN_TASKS', False):
+    CELERYBEAT_SCHEDULE = {
+        'Parse Logs': {
+            'task': 'log_parse_task',
+            'schedule': crontab()
+        },
+    }
+
 
 # .local.py overrides all the common settings.
 try:
