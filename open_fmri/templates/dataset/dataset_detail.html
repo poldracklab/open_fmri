@@ -89,6 +89,10 @@
     {% endfor %}
 
     <h4>Linked Data:</h4>
+    <p>
+        <strong style="color: red">Note: The TR values stored in the NIFTI headers may not be accurate. Please use the TR values 
+        provided in the <strong>scan_key.txt</strong> or the <strong>.json</strong> sidecar file for analysis purposes.</strong> 
+    </p>
     {% for link in object.link_set.all %}
         <a href="{{ link.url }}">{{ link.title }}</a><br>
     {% endfor %}
