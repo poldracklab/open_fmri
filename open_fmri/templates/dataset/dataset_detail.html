@@ -89,8 +89,13 @@
     {% endfor %}
 
     <h4>Linked Data:</h4>
-    {% for link in object.link_set.all %}
-        <a href="{{ link.url }}">{{ link.title }}</a><br>
+    {% for link in links %}
+        <a href="{{ link.0.url }}">{{ link.0.title }}</a>
+
+        {% if user.is_authenticated %}
+            {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
+            <br>
+        {% endif %}
     {% endfor %}
 
 {% else %}

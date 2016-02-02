@@ -1,7 +1,9 @@
 import requests
 import requests_cache
+from urllib.parse import urlparse
 
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
@@ -21,6 +23,7 @@ from dataset.forms import ContactForm, DatasetForm, FeaturedDatasetForm, \
     UserDataRequestForm, NewContactForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
     PublicationPubMedLink, FeaturedDataset, UserDataRequest
+from log_parse.models import S3File
 
 requests_cache.install_cache('test_cache')
 
@@ -55,6 +58,18 @@ class DatasetDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DatasetDetail, self).get_context_data(**kwargs)
         context['revisions'] = self.object.revision_set.order_by('-date_set')
+        context_links = []
+        links = self.object.link_set.all()
+        for link in links:
+            try:
+                filename = urlparse(link.url).path 
+                if filename[0] == '/':
+                    filename = filename[1:]
+                count = S3File.objects.get(filename=filename).count
+                context_links.append((link, count))
+            except ObjectDoesNotExist:
+                context_links.append((link, -1))
+        context['links'] = context_links    
         return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
