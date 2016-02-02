@@ -91,12 +91,16 @@ def parse_log_files_locally(path_to_logs):
     normal task has.
     """
     for log in os.listdir(path_to_logs):
-        contents = open(path_to_logs + log, 'r').read()
-        key = "logs/" + log
-        print(key)
-        parse_str(contents)
-        log_file = LogFile(key=key, parsed=True, lock=False)
-        log_file.save()
+        try:
+            key = "logs/" + log
+            log_file = LogFile.objects.get(key=key)
+        except ObjectDoesNotExist:
+            contents = open(path_to_logs + log, 'r').read()
+            key = "logs/" + log
+            print(key)
+            parse_str(contents)
+            log_file = LogFile(key=key, parsed=True, lock=False)
+            log_file.save()
     
 
 def parse_str(contents):
