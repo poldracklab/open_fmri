@@ -89,9 +89,12 @@
     {% endfor %}
 
     <h4>Linked Data:</h4>
+    <p>
+        <strong style="color: red">Note: The TR values stored in the NIFTI headers may not be accurate. Please use the TR values 
+        provided in the <strong>scan_key.txt</strong> or the <strong>.json</strong> sidecar file for analysis purposes.</strong> 
+    </p>
     {% for link in links %}
         <a href="{{ link.0.url }}">{{ link.0.title }}</a>
-
         {% if user.is_authenticated %}
             {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
             <br>
