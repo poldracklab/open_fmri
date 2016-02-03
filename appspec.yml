@@ -7,6 +7,9 @@ hooks:
   ApplicationStop: 
     - location: scripts/stop_container.sh 
       timeout: 60 
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 60
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 60
