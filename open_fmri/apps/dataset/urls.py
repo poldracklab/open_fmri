@@ -2,7 +2,9 @@ from django.conf.urls import patterns, url
 
 from dataset.views import DatasetCreate, DatasetDelete, DatasetDetail, \
     DatasetList, DatasetUpdate, FeaturedDatasetEdit, FeaturedDatasetDelete, \
-    UserDatasetCreate, UserDataRequestCreate, UserDataset
+    UserDatasetCreate, UserDataRequestCreate, UserDataset, \
+    ReferencePaperCreate, ReferencePaperUpdate, ReferencePaperDelete, \
+    ReferencePaperList
 
 from dataset.api_views import DatasetAPIList, DatasetAPIDetail
 
@@ -52,6 +54,26 @@ urlpatterns = patterns('',
         r'^user/(?P<token>.*)/$',
         UserDataset.as_view(),
         name='user_dataset'
+    ),
+    url(
+        r'^reference/$',
+        ReferencePaperList.as_view(),
+        name='reference_paper_list'
+    ),
+    url(
+        r'^reference/new/$',
+        ReferencePaperCreate.as_view(),
+        name='reference_paper_create'
+    ),
+    url(
+        r'^reference/edit/(?P<pk>\d+)$',
+        ReferencePaperUpdate.as_view(),
+        name='reference_paper_update'
+    ),
+    url(
+        r'^reference/delete/(?P<pk>\d+)$',
+        ReferencePaperDelete.as_view(),
+        name='reference_paper_update'
     ),
     url(
         r'^$',

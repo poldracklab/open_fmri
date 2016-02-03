@@ -18,7 +18,7 @@ from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
 
 from dataset.models import Contact, Dataset, FeaturedDataset, Investigator, \
     Link, PublicationPubMedLink, PublicationDocument, Revision, Task, \
-    UserDataRequest
+    UserDataRequest, ReferencePaper
 
 class ContactForm(Form):
     contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
@@ -337,3 +337,22 @@ class UserDataRequestForm(ModelForm):
         except smtplib.SMTPException:
             raise smtplib.SMTPException
             
+class ReferencePaperForm(ModelForm):
+    class Meta:
+        model = ReferencePaper
+        fields = ['title', 'url', 'datasets']
+        
+        widgets = {
+            'url': TextInput(),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super(ReferencePaperForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('title', css_class="form-control"),
+            Field('url', css_class="form-control"),
+            Field('datasets', css_class="form-control")
+        )
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit Reference Paper'))

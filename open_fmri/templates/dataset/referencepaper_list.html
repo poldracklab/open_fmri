@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    Refernce Papers
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block header-image %}
+{% static 'images/banner_view_data.png' %}
+{% endblock %}
+
+{% block content %}
+<h1 class="title">Reference Papers</h1>
+<a class="btn" href="{% url 'reference_paper_create' %}">Create New Reference Paper</a>
+<table id="reference-paper-list-table" class="table table-bordered">
+<thead>
+    <tr>
+        <th>Title</th>
+        <th>URL</th>
+        <th>Datasets</th>
+    </tr>
+</thead>
+<tbody>
+    {% for ref_paper in object_list %} 
+        <tr>
+            <td>{{ ref_paper.title }}</td>
+            <td><a href="{{ ref_paper.url }}">{{ ref_paper.url }}</a></td>
+            <td>
+            {% for dataset in ref_paper.dataset_list %}
+                <a href="{% url 'dataset_detail' dataset.accession_number %}">{{ dataset.project_name }}</a><br>
+            {% endfor %}
+            </td>
+            <td>
+                <a href="{% url 'reference_paper_update' ref_paper.id %}">Edit</a><br/>
+                <a href="{% url 'reference_paper_delete' ref_paper.id %}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript">
+$(document).ready(function() {
+    $('#reference-paper-list-table').DataTable({
+        "bLengthChange": false,        
+        "pageLength": 25,
+        "order": [[ 2, "asc" ]],
+        });
+});
+</script>
+{% endblock %}

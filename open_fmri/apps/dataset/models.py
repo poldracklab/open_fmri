@@ -208,3 +208,8 @@ class UserDataRequest(models.Model):
     def __str__(self):
         return self.token
     
+
+class ReferencePaper(models.Model):
+    datasets = models.ManyToManyField('Dataset')
+    title = models.TextField(null=True, blank=True)
+    url = models.TextField(validators=[URLValidator()], blank=True, null=True)
