@@ -4,6 +4,8 @@ dependencies:
     - pip install coveralls
 
 machine:
+    python:
+    version: 3.5.0
     environment:
         SECRET_KEY: CI
 
