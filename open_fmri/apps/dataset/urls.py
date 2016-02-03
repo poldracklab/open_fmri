@@ -73,7 +73,7 @@ urlpatterns = patterns('',
     url(
         r'^reference/delete/(?P<pk>\d+)$',
         ReferencePaperDelete.as_view(),
-        name='reference_paper_update'
+        name='reference_paper_delete'
     ),
     url(
         r'^$',
