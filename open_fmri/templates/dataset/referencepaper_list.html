@@ -30,8 +30,8 @@
             <td>{{ ref_paper.title }}</td>
             <td><a href="{{ ref_paper.url }}">{{ ref_paper.url }}</a></td>
             <td>
-            {% for dataset in ref_paper.dataset_list %}
-                <a href="{% url 'dataset_detail' dataset.accession_number %}">{{ dataset.project_name }}</a><br>
+            {% for dataset in ref_paper.datasets.all %}
+                <a href="{% url 'dataset_detail' dataset.accession_number %}">{{ dataset }}</a><br>
             {% endfor %}
             </td>
             <td>
