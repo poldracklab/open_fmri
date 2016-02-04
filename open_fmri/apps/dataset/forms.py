@@ -348,6 +348,7 @@ class ReferencePaperForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(ReferencePaperForm, self).__init__(*args, **kwargs)
+        self.fields['datasets'].queryset = ReferencePaper.objects.filter(datasets__status='PUBLISHED')
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('title', css_class="form-control"),
