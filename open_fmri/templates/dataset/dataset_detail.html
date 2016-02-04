@@ -101,6 +101,16 @@
         <br>
     {% endfor %}
 
+    {% if ref_papers %}
+        <h4>Papers that Reference this Dataset:</h4>
+        {% for ref_paper in ref_papers %
+            <p>
+            {{ paper.title }}<br>
+            <a href="{{ ref_paper.url }}">{{ ref_paper.url }}</a><br>
+            </p>
+        {% endfor %}
+    {% endif %}
+
 {% else %}
     <h1> 
         The dataset with accession number {{ object.accession_number }} has been 
