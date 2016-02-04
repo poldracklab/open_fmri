@@ -85,7 +85,10 @@
 
     {% for revision in revisions %}
     <h4>Revision: {{ revision.revision_number }} <small>Date Set: {{ revision.date_set }}</small></h4>
-    <p><a href="{{ revision.aws_link_url }}">{{ revision.aws_link_title }}</a></p>
+    <h6>Data Associated with Revision:</h6>
+        {% for link in revision.link_set.all %}
+            <a href="{{ link.url }}">{{ link.title }}</a><br>
+        {% endfor %}
     {% endfor %}
 
     <h4>Linked Data:</h4>
