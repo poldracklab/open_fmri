@@ -69,7 +69,8 @@ class DatasetDetail(DetailView):
                 context_links.append((link, count))
             except ObjectDoesNotExist:
                 context_links.append((link, -1))
-        context['links'] = context_links    
+        context['links'] = context_links
+        context['ref_papers'] = self.object.referencepaper_set.all()
         return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
