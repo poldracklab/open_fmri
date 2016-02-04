@@ -71,6 +71,7 @@ class DatasetDetail(DetailView):
                 context_links.append((link, -1))
         context['links'] = context_links
         context['ref_papers'] = self.object.referencepaper_set.all()
+        context['no_rev_files'] = self.object.link_set.filter(revision__isnull=True)
         return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
