@@ -23,6 +23,8 @@ class DatasetViewTestCase(TestCase):
 
     def test_list_view(self):
         response = self.client.get(reverse('dataset_list'))
+        for dataset in response.context['object_list']:
+            self.assertEqual(dataset.status, 'PUBLISHED')
         self.assertEqual(response.status_code, 200)
     
     def test_create_view_nologin(self):

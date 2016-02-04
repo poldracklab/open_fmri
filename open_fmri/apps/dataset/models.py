@@ -88,7 +88,7 @@ class Dataset(models.Model):
     contact = models.ForeignKey('Contact', blank=True, null=True)
     
     def __str__(self):
-        return self.project_name
+        return self.accession_number + ": " + self.project_name
 
     def save(self, *args, **kwargs):
         notify = False
@@ -208,3 +208,8 @@ class UserDataRequest(models.Model):
     def __str__(self):
         return self.token
     
+
+class ReferencePaper(models.Model):
+    datasets = models.ManyToManyField('Dataset')
+    title = models.TextField(null=True, blank=True)
+    url = models.TextField(validators=[URLValidator()], blank=True, null=True)

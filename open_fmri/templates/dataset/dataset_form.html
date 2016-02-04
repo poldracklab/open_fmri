@@ -65,8 +65,8 @@
 {{ block.super }}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script src="{% static 'js/select2.min.js' %}"></script>
-    <script>
+    <script type="text/javascript" src="{% static 'js/select2.min.js' %}"></script>
+    <script type="text/javascript">
 
     var task_template;
     $(document).ready(function() {

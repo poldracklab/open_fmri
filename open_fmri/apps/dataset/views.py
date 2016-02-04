@@ -20,9 +20,9 @@ from dataset.forms import ContactForm, DatasetForm, FeaturedDatasetForm, \
     PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
     PublicationPubMedLinkFormSetHelper, RevisionFormSet, \
     RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm, \
-    UserDataRequestForm, NewContactForm
+    UserDataRequestForm, NewContactForm, ReferencePaperForm
 from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationPubMedLink, FeaturedDataset, UserDataRequest
+    PublicationPubMedLink, FeaturedDataset, UserDataRequest, ReferencePaper
 from log_parse.models import S3File
 
 requests_cache.install_cache('test_cache')
@@ -69,7 +69,8 @@ class DatasetDetail(DetailView):
                 context_links.append((link, count))
             except ObjectDoesNotExist:
                 context_links.append((link, -1))
-        context['links'] = context_links    
+        context['links'] = context_links
+        context['ref_papers'] = self.object.referencepaper_set.all()
         return context
 
 class DatasetCreate(LoginRequiredMixin, CreateView):
@@ -317,3 +318,21 @@ class Index(TemplateView):
                 total += x.sample_size
         context['num_subjects'] =  total
         return context
+
+class ReferencePaperList(LoginRequiredMixin, ListView):
+    model = ReferencePaper
+
+class ReferencePaperDelete(LoginRequiredMixin, DeleteView):
+    model = ReferencePaper
+    success_url = reverse_lazy('reference_paper_list')
+
+class ReferencePaperCreate(LoginRequiredMixin, CreateView):
+    model = ReferencePaper
+    form_class = ReferencePaperForm
+    success_url = reverse_lazy('reference_paper_list')
+
+class ReferencePaperUpdate(LoginRequiredMixin, UpdateView):
+    model = ReferencePaper
+    form_class = ReferencePaperForm
+    success_url = reverse_lazy('reference_paper_list')
+

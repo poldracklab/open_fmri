@@ -3,9 +3,11 @@ from django.test import TestCase
 
 from model_mommy import mommy as ModelFactory
 
-from dataset.models import Dataset, FeaturedDataset
+from dataset.models import Dataset, FeaturedDataset, ReferencePaper
 from dataset.views import DatasetCreate, DatasetList, DatasetUpdate, \
-    DatasetDelete, FeaturedDatasetEdit, FeaturedDatasetDelete
+    DatasetDelete, FeaturedDatasetEdit, FeaturedDatasetDelete, \
+    ReferencePaperCreate, ReferencePaperUpdate, ReferencePaperList, \
+    ReferencePaperDelete
 
 class DataSetUrlTestCase(TestCase):
 
@@ -17,6 +19,7 @@ class DataSetUrlTestCase(TestCase):
             sample_size = 2
         )
         self.featured_dataset = ModelFactory.make('FeaturedDataset', dataset=self.dataset)
+        self.ref = ModelFactory.make('ReferencePaper')
     
     def test_dataset_list(self):
         found = resolve('/dataset/')
@@ -44,3 +47,19 @@ class DataSetUrlTestCase(TestCase):
                         str(self.featured_dataset.id))
         self.assertEqual(found.func.__name__, 
                          FeaturedDatasetDelete.as_view().__name__)
+
+    def test_reference_paper_create(self):
+        found = resolve('/dataset/reference/new/')
+        self.assertEqual(found.func.__name__, ReferencePaperCreate.as_view().__name__)
+    def test_reference_paper_update(self):
+        found = resolve('/dataset/reference/edit/' + \
+                        str(self.ref.id))
+        self.assertEqual(found.func.__name__, ReferencePaperUpdate.as_view().__name__)
+    def test_reference_paper_list(self):
+        found = resolve('/dataset/reference/')
+        self.assertEqual(found.func.__name__, ReferencePaperList.as_view().__name__)
+    def test_reference_paper_delete(self):
+        found = resolve('/dataset/reference/delete/' + \
+                        str(self.ref.id))
+        self.assertEqual(found.func.__name__, ReferencePaperDelete.as_view().__name__)
+
