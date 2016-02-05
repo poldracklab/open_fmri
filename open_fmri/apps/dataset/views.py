@@ -75,7 +75,7 @@ class DatasetDetail(DetailView):
             context_revisions.append((revision, context_links))
         
         context_links = []
-        links = self.object.link_set.all()
+        links = self.object.link_set.filter(revision__isnull=True)
         for link in links:
             try:
                 filename = urlparse(link.url).path 
