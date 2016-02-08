@@ -98,14 +98,16 @@
         {% endfor %}
     {% endfor %}
     
-    <h4>Unrevisioned Data:</h4>
-    {% for link in other_links %}
-        <a href="{{ link.0.url }}">{{ link.0.title }}</a>
-        {% if user.is_authenticated %}
-            {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
-        {% endif %}
-        <br>
-    {% endfor %}
+    {% if other_links %}
+        <h4>Unrevisioned Data:</h4>
+        {% for link in other_links %}
+            <a href="{{ link.0.url }}">{{ link.0.title }}</a>
+            {% if user.is_authenticated %}
+                {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
+            {% endif %}
+            <br>
+        {% endfor %}
+    {% endif %}
     
     {% if ref_papers and user.is_authenticated %}
         <h4>Papers that Reference this Dataset:</h4>
