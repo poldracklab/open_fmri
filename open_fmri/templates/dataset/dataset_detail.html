@@ -83,24 +83,32 @@
     <h4>Curated:</h4>
     <p>{{ object.curated|yesno:"Yes,No,Unknown" }}</p>
 
-    {% for revision in revisions %}
-    <h4>Revision: {{ revision.revision_number }} <small>Date Set: {{ revision.date_set }}</small></h4>
-    <p><a href="{{ revision.aws_link_url }}">{{ revision.aws_link_title }}</a></p>
-    {% endfor %}
-
-    <h4>Linked Data:</h4>
     <p>
         <strong style="color: red">Note: The TR values stored in the NIFTI headers may not be accurate. Please use the TR values 
         provided in the <strong>scan_key.txt</strong> or the <strong>.json</strong> sidecar file for analysis purposes.</strong> 
     </p>
-    {% for link in links %}
-        <a href="{{ link.0.url }}">{{ link.0.title }}</a>
-        {% if user.is_authenticated %}
-            {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
-        {% endif %}
-        <br>
+    {% for revision in revisions %}
+    <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
+    <h6>Data Associated with Revision:</h6>
+        {% for link in revision.1 %}
+            <a href="{{ link.0.url }}">{{ link.0.title }}</a><br>
+            {% if user.is_authenticated and link.1 != -1 %}
+                <small>Download Count: {{link.1}}</small>
+            {% endif %}
+        {% endfor %}
     {% endfor %}
-
+    
+    {% if other_links %}
+        <h4>Unrevisioned Data:</h4>
+        {% for link in other_links %}
+            <a href="{{ link.0.url }}">{{ link.0.title }}</a>
+            {% if user.is_authenticated %}
+                {% if link.1 != -1 %}<small>Download Count: {{link.1}}</small>{% endif %}
+            {% endif %}
+            <br>
+        {% endfor %}
+    {% endif %}
+    
     {% if ref_papers and user.is_authenticated %}
         <h4>Papers that Reference this Dataset:</h4>
         {% for ref_paper in ref_papers %}

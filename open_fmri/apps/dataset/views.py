@@ -58,8 +58,24 @@ class DatasetDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DatasetDetail, self).get_context_data(**kwargs)
         context['revisions'] = self.object.revision_set.order_by('-date_set')
+
+        revisions = self.object.revision_set.order_by('-date_set')
+        context_revisions = []
+        for revision in revisions:
+            context_links = []
+            for link in revision.link_set.all():
+                try:
+                    filename = urlparse(link.url).path 
+                    if filename[0] == '/':
+                        filename = filename[1:]
+                    count = S3File.objects.get(filename=filename).count
+                    context_links.append((link, count))
+                except ObjectDoesNotExist:
+                    context_links.append((link, -1))
+            context_revisions.append((revision, context_links))
+        
         context_links = []
-        links = self.object.link_set.all()
+        links = self.object.link_set.filter(revision__isnull=True)
         for link in links:
             try:
                 filename = urlparse(link.url).path 
@@ -69,7 +85,10 @@ class DatasetDetail(DetailView):
                 context_links.append((link, count))
             except ObjectDoesNotExist:
                 context_links.append((link, -1))
+        
         context['links'] = context_links
+        context['revisions'] = context_revisions
+        context['other_links'] = context_links
         context['ref_papers'] = self.object.referencepaper_set.all()
         return context
 
