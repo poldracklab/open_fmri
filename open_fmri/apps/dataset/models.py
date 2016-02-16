@@ -86,6 +86,7 @@ class Dataset(models.Model):
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True,
                                     null=True)
     contact = models.ForeignKey('Contact', blank=True, null=True)
+    orientation_warning = models.NullBooleanField(default=False, null=True)
     
     def __str__(self):
         return self.accession_number + ": " + self.project_name

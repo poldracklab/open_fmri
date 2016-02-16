@@ -66,7 +66,8 @@ class DatasetForm(ModelForm):
         fields = [
             'workflow_stage', 'status', 'project_name', 'summary', 
             'sample_size', 'scanner_type', 'accession_number', 
-            'acknowledgements', 'license_title', 'license_url', 'curated' 
+            'acknowledgements', 'license_title', 'license_url', 'curated',
+            'orientation_warning' 
         ]
         
         widgets = {
@@ -89,6 +90,7 @@ class DatasetForm(ModelForm):
             Field('acknowledgements', css_class="form-control", rows=3),
             Field('license_title', css_class="form-control"),
             Field('license_url', css_class="form-control"),
+            Field('orientation_warning', css_class="form-control"),
         )
         self.helper.form_tag = False
 
