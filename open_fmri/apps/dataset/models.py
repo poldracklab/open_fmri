@@ -1,3 +1,4 @@
+import datetime
 import os
 import re
 
@@ -10,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from django.db import models
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 MAX_TITLE_LENGTH = 255
 
@@ -171,7 +173,7 @@ class PublicationPubMedLink(models.Model):
 
 class Revision(models.Model):
     dataset = models.ForeignKey('Dataset')
-    date_set = models.DateTimeField(auto_now_add=True)
+    date_set = models.DateTimeField(default=timezone.now, blank=True, null=True)
     notes = models.TextField(blank=True)
     previous_revision = models.ForeignKey('Revision', null=True)
     revision_number = models.CharField(max_length=200)

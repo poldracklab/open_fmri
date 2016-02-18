@@ -157,7 +157,7 @@ class PublicationPubMedLinkForm(ModelForm):
 class RevisionForm(ModelForm):
     class Meta:
         model = Revision
-        fields = ['revision_number', 'notes']
+        fields = ['revision_number', 'date_set', 'notes']
 
 class TaskForm(ModelForm):
     cogat_id = forms.ChoiceField()
@@ -262,6 +262,7 @@ class RevisionFormSetHelper(FormHelper):
             Fieldset(
                 "Revision Information",
                 Field('revision_number', css_class="form-control"),
+                Field('date_set', css_class="form-control"),
                 Field('notes', css_class="form-control", rows=3),
                 Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"

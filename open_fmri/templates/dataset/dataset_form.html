@@ -13,6 +13,7 @@
 {% block css %}
 {{ block.super }}
 <link href="{% static 'css/select2.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 {% endblock %}
 
 {% block content %}
@@ -63,6 +64,7 @@
 {% endblock %}
 {% block javascript %}
 {{ block.super }}
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static 'js/select2.min.js' %}"></script>
@@ -134,6 +136,12 @@
             formTemplate: task_template
         });
     })
+
+    
+    $(document).ready(function() {
+        $("input[id$='-date_set']").datepicker();
+    });
+    
 
     </script>
 {% endblock %}
