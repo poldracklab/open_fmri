@@ -37,6 +37,7 @@ nginx:
         - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
         - .ssl/nginx.crt:/etc/nginx/nginx.crt:ro
         - .ssl/nginx.key:/etc/nginx/nginx.key:ro
+        - /var/www/.well-known/acme-challenge/
     links:
         - uwsgi
     ports:
