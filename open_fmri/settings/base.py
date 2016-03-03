@@ -52,7 +52,6 @@ THIRD_PARTY_APPS = (
     'ckeditor',
     'contact_form',
     'crispy_forms',
-    'djcelery',
     'opbeat.contrib.django',
     'rest_framework',
 )
@@ -181,7 +180,7 @@ OPBEAT = {
 
 # Celery config
 BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -194,10 +193,12 @@ if os.environ.get('RUN_TASKS', False):
     CELERYBEAT_SCHEDULE = {
         'Parse Logs': {
             'task': 'log_parse_task',
-            'schedule': crontab()
+            'schedule': crontab(minute='*', hour='*')
         },
     }
 
+# slack endpoint URL to post json to for logging
+LOG_ENDPOINT = os.environ.get('LOG_ENDPOINT', '')
 
 # .local.py overrides all the common settings.
 try:

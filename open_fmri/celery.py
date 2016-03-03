@@ -3,7 +3,6 @@ import os
 from celery import Celery
 from django.conf import settings
 
-#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neurovault.settings')
 celery = Celery('open_fmri')
 
 # Using a string here means the worker will not have to

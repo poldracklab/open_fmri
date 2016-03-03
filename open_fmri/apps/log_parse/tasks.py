@@ -1,13 +1,16 @@
 import argparse
+from datetime import datetime
+import json
 import os
 import re
 import sys
-from datetime import datetime
 
 from boto.s3.connection import S3Connection
 from celery import Celery, task, shared_task
 from celery.utils.log import get_task_logger
+import requests
 
+from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -32,17 +35,32 @@ s3_names = ("bucket_owner", "bucket", "datetime", "ip", "requestor_id",
 "referer", "user_agent")
 # END
 
+def log_to_endpoint(message):
+    if not settings.LOG_ENDPOINT:
+        return
+    try:
+        payload = {'text': message}
+        requests.post(settings.LOG_ENDPOINT, data=json.dumps(payload))
+    except:
+        pass
+    return
+    
+
 @app.task(name='log_parse_task')
 def log_parse_task():
+    
     lock_id = "parse_log_files"    
     acquire_lock = lambda: cache.add(lock_id, 'true')
     release_lock = lambda: cache.delete(lock_id)
     
     if acquire_lock():
         try:
+            log_to_endpoint("Lock acquired, starting parse task")
             parse_log_files()
+            log_to_endpoint("Exiting parse task")
         finally:
             release_lock()
+    
     return
  
 def parse_log_files():
@@ -78,11 +96,6 @@ def parse_log_files():
         log_file.parsed = True
         log_file.lock = False
         log_file.save()
- 
-        #Only parse 10 log files at a time to prevent long running tasks
-        file_count += 1
-        if file_count >= 100:
-            break
         
 def parse_log_files_locally(path_to_logs):
     """Parse S3 log files that are local
