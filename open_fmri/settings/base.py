@@ -193,7 +193,7 @@ if os.environ.get('RUN_TASKS', False):
     CELERYBEAT_SCHEDULE = {
         'Parse Logs': {
             'task': 'log_parse_task',
-            'schedule': crontab(minute='*', hour='*')
+            'schedule': crontab(minute='*', hour='8')
         },
     }
 
