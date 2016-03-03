@@ -38,6 +38,7 @@ nginx:
         - .ssl/nginx.crt:/etc/nginx/nginx.crt:ro
         - .ssl/nginx.key:/etc/nginx/nginx.key:ro
         - /var/www/.well-known/acme-challenge/
+        - .ssl/:/etc/letsencrypt/openfmri.org/
     links:
         - uwsgi
     ports:
