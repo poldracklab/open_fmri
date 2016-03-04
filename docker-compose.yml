@@ -29,7 +29,8 @@ uwsgi:
     working_dir: /app
 
 nginx:
-    image: nginx:latest
+    build: .
+    dockerfile: Dockerfile_nginx
     volumes_from:
         - uwsgi
     volumes:
