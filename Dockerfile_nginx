@@ -3,4 +3,4 @@ FROM nginx:latest
 RUN apt-get update && apt-get install -y cron
 ADD scripts/get_cert_cron /get_cert_cron
 RUN crontab /get_cert_cron
-RUN update-rc.d cron defaults
+CMD /bin/bash -c "service cron start && nginx -g 'daemon off;'"
