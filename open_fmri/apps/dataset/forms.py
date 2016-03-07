@@ -164,7 +164,7 @@ class TaskForm(ModelForm):
 
     class Meta:
         model = Task
-        fields = ['cogat_id', 'number']
+        fields = ['cogat_id', 'number', 'name']
 
     def get_cogat_tasks(self):
         cogat_tasks = requests.get('http://cognitiveatlas.org/api/v-alpha/task')
@@ -175,9 +175,20 @@ class TaskForm(ModelForm):
         
         return tasks_choices
 
+    def save(self, commit=True):
+        task = super(TaskForm, self).save(commit=False)
+        choices = self.fields['cogat_id'].choices
+        cogat_id = self.cleaned_data['cogat_id']
+        task.name = [name for name in choices if name[0] == cogat_id][0][1]
+        if commit:
+            task.save()
+        return super(TaskForm, self).save(commit=commit)
+
     def __init__(self, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
+
+    
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
@@ -278,6 +289,7 @@ class TaskFormSetHelper(FormHelper):
                 "Cognitive Atlas Task",
                 Field('cogat_id', css_class="form-control"),
                 Field('number', css_class="form-control"),
+                Field('name', type="hidden"),
                 Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control task_set"
             ),
