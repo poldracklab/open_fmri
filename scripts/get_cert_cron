@@ -1,1 +1,1 @@
-00 01 04 * * /app/scripts/get_cert.sh
+00 01 04 * * /bin/bash /app/scripts/get_cert.sh
