@@ -99,6 +99,9 @@
     {% endif %}
     {% for revision in revisions %}
     <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
+    {% if revision.0.notes %}
+    <p> Notes: {{ revision.0.notes }} </p>
+    {% endif %}
     <h6>Data Associated with Revision:</h6>
         {% for link in revision.1 %}
             <a href="{{ link.0.url }}">{{ link.0.title }}</a><br>
