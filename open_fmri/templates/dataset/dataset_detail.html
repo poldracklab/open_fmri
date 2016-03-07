@@ -100,19 +100,27 @@
     {% for revision in revisions %}
     <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
     {% if revision.0.notes %}
-    <p> Notes: {{ revision.0.notes }} </p>
+    <div class="revision_notes">
+    <h5>Notes:</h5>
+    <p>  {{ revision.0.notes }} </p>
+    </div>
     {% endif %}
-    <h6>Data Associated with Revision:</h6>
+    <div class="revision_links">
+    <h5>Data Associated with Revision:</h5>
+        <ul>
         {% for link in revision.1 %}
-            <a href="{{ link.0.url }}">{{ link.0.title }}</a><br>
+            <li><a href="{{ link.0.url }}">{{ link.0.title }}</a></li>
             {% if user.is_authenticated and link.1 != -1 %}
                 <small>Download Count: {{link.1}}</small>
             {% endif %}
         {% endfor %}
+        </ul>
+    </div>
     {% endfor %}
     
     {% if other_links %}
         <h4>Unrevisioned Data:</h4>
+        <div class="unrevisioned_links">
         {% for link in other_links %}
             <a href="{{ link.0.url }}">{{ link.0.title }}</a>
             {% if user.is_authenticated %}
@@ -120,6 +128,7 @@
             {% endif %}
             <br>
         {% endfor %}
+        </div>
     {% endif %}
     
     {% if ref_papers and user.is_authenticated %}

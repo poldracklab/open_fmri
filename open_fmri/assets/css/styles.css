@@ -238,6 +238,10 @@
     color: #983c70
 }
 
+.revision_notes > p {
+    padding-left: 5%;
+}
+
 .right-elem {
     background-color: #269885;
     padding: 10px 5px;
@@ -256,7 +260,7 @@ body {
     border-top: 16px solid #0e9985;
 }
 
-hrml {
+html {
     font-size: 100%;
     font-family: Verdana,Tahoma,"DejaVu Sans",sans-serif;
 }
