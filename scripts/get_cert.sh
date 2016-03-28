@@ -21,5 +21,5 @@ mkdir -p /var/www/.well-known/acme-challenge/
 # Get a signed certificate with acme-tiny
 python /opt/acme-tiny/acme_tiny.py --account-key ./account.key --csr ./domain.csr --acme-dir /var/www/.well-known/acme-challenge/ > ./signed.crt
 
-wget -O - https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem > intermediate.pem
+wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > intermediate.pem
 cat signed.crt intermediate.pem > nginx.crt
