@@ -36,8 +36,8 @@ nginx:
     volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
         - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
-        - .ssl/nginx.crt:/etc/nginx/nginx.crt:ro
-        - .ssl/nginx.key:/etc/nginx/nginx.key:ro
+        - .ssl/nginx.crt:/etc/nginx/nginx.crt
+        - .ssl/nginx.key:/etc/nginx/nginx.key
         - /var/www/.well-known/acme-challenge/
         - .ssl/:/etc/letsencrypt/openfmri.org/
     links:
