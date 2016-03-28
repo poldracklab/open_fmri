@@ -6,6 +6,10 @@ DOMAIN=openfmri.org
 mkdir -p /etc/letsencrypt/$DOMAIN
 cd /etc/letsencrypt/$DOMAIN
 
+# backup old key and cert
+cp nginx.key{,.bak.$(date +%s)}
+cp nginx.crt{,.bak.$(date +%s)}
+
 # Generate a private key
 openssl genrsa 4096 > account.key
 
