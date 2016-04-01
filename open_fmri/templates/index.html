@@ -25,6 +25,20 @@
 
 {% block container-content-class %}col-md-12{% endblock %}
 {% block content %}
+{% if featured_dataset %}
+    <div class="row">
+        <div id="featured-dataset-container" class="col-md-12 content-block">
+            <h3>Featured Dataset:</h3>
+            <h4><a href="{% url 'dataset_detail' featured_dataset.dataset.accession_number %}">{{ featured_dataset.title }}</a></h4><br/>
+            {% if featured_dataset.image %}
+                <img src="{{ featured_dataset.image.url }}" class="img-responsive index-featured-img" />
+            {% endif %}
+            <div id="featured-dataset-text">
+                {{ featured_dataset.content }}
+            </div>
+        </div>
+    </div>
+{% endif %}
 <div class="row">
     <div class="col-md-4 content-block">
         <img src="{% static 'images/magnifier.png' %}">

@@ -114,6 +114,15 @@
 .dropdown-item {
     color: rgba(255, 255, 255, 0.5);
 }
+
+#featured-dataset-container {
+    padding-bottom: 30px;
+} 
+
+#featured-dataset-text {
+    padding-right: 30px;
+    padding-left: 30px;
+}
     
 #footer {
     margin-top: 30px;
@@ -195,6 +204,12 @@
 .header-block-stats {
     color: #15a691;
     font-size: 18px;
+}
+
+.index-featured-img {
+    height: auto;
+    width: 33%;
+    float: right;
 }
 
 #navbar-header .navbar-nav .nav-item {

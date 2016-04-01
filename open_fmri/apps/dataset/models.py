@@ -138,7 +138,7 @@ def twitter_notify(dataset):
 
 class FeaturedDataset(models.Model):
     dataset = models.ForeignKey('Dataset')
-    date_featured = models.DateField(auto_now_add=True)
+    date_featured = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     image = models.ImageField(blank=True)
     title = models.CharField(max_length=MAX_TITLE_LENGTH)

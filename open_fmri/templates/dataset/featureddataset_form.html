@@ -3,6 +3,11 @@
 {% crispy form form.helper %}
 {% load staticfiles %}
 
+{% block css %}
+{{ block.super }}
+<link href="{% static 'css/select2.min.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}
 Set Featured Dataset
 {% endblock %}
@@ -24,10 +29,23 @@ Set Featured Dataset
             <td>{{ featured_dataset.title }}</td>
             <td>{{ featured_dataset.content }}</td>
             <td>{{ featured_dataset.image }}</td>
-            <td>{{ featured_dataset.dataset }}</td>
+            <td>{{ featured_dataset.date_featured }}</td>
             <td><a href="{% url 'featureddataset_delete' featured_dataset.id %}">Delete</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/select2.min.js' %}"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".dataset_select").select2();
+    });
+    </script>
 {% endblock %}

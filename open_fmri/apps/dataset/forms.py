@@ -300,12 +300,17 @@ class FeaturedDatasetForm(ModelForm):
     class Meta:
         model = FeaturedDataset
         fields = ['dataset', 'image', 'title', 'content']
+        
+        widgets = {
+            'content': CKEditorWidget(),
+        }
     
     def __init__(self, *args, **kwargs):
         super(FeaturedDatasetForm, self).__init__(*args, **kwargs)
+        self.fields['dataset'].queryset = Dataset.objects.filter(status='PUBLISHED')
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('dataset', css_class="form-control"),
+            Field('dataset', css_class="form-control dataset_select"),
             Field('title', css_class="form-control"),
             Field('image', css_class="form-control"),
             Field('content', css_class="form-control"),
