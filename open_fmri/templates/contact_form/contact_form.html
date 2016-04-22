@@ -6,7 +6,6 @@ Contact
 {% endblock %}
 {% block content %}
     <h1>Contact</h1>
-    <form method="post">{% csrf_token %}
     <p>
         Requirements for data set submission to OpenfMRI:
         <br/>
@@ -44,6 +43,12 @@ Contact
             <br/><br/>
             </li>
             <li>
+            <br/><br/>
+            <input type="checkbox" name="collab_approval" required/> 
+            All collaborators have given permission to publish this dataset.
+            <br/><br/>
+            </li>
+            <li>
             Its strongly recommended that the data be organized acording to the 
             BIDS standard. Complete documentation for the standard can be found at 
             <a href="http://bids.neuroimaging.io">http://bids.neuroimaging.io</a>
@@ -58,11 +63,14 @@ Contact
         where additional information for the dataset can be submitted if 
         needed. 
     </p>
-    {% crispy form %}
-    </form>
+    <script type="text/javascript" src="http://assets.freshdesk.com/widget/freshwidget.js"></script>
+  <style type="text/css" media="screen, projection">
+    @import url(http://assets.freshdesk.com/widget/freshwidget.css);
+  </style>
+  <iframe title="Feedback Form" class="freshwidget-embedded-form" id="freshwidget-embedded-form" src="https://openfmri.freshdesk.com/widgets/feedback_widget/new?&widgetType=embedded&formTitle=Submit+a+new+dataset&submitThanks=Thank+you+for+your+submission!+Someone+will+get+back+to+you+shortly!&screenshot=no&searchArea=no&formTitle=Describe+your+dataset" scrolling="no" height="500px" width="100%" frameborder="0" >
+   </iframe>
 {% endblock %}
 
 {% block javascript %}
     {{ block.super }}
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {% endblock %}
