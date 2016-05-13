@@ -15,20 +15,12 @@ Contact
             wish to share processed data should use 
             <a href="http://neurovault.org">http://neurovault.org</a> 
             instead.
-            <br/><br/>
-            <input type="checkbox" name="unprocessed" id="unprocessed" required/> 
-            The data to be uploaded is raw and unprocessed.
-            <br/><br/>
             </li>
             <li>
             The dataset must include some form of brain imaging data. All forms of 
             MRI data are accepted including structural, functional, and diffusion 
             MRI. Electrophysiological data will be accepted if they accompany a
             MRI dataset.
-            <br/><br/>
-            <input type="checkbox" name="contains_mri" id="contains_mri" required/> 
-            The data includes some form of MRI data.
-            <br/><br/>
             </li>
             <li>
             All data must be deidentified prior to submission, with no links from 
@@ -37,14 +29,10 @@ Contact
             <a href="https://pypi.python.org/pypi/pydeface">pydeface</a> 
             and
             <a href="https://www.nitrc.org/projects/deid/">DeID</a>
-            <br/><br/>
-            <input type="checkbox" name="deident" id="deident" required/> 
-            The data are deidentified.
-            <br/><br/>
             </li>
             <li>
             All submitted datasets need to be organized according to the 
-            <a href="http://bids.neuroimaging.io/">
+            <a href="https://openfmri.org/data-organization/">
                 Brain Imaging Data Structure (BIDS) standard
             </a>
             . Please validate your dataset before submission using the 
@@ -53,12 +41,7 @@ Contact
             </a>
              (requires Chrome browser, also available as a 
             <a href="http://incf.github.io/bids-validator/">command line tool</a>
-            <br/><br/>
-            <input type="checkbox" name="bids" id="bids" required/> 
-            The data to be uploaded will be converted to the BIDS standard.
-            ).
             </li>
-            <br/><br/>
         </ul>
     </p>
     <p> 
@@ -68,7 +51,6 @@ Contact
         needed. 
     </p>
     <br/>
-    <h5 id="check_warn">All boxes must be checked to submit a dataset</h5>
     <script type="text/javascript" src="http://assets.freshdesk.com/widget/freshwidget.js"></script>
     <style type="text/css" media="screen, projection">
     @import url(http://assets.freshdesk.com/widget/freshwidget.css);
@@ -81,36 +63,4 @@ Contact
 
 {% block javascript %}
     {{ block.super }}
-    <script type="text/javascript">
-        var check_boxes = ['unprocessed', 'contains_mri', 'deident', 'bids']
-        function validateCheckboxes() {
-            var not_checked = false;
-            for(var i = 0; i < check_boxes.length; i++) {
-                if(!document.getElementById(check_boxes[i]).checked) {
-                    not_checked = true;
-                    break;
-                }
-            }
-
-            if (!not_checked) {
-                document.getElementById('contact_form_cover').style.opacity = 1;
-                document.getElementById('contact_form_cover').style.pointerEvents = "all";
-                document.getElementById('check_warn').style.display = 'none';
-            } else {
-                document.getElementById('contact_form_cover').style.opacity = .2;
-                document.getElementById('contact_form_cover').style.pointerEvents = "none";
-                document.getElementById('check_warn').style.display = 'block';
-            }
-        }
-
-        for(var i = 0; i < check_boxes.length; i++) {
-            var form = document.getElementById(check_boxes[i]);
-            if (form.attachEvent) {
-                form.attachEvent("change", validateCheckboxes);
-            } else {
-                form.addEventListener("change", validateCheckboxes);
-            }
-        }
-        document.addEventListener("DOMContentLoaded", validateCheckboxes);
-        </script>
 {% endblock %}
