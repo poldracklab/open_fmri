@@ -63,7 +63,7 @@ class DatasetDetail(DetailView):
         context_revisions = []
         for revision in revisions:
             context_links = []
-            for link in revision.link_set.all():
+            for link in revision.link_set.all().order_by('title'):
                 try:
                     filename = urlparse(link.url).path 
                     if filename[0] == '/':
@@ -75,7 +75,7 @@ class DatasetDetail(DetailView):
             context_revisions.append((revision, context_links))
         
         context_links = []
-        links = self.object.link_set.filter(revision__isnull=True)
+        links = self.object.link_set.filter(revision__isnull=True).order_by('title')
         for link in links:
             try:
                 filename = urlparse(link.url).path 
