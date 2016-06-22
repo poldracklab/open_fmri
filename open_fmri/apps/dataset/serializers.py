@@ -25,9 +25,10 @@ class PublicationPubMedLinkSerializer(serializers.ModelSerializer):
         fields = ['title', 'url']
 
 class RevisionSerializer(serializers.ModelSerializer):
+    date_set = serializers.DateTimeField(format="%Y-%m-%d")
     class Meta:
         model = Revision
-        fields = ['revision_number', 'notes', 'aws_link_title', 'aws_link_url']
+        fields = ['revision_number', 'notes', 'date_set']
 
 class TaskSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
