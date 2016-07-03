@@ -78,7 +78,7 @@ class Dataset(models.Model):
     acknowledgements = models.TextField(null=True, blank=True)
     
     license_title = models.CharField(max_length=MAX_TITLE_LENGTH, 
-                                     default="PPDL")
+                                     default="PDDL")
     default_license_url = "http://opendatacommons.org/licenses/pddl/1.0/"
     license_url = models.TextField(validators=[URLValidator()], blank=True, 
                                    default=default_license_url)
