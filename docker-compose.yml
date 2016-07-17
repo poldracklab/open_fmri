@@ -18,7 +18,6 @@ uwsgi:
     volumes:
         - .:/app 
         - /var/www/static
-        - /Users/rblair/projects/open_fmri_logs/logs:/logs/ 
     links:
         - postgres
         - redis
