@@ -99,7 +99,7 @@
     {% endif %}
     {% for revision in revisions %}
     <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
-    {% if revision.0.notes %}
+    {% if revision.0.notes|linebreaks %}
     <div class="revision_notes">
     <h5>Notes:</h5>
     <p>  {{ revision.0.notes }} </p>
