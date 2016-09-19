@@ -29,6 +29,7 @@ class RevisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Revision
         fields = ['revision_number', 'notes', 'date_set']
+        ordering = ('revision_number',)
 
 class TaskSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
