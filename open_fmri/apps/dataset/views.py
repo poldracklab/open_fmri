@@ -120,7 +120,8 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         dataset = form.save()
-        
+        invalid_form = False
+
         new_contact_form = NewContactForm(self.request.POST)
         contact_form = ContactForm(self.request.POST)
         if new_contact_form.is_valid() and new_contact_form.has_changed():
@@ -129,39 +130,64 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             dataset.contact = new_contact
         elif contact_form.is_valid():
             dataset.contact = contact_form.cleaned_data['contact']
-        else:
-            pass
+        elif not(new_contact_form.is_valid() or contact_form.is_valid()):
+            invalid_form = True
 
         investigator_formset = InvestigatorFormSet(self.request.POST,
             self.request.FILES, instance=dataset)
         if investigator_formset.is_valid():
             investigator_formset.save()
+        else:
+            invalid_form = True
 
         link_formset = LinkFormSet(self.request.POST, instance=dataset)
         if link_formset.is_valid():
             link_formset.save()
+        else:
+            invalid_form = True
 
         publication_document_formset = PublicationDocumentFormSet(
             self.request.POST, self.request.FILES, instance=dataset)
         if publication_document_formset.is_valid():
             publication_document_formset.save()
+        else:
+            invalid_form = True
 
         publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
             self.request.POST, instance=dataset)
         if publication_pubmed_link_formset.is_valid():
             publication_pubmed_link_formset.save()
+        else:
+            invalid_form = True
 
         revision_formset = RevisionFormSet(self.request.POST, 
             instance=dataset)
         if revision_formset.is_valid():
             revision_formset.save()
+        else:
+            invalid_form = True
         
         task_formset = TaskFormSet(self.request.POST, self.request.FILES,
             instance=dataset)
         if task_formset.is_valid():
             task_formset.save()
+        else:
+            invalid_form = True
         
-        return super(DatasetCreate, self).form_valid(form)
+        if invalid_form:
+            forms = {
+                'new_contact_form': new_contact_form,
+                'contact_form': contact_form,
+                'investigator_formset': investigator_formset,
+                'link_formset': link_formset,
+                'publication_document_formset': publication_document_formset,
+                'publication_pubmed_link': publication_pubmed_link,
+                'revision_formset': revision_formset,
+                'task_formset': task_formset
+            }
+            return self.render_to_response(self.get_context_data(**forms))
+        else:
+            return super(DatasetCreate, self).form_valid(form)
 
 class DatasetUpdate(LoginRequiredMixin, UpdateView):
     model = Dataset
