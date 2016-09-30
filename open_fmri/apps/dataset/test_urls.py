@@ -4,7 +4,7 @@ from django.test import TestCase
 from model_mommy import mommy as ModelFactory
 
 from dataset.models import Dataset, FeaturedDataset, ReferencePaper
-from dataset.views import DatasetCreate, DatasetList, DatasetUpdate, \
+from dataset.views import DatasetCreateUpdate, DatasetList, \
     DatasetDelete, FeaturedDatasetEdit, FeaturedDatasetDelete, \
     ReferencePaperCreate, ReferencePaperUpdate, ReferencePaperList, \
     ReferencePaperDelete
@@ -27,11 +27,11 @@ class DataSetUrlTestCase(TestCase):
 
     def test_dataset_create(self):
         found = resolve('/dataset/new/')
-        self.assertEqual(found.func.__name__, DatasetCreate.as_view().__name__)
+        self.assertEqual(found.func.__name__, DatasetCreateUpdate.as_view().__name__)
 
     def test_dataset_update(self):
         found = resolve('/dataset/edit/' + str(self.dataset.accession_number))
-        self.assertEqual(found.func.__name__, DatasetUpdate.as_view().__name__)
+        self.assertEqual(found.func.__name__, DatasetCreateUpdate.as_view().__name__)
 
     def test_dataset_delete(self):
         found = resolve('/dataset/delete/' + str(self.dataset.accession_number))
