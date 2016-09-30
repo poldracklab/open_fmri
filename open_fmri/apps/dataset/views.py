@@ -93,7 +93,7 @@ class DatasetDetail(DetailView):
         return context
 
 
-class DatasetCreateUpdate(SingleObjectTemplateResponseMixin,
+class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                               ModelFormMixin, ProcessFormView):
     model = Dataset
     form_class = DatasetForm
