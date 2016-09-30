@@ -7,25 +7,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
-from django.views.generic import CreateView, DeleteView, DetailView, \
-    ListView, UpdateView, TemplateView, View 
+from django.views.generic import (CreateView, DeleteView, DetailView,
+    ListView, UpdateView, TemplateView, View)
 from django.views.generic.edit import ModelFormMixin, ProcessFormView 
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 
 from braces.views import LoginRequiredMixin
 
-from dataset.forms import ContactForm, DatasetForm, FeaturedDatasetForm, \
-    InvestigatorFormSet, InvestigatorFormSetHelper, LinkFormSet, \
-    LinkFormSetHelper, PublicationDocumentFormSet, \
-    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet, \
-    PublicationPubMedLinkFormSetHelper, RevisionFormSet, \
-    RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm, \
-    UserDataRequestForm, NewContactForm, ReferencePaperForm
-from dataset.models import Dataset, Investigator, PublicationDocument, \
-    PublicationPubMedLink, FeaturedDataset, UserDataRequest, ReferencePaper
+from dataset.forms import (ContactForm, DatasetForm, FeaturedDatasetForm,
+    InvestigatorFormSet, InvestigatorFormSetHelper, LinkFormSet,
+    LinkFormSetHelper, PublicationDocumentFormSet,
+    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet,
+    PublicationPubMedLinkFormSetHelper, RevisionFormSet,
+    RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm,
+    UserDataRequestForm, NewContactForm, ReferencePaperForm)
+from dataset.models import (Dataset, Investigator, PublicationDocument,
+    PublicationPubMedLink, FeaturedDataset, UserDataRequest, ReferencePaper)
 from log_parse.models import S3File
 
-requests_cache.install_cache('test_cache')
+requests_cache.install_cache('cache')
 
 class DatasetList(ListView):
     model = Dataset
@@ -92,27 +92,49 @@ class DatasetDetail(DetailView):
         context['ref_papers'] = self.object.referencepaper_set.all()
         return context
 
-class DatasetCreate(LoginRequiredMixin, CreateView):
+
+class DatasetCreateUpdate(SingleObjectTemplateResponseMixin,
+                              ModelFormMixin, ProcessFormView):
     model = Dataset
     form_class = DatasetForm
     success_url = reverse_lazy('dataset_list')
+    template_name = 'dataset/dataset_form.html'
+
+    def get_object(self, queryset=None):
+        try:
+            return super(DatasetCreateUpdate, self).get_object(queryset)
+        except AttributeError:
+            return None
+
+    def get(self, *args, **kwargs):
+        self.object = self.get_object()
+        return super(DatasetCreateUpdate, self).get(self.request, *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        return super(DatasetCreateUpdate, self).post(self.request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(DatasetCreate, self).get_context_data(**kwargs)
-        context['contact_form'] = ContactForm()
+        context = super(DatasetCreateUpdate, self).get_context_data(**kwargs)
+        contact_pk = 0
+        if self.object and self.object.contact:
+            contact_pk = self.object.contact.pk
+        context['contact_form'] = ContactForm(
+            initial = {'contact': contact_pk}
+        )
         context['investigator_formset'] = InvestigatorFormSet()
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
-        context['link_formset'] = LinkFormSet()
+        context['link_formset'] = LinkFormSet(instance=self.object)
         context['link_formset_helper'] = LinkFormSetHelper()
         context['new_contact_form'] = NewContactForm()
-        context['publication_document_formset'] = PublicationDocumentFormSet()
+        context['publication_document_formset'] = PublicationDocumentFormSet(instance=self.object)
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
-            PublicationPubMedLinkFormSet()
+            PublicationPubMedLinkFormSet(instance=self.object)
         context['publication_pubmed_link_formset_helper'] = \
             PublicationPubMedLinkFormSetHelper()
-        context['task_formset'] = TaskFormSet()
+        context['task_formset'] = TaskFormSet(instance=self.object)
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
@@ -175,101 +197,29 @@ class DatasetCreate(LoginRequiredMixin, CreateView):
             invalid_form = True
         
         if invalid_form:
-            forms = {
+            context = {
+                'request': self.request,
+                'form': form,
                 'new_contact_form': new_contact_form,
                 'contact_form': contact_form,
                 'investigator_formset': investigator_formset,
                 'link_formset': link_formset,
                 'publication_document_formset': publication_document_formset,
-                'publication_pubmed_link': publication_pubmed_link,
+                'publication_pubmed_link_formset': publication_pubmed_link_formset,
                 'revision_formset': revision_formset,
-                'task_formset': task_formset
+                'task_formset': task_formset,
+                'investigator_formset_helper': InvestigatorFormSetHelper(),
+                'link_formset_helper': LinkFormSetHelper(),
+                'publication_document_formset_helper': PublicationDocumentFormSetHelper(),
+                'publication_pubmed_link_formset_helper': PublicationPubMedLinkFormSetHelper(),
+                'task_formset_helper': TaskFormSetHelper(),
+                'revision_formset_helper': RevisionFormSetHelper()
             }
-            return self.render_to_response(self.get_context_data(**forms))
+            return self.render_to_response(context)
         else:
-            return super(DatasetCreate, self).form_valid(form)
+            return super(DatasetCreateUpdate, self).form_valid(form)
 
-class DatasetUpdate(LoginRequiredMixin, UpdateView):
-    model = Dataset
-    form_class = DatasetForm
-    success_url = reverse_lazy('dataset_list')
-    
 
-    def get_context_data(self, **kwargs):
-        context = super(DatasetUpdate, self).get_context_data(**kwargs)
-        contact_pk = 0
-        if self.object.contact:
-            contact_pk = self.object.contact.pk
-        context['contact_form'] = ContactForm(initial = {'contact': contact_pk})
-        context['investigator_formset'] = InvestigatorFormSet(
-            instance=self.object)
-        context['investigator_formset_helper'] = InvestigatorFormSetHelper()
-        context['link_formset'] = LinkFormSet(instance=self.object)
-        context['link_formset_helper'] = LinkFormSetHelper()
-        context['new_contact_form'] = NewContactForm()
-        context['publication_document_formset'] = PublicationDocumentFormSet(
-            instance=self.object)
-        context['publication_document_formset_helper'] = \
-            PublicationDocumentFormSetHelper()
-        context['publication_pubmed_link_formset'] = \
-            PublicationPubMedLinkFormSet(instance=self.object)
-        context['publication_pubmed_link_formset_helper'] = \
-            PublicationPubMedLinkFormSetHelper()
-        context['task_formset'] = TaskFormSet(instance=self.object)
-        context['task_formset_helper'] = TaskFormSetHelper()
-        context['revision_formset'] = RevisionFormSet(instance=self.object)
-        context['revision_formset_helper'] = RevisionFormSetHelper()
-        return context
-
-    def form_valid(self, form):
-        dataset = form.save()
-
-        new_contact_form = NewContactForm(self.request.POST)
-        contact_form = ContactForm(self.request.POST)
-        if new_contact_form.is_valid() and new_contact_form.has_changed():
-            new_contact = new_contact_form.save()
-            new_contact.save()
-            dataset.contact = new_contact
-        elif contact_form.is_valid():
-            dataset.contact = contact_form.cleaned_data['contact']
-        else:
-            pass
-        
-        investigator_formset = InvestigatorFormSet(self.request.POST,
-            self.request.FILES, instance=self.object)
-        if investigator_formset.is_valid():
-            investigator_formset.save()
-
-        link_formset = LinkFormSet(self.request.POST, instance=self.object)
-        if link_formset.is_valid():
-            link_formset.save()
-
-        publication_document_formset = PublicationDocumentFormSet(
-            self.request.POST, self.request.FILES, instance=self.object)
-        if publication_document_formset.is_valid():
-            publication_document_formset.save()
-        
-        publication_pubmed_link_formset = PublicationPubMedLinkFormSet(
-            self.request.POST, instance=self.object)
-        if publication_pubmed_link_formset.is_valid():
-            publication_pubmed_link_formset.save()
-
-        revision_formset = RevisionFormSet(self.request.POST, 
-            instance=self.object)
-        if revision_formset.is_valid():
-            revision_formset.save()
-        
-        task_formset = TaskFormSet(self.request.POST, self.request.FILES,
-            instance=self.object)
-        if task_formset.is_valid():
-            task_formset.save()
-        else:
-            form_empty_permitted = task_formset.forms[-1].empty_permitted
-            form_has_changed = task_formset.forms[-1].changed_data
-            total_forms = task_formset.total_form_count()
-            raise forms.ValidationError(task_formset.errors)
-            
-        return super(DatasetUpdate, self).form_valid(form)
 
 class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):
     model = FeaturedDataset
@@ -300,7 +250,8 @@ class UserDataRequestCreate(LoginRequiredMixin, CreateView):
         user_request.save()
         return super(UserDataRequestCreate, self).form_valid(form)
 
-class UserDataset(SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFormView):
+class UserDataset(SingleObjectTemplateResponseMixin, ModelFormMixin,
+                  ProcessFormView):
     model = Dataset
     form_class = UserDatasetForm
     success_url = reverse_lazy('dataset_list')
