@@ -1,22 +1,22 @@
 from django.conf.urls import patterns, url
 
-from dataset.views import DatasetCreate, DatasetDelete, DatasetDetail, \
-    DatasetList, DatasetUpdate, FeaturedDatasetEdit, FeaturedDatasetDelete, \
-    UserDatasetCreate, UserDataRequestCreate, UserDataset, \
-    ReferencePaperCreate, ReferencePaperUpdate, ReferencePaperDelete, \
-    ReferencePaperList
+from dataset.views import (DatasetCreateUpdate, DatasetDelete,
+    DatasetDetail, DatasetList, FeaturedDatasetEdit,
+    FeaturedDatasetDelete, UserDatasetCreate, UserDataRequestCreate,
+    UserDataset, ReferencePaperCreate, ReferencePaperUpdate,
+    ReferencePaperDelete, ReferencePaperList)
 
 from dataset.api_views import DatasetAPIList, DatasetAPIDetail
 
 urlpatterns = patterns('',
     url(
         r'^new/$',
-        DatasetCreate.as_view(),
+        DatasetCreateUpdate.as_view(),
         name='dataset_create'
     ),
     url(
         r'^edit/(?P<pk>ds\d+[a-zA-Z]?)$',
-        DatasetUpdate.as_view(),
+        DatasetCreateUpdate.as_view(),
         name='dataset_update'
     ),
     # this url maintains backwards compatability with old site detail view

@@ -13,12 +13,12 @@ from django.utils.crypto import salted_hmac
 from ckeditor.widgets import CKEditorWidget
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
-    Layout, Row, Submit
+from crispy_forms.layout import (ButtonHolder, Column, Field, Fieldset,
+    Layout, Row, Submit)
 
-from dataset.models import Contact, Dataset, FeaturedDataset, Investigator, \
-    Link, PublicationPubMedLink, PublicationDocument, Revision, Task, \
-    UserDataRequest, ReferencePaper
+from dataset.models import (Contact, Dataset, FeaturedDataset, Investigator,
+    Link, PublicationPubMedLink, PublicationDocument, Revision, Task,
+    UserDataRequest, ReferencePaper)
 
 class ContactForm(Form):
     contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
@@ -188,13 +188,14 @@ class TaskForm(ModelForm):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
-    
+ContactFormSet = inlineformset_factory(Dataset, Contact, form=NewContactForm,
+                                       extra=1, can_delete=True)
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
 
-LinkFormSet = inlineformset_factory(
-    Dataset, Link, form=LinkForm, extra=1, can_delete=True)
+LinkFormSet = inlineformset_factory(Dataset, Link, form=LinkForm, extra=1,
+                                    can_delete=True)
 
 PublicationDocumentFormSet = inlineformset_factory(
     Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1, 
@@ -209,6 +210,21 @@ RevisionFormSet = inlineformset_factory(
 
 TaskFormSet = inlineformset_factory(
     Dataset, Task, form=TaskForm, extra=1, can_delete=True)
+
+class ContactFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(ContactFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "Contact",
+                Field('name', class="form-control"),
+                Field('email', class="form-control"),
+                Field('website', class="form-control"),
+                Field('DELETE', css_class='form-control'),
+                css_class="fieldset-control form-control"
+            )
+        )
+        self.form_tag = False
 
 class InvestigatorFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
