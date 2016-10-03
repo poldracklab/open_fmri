@@ -126,7 +126,6 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['link_formset'] = LinkFormSet(instance=self.object)
         context['link_formset_helper'] = LinkFormSetHelper()
-        context['new_contact_form'] = NewContactForm()
         context['publication_document_formset'] = PublicationDocumentFormSet(instance=self.object)
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
@@ -138,7 +137,8 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
-        context['contact_formset'] = ContactFormSet()
+        context['new_contact_form'] = NewContactForm()
+        context['contact_formset'] = ContactFormSet(prefix="contact")
         context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
@@ -197,6 +197,12 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
             task_formset.save()
         else:
             invalid_form = True
+
+        contact_formset = ContactFormSet(self.request.POST, instance=dataset)
+        if contact_formset.is_valid():
+            contact_formset.save()
+        else:
+            invalid_form = True
         
         if invalid_form:
             context = {
@@ -210,12 +216,14 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                 'publication_pubmed_link_formset': publication_pubmed_link_formset,
                 'revision_formset': revision_formset,
                 'task_formset': task_formset,
+                'contact_formset': contact_formset,
                 'investigator_formset_helper': InvestigatorFormSetHelper(),
                 'link_formset_helper': LinkFormSetHelper(),
                 'publication_document_formset_helper': PublicationDocumentFormSetHelper(),
                 'publication_pubmed_link_formset_helper': PublicationPubMedLinkFormSetHelper(),
                 'task_formset_helper': TaskFormSetHelper(),
-                'revision_formset_helper': RevisionFormSetHelper()
+                'revision_formset_helper': RevisionFormSetHelper(),
+                'contact_formset_helper': ContactFormSetHelper()
             }
             return self.render_to_response(context)
         else:

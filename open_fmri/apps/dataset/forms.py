@@ -21,7 +21,10 @@ from dataset.models import (Contact, Dataset, FeaturedDataset, Investigator,
     UserDataRequest, ReferencePaper)
 
 class ContactForm(Form):
-    contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
+    contact = forms.ModelMultipleChoiceField(
+        queryset=Contact.objects.all(),
+        widget=forms.Select
+    )
 
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
@@ -215,7 +218,7 @@ class ContactFormSetHelper(FormHelper):
         super(ContactFormSetHelper, self).__init__(*args, **kwargs)
         self.layout = Layout(
             Fieldset(
-                "Contact",
+                "New Contact Information",
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
