@@ -5,7 +5,7 @@ from django import forms
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.forms import Form, ModelForm
-from django.forms.models import inlineformset_factory
+from django.forms.models import formset_factory, inlineformset_factory
 from django.forms.widgets import TextInput
 from django.template.loader import render_to_string
 from django.utils.crypto import salted_hmac
@@ -188,8 +188,7 @@ class TaskForm(ModelForm):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
-ContactFormSet = inlineformset_factory(Dataset, Contact, form=NewContactForm,
-                                       extra=1, can_delete=True)
+ContactFormSet = formset_factory(NewContactForm, extra=1, can_delete=True)
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
@@ -217,14 +216,15 @@ class ContactFormSetHelper(FormHelper):
         self.layout = Layout(
             Fieldset(
                 "Contact",
-                Field('name', class="form-control"),
-                Field('email', class="form-control"),
-                Field('website', class="form-control"),
+                Field('name', css_class="form-control"),
+                Field('email', css_class="form-control"),
+                Field('website', css_class="form-control"),
                 Field('DELETE', css_class='form-control'),
                 css_class="fieldset-control form-control"
             )
         )
         self.form_tag = False
+
 
 class InvestigatorFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):

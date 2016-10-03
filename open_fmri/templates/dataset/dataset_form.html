@@ -54,8 +54,12 @@
         {% crispy contact_form %}
     </div>
     
-     <div id="id_new_contact">
+    <div id="id_new_contact">
         {% crispy new_contact_form %}
+    </div>
+
+    <div id="id_contactformset">
+        {% crispy contact_formset contact_formset_helper %}
     </div>
 
     <input class="btn btn-primary" type="submit" value="Save">
@@ -114,6 +118,15 @@
             deleteText: 'Remove',
             prefix: 'id_publication_document_set',
             formCssClass: 'id_publication_document_set'
+        });
+    })
+
+    $(document).ready(function() {
+        $('#id_contact_formset .fieldset-control').formset({
+            addText: 'Add additional Contact',
+            deleteText: 'Remove',
+            prefix: 'id_contact_formset_set',
+            formCssClass: 'id_contact_formset_set'
         });
     })
 

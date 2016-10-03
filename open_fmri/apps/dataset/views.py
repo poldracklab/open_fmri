@@ -14,13 +14,13 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 
 from braces.views import LoginRequiredMixin
 
-from dataset.forms import (ContactForm, DatasetForm, FeaturedDatasetForm,
-    InvestigatorFormSet, InvestigatorFormSetHelper, LinkFormSet,
-    LinkFormSetHelper, PublicationDocumentFormSet,
-    PublicationDocumentFormSetHelper, PublicationPubMedLinkFormSet,
-    PublicationPubMedLinkFormSetHelper, RevisionFormSet,
-    RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper, UserDatasetForm,
-    UserDataRequestForm, NewContactForm, ReferencePaperForm)
+from dataset.forms import (ContactForm, ContactFormSet, ContactFormSetHelper,
+    DatasetForm, FeaturedDatasetForm, InvestigatorFormSet,
+    InvestigatorFormSetHelper, LinkFormSet, LinkFormSetHelper,
+    PublicationDocumentFormSet, PublicationDocumentFormSetHelper,
+    PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, 
+    RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper,
+    UserDatasetForm, UserDataRequestForm, NewContactForm, ReferencePaperForm)
 from dataset.models import (Dataset, Investigator, PublicationDocument,
     PublicationPubMedLink, FeaturedDataset, UserDataRequest, ReferencePaper)
 from log_parse.models import S3File
@@ -138,6 +138,8 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
+        context['contact_formset'] = ContactFormSet()
+        context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
     def form_valid(self, form):

@@ -45,6 +45,7 @@ class Contact(models.Model):
     email = models.EmailField(blank=True)
     name = models.CharField(max_length=200, blank=True)
     website = models.TextField(validators=[URLValidator()], blank=True)
+    datasets = models.ManyToManyField('Dataset', related_name='m2m_contact')
     
     def __str__(self):
         return self.name
