@@ -26,6 +26,10 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
+    <div id="id_contactformset">
+        {% crispy contact_formset contact_formset_helper %}
+    </div>
+
     <div id="id_task">
         {% crispy task_formset task_formset_helper %}
     </div>
@@ -50,18 +54,6 @@
         {% crispy revision_formset revision_formset_helper %}
     </div>
 
-    <div id="id_contact">
-        {% crispy contact_form %}
-    </div>
-    
-    <div id="id_new_contact">
-        {% crispy new_contact_form %}
-    </div>
-
-    <div id="id_contactformset">
-        {% crispy contact_formset contact_formset_helper %}
-    </div>
-
     <input class="btn btn-primary" type="submit" value="Save">
 
     </form>
@@ -79,8 +71,7 @@
         task_template = $('.task_set:last').clone(true)
         task_template.find('input:hidden[id $= "-DELETE"]').remove();
         $("select[id$='-cogat_id']").select2();
-        $("select[id$='contact']").attr('multiple', true);
-        $("select[id$='contact']").select2();
+        $("select[id$='contacts']").select2();
     });
 
     function updateCogatSelect(row) {

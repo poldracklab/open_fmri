@@ -21,8 +21,9 @@ from dataset.forms import (ContactForm, ContactFormSet, ContactFormSetHelper,
     PublicationPubMedLinkFormSet, PublicationPubMedLinkFormSetHelper, 
     RevisionFormSet, RevisionFormSetHelper, TaskFormSet, TaskFormSetHelper,
     UserDatasetForm, UserDataRequestForm, NewContactForm, ReferencePaperForm)
-from dataset.models import (Dataset, Investigator, PublicationDocument,
-    PublicationPubMedLink, FeaturedDataset, UserDataRequest, ReferencePaper)
+from dataset.models import (Contact, Dataset, Investigator,
+    PublicationDocument, PublicationPubMedLink, FeaturedDataset,
+    UserDataRequest, ReferencePaper)
 from log_parse.models import S3File
 
 requests_cache.install_cache('cache')
@@ -97,8 +98,13 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                               ModelFormMixin, ProcessFormView):
     model = Dataset
     form_class = DatasetForm
-    success_url = reverse_lazy('dataset_list')
     template_name = 'dataset/dataset_form.html'
+
+    def get_success_url(self):
+        if self.object.pk != None:
+            return reverse_lazy('dataset_detail', args = (self.object.pk,))
+        else:
+            return reverse_lazy('dataset_list')
 
     def get_object(self, queryset=None):
         try:
@@ -117,16 +123,13 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
     def get_context_data(self, **kwargs):
         context = super(DatasetCreateUpdate, self).get_context_data(**kwargs)
         contact_pk = 0
-        if self.object and self.object.contact:
-            contact_pk = self.object.contact.pk
-        context['contact_form'] = ContactForm(
-            initial = {'contact': contact_pk}
-        )
+        # initial = {'contact': contact_pk})
         context['investigator_formset'] = InvestigatorFormSet()
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['link_formset'] = LinkFormSet(instance=self.object)
         context['link_formset_helper'] = LinkFormSetHelper()
-        context['publication_document_formset'] = PublicationDocumentFormSet(instance=self.object)
+        context['publication_document_formset'] = \
+            PublicationDocumentFormSet(instance=self.object)
         context['publication_document_formset_helper'] = \
             PublicationDocumentFormSetHelper()
         context['publication_pubmed_link_formset'] = \
@@ -137,8 +140,9 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
-        context['new_contact_form'] = NewContactForm()
-        context['contact_formset'] = ContactFormSet(prefix="contact")
+        context['contact_formset'] = ContactFormSet(
+            queryset=self.object.contacts.all(),
+        )
         context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
@@ -146,15 +150,12 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         dataset = form.save()
         invalid_form = False
 
-        new_contact_form = NewContactForm(self.request.POST)
-        contact_form = ContactForm(self.request.POST)
-        if new_contact_form.is_valid() and new_contact_form.has_changed():
-            new_contact = new_contact_form.save()
-            new_contact.save()
-            dataset.contact = new_contact
-        elif contact_form.is_valid():
-            dataset.contact = contact_form.cleaned_data['contact']
-        elif not(new_contact_form.is_valid() or contact_form.is_valid()):
+        contact_formset = ContactFormSet(self.request.POST)
+        if contact_formset.is_valid():
+            contact_forms = contact_formset.save()
+            for contact_form in contact_forms:
+                dataset.contacts.add(contact_form)
+        else:
             invalid_form = True
 
         investigator_formset = InvestigatorFormSet(self.request.POST,
@@ -198,18 +199,11 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         else:
             invalid_form = True
 
-        contact_formset = ContactFormSet(self.request.POST, instance=dataset)
-        if contact_formset.is_valid():
-            contact_formset.save()
-        else:
-            invalid_form = True
         
         if invalid_form:
             context = {
                 'request': self.request,
                 'form': form,
-                'new_contact_form': new_contact_form,
-                'contact_form': contact_form,
                 'investigator_formset': investigator_formset,
                 'link_formset': link_formset,
                 'publication_document_formset': publication_document_formset,

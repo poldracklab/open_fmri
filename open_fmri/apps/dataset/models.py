@@ -45,7 +45,6 @@ class Contact(models.Model):
     email = models.EmailField(blank=True)
     name = models.CharField(max_length=200, blank=True)
     website = models.TextField(validators=[URLValidator()], blank=True)
-    datasets = models.ManyToManyField('Dataset', related_name='m2m_contact')
     
     def __str__(self):
         return self.name
@@ -89,6 +88,8 @@ class Dataset(models.Model):
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True,
                                     null=True)
     contact = models.ForeignKey('Contact', blank=True, null=True)
+    contacts = models.ManyToManyField('Contact', related_name='m2m_contact',
+                                      blank=True)
     orientation_warning = models.NullBooleanField(default=False, null=True)
     
     def __str__(self):

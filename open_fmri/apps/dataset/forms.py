@@ -5,7 +5,7 @@ from django import forms
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.forms import Form, ModelForm
-from django.forms.models import formset_factory, inlineformset_factory
+from django.forms.models import modelformset_factory, inlineformset_factory
 from django.forms.widgets import TextInput
 from django.template.loader import render_to_string
 from django.utils.crypto import salted_hmac
@@ -22,8 +22,7 @@ from dataset.models import (Contact, Dataset, FeaturedDataset, Investigator,
 
 class ContactForm(Form):
     contact = forms.ModelMultipleChoiceField(
-        queryset=Contact.objects.all(),
-        widget=forms.Select
+        queryset=Contact.objects.all()
     )
 
     def __init__(self, *args, **kwargs):
@@ -54,7 +53,7 @@ class NewContactForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "New Contact Information",
+                "Contact Information",
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
@@ -70,7 +69,7 @@ class DatasetForm(ModelForm):
             'workflow_stage', 'status', 'project_name', 'summary', 
             'sample_size', 'scanner_type', 'accession_number', 
             'acknowledgements', 'license_title', 'license_url', 'curated',
-            'orientation_warning' 
+            'orientation_warning', 'contacts'
         ]
         
         widgets = {
@@ -94,6 +93,7 @@ class DatasetForm(ModelForm):
             Field('license_title', css_class="form-control"),
             Field('license_url', css_class="form-control"),
             Field('orientation_warning', css_class="form-control"),
+            Field('contacts', css_class="form-control"),
         )
         self.helper.form_tag = False
 
@@ -191,7 +191,8 @@ class TaskForm(ModelForm):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
-ContactFormSet = formset_factory(NewContactForm, extra=1, can_delete=True)
+ContactFormSet = modelformset_factory(Contact, NewContactForm, extra=1,
+                                      can_delete=True)
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
@@ -218,7 +219,7 @@ class ContactFormSetHelper(FormHelper):
         super(ContactFormSetHelper, self).__init__(*args, **kwargs)
         self.layout = Layout(
             Fieldset(
-                "New Contact Information",
+                "Contact Information",
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
