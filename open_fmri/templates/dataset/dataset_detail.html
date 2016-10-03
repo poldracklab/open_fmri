@@ -11,7 +11,7 @@
     <h1 class="title">
         {{ object.project_name }}
         {% if user.is_authenticated %}
-            <a href="{% url 'dataset_update' object.accession_number %}">Edit</a><br/> 
+            (<a href="{% url 'dataset_update' object.accession_number %}">Edit</a>)
         {% endif %}
     </h1>
     <p>{{ object.summary|safe }}</p>
@@ -30,17 +30,20 @@
     {% endfor %}
     </ul>
 
-    {% if object.contact %}
+    {% if object.contacts %}
     <h4>Contact Information:</h4>
-        {% if object.contact.name %}
-            Name: {{ object.contact.name }}<br/>
-        {% endif %}
-        {% if object.contact.email %}
-            Email: {{ object.contact.email }}<br/>
-        {% endif %}
-        {% if object.contact.website %}
-            Website: <a href="{{ object.contact.website }}">{{ object.contact.website }}</a><br/>
-        {% endif %}
+        {% for contact in object.contacts.all %}
+            {% if contact.name %}
+                Name: {{ contact.name }}<br/>
+            {% endif %}
+            {% if contact.email %}
+                Email: {{ contact.email }}<br/>
+            {% endif %}
+            {% if contact.website %}
+                Website: <a href="{{ contact.website }}">{{ contact.website }}</a><br/>
+            {% endif %}
+            <br/>
+        {% endfor %}
     {% endif %}
 
     {% if object.acknowledgements %}
