@@ -30,7 +30,7 @@
     {% endfor %}
     </ul>
 
-    {% if object.contacts %}
+    {% if has_contacts %}
     <h4>Contact Information:</h4>
         {% for contact in object.contacts.all %}
             {% if contact.name %}

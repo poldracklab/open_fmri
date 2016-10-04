@@ -91,6 +91,7 @@ class DatasetDetail(DetailView):
         context['revisions'] = context_revisions
         context['other_links'] = context_links
         context['ref_papers'] = self.object.referencepaper_set.all()
+        context['has_contacts'] = self.object.contacts.all().count() > 0
         return context
 
 
@@ -143,10 +144,13 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         if self.object:
             context['contact_formset'] = ContactFormSet(
                 queryset=self.object.contacts.all(),
+                prefix='contacts'
             )
         else:
             context['contact_formset'] = ContactFormSet(
-                queryset=Contact.objects.none()
+                queryset=Contact.objects.none(
+                    prefix='contacts'
+                )
             )
         context['contact_formset_helper'] = ContactFormSetHelper()
         return context
@@ -160,6 +164,7 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
             contact_forms = contact_formset.save()
             for contact_form in contact_forms:
                 dataset.contacts.add(contact_form)
+            dataset.save()
         else:
             invalid_form = True
 

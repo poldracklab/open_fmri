@@ -18,7 +18,10 @@
 
 {% block content %}
     {% if object.pk %}
-        <h2>Update Dataset</h2>
+        <h2>
+            Update Dataset 
+            (<a href="{% url 'dataset_detail' object.accession_number %}">View</a>)
+        </h2>
     {% else %}
         <h2>Create Dataset</h2>
     {% endif %}
@@ -26,8 +29,8 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
-    <label class="control-label"> Contact Information <input type="button" class="btn btn-default" id="contact_toggle" value="hide/show"></label>
-    <div id="id_contactformset">
+    <label class="control-label">Edit/Add Contact Information <input type="button" class="btn btn-default" id="contact_toggle" value="hide/show"></label>
+    <div id="id_contactformset" style="display: None">
         {% crispy contact_formset contact_formset_helper %}
     </div>
 
@@ -86,54 +89,42 @@
             prefix: '{{ link_formset.prefix }}',
             formCssClass: '{{ link_formset.prefix }}'
         });
-    })   
 
-    $(document).ready(function() {
         $('#id_revision .fieldset-control').formset({
             addText: 'Add Revision',
             deleteText: 'Remove',
             prefix: '{{ revision_formset.prefix }}',
             formCssClass: '{{ revision_formset.prefix }}'
         });
-    })
 
-    $(document).ready(function() {
         $('#id_investigator .fieldset-control').formset({
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}',
             formCssClass: '{{ investigator_formset.prefix }}'
         });
-    })
     
-    $(document).ready(function() {
         $('#id_publication_document .fieldset-control').formset({
             addText: 'Add Publication Document',
             deleteText: 'Remove',
             prefix: 'id_publication_document_set',
             formCssClass: 'id_publication_document_set'
         });
-    })
 
-    $(document).ready(function() {
         $('#id_contactformset .fieldset-control').formset({
             addText: 'Add additional Contact',
             deleteText: 'Remove',
-            prefix: '{{ contact_formset.prefix }}',
-            formCssClass: '{{ contact_formset.prefix }}'
+            prefix: 'id_contacts',
+            formCssClass: 'id_contacts'
         });
-    })
 
-    $(document).ready(function() {
         $('#id_publication_pubmed_link .fieldset-control').formset({
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}',
             formCssClass: '{{ publication_pubmed_link_formset.prefix }}',
         });
-    })
 
-    $(document).ready(function() {
         $('#id_task .fieldset-control').formset({
             addText: 'Add Task',
             deleteText: 'Remove',
@@ -142,13 +133,8 @@
             added: updateCogatSelect,
             formTemplate: task_template
         });
-    })
-
-    
-    $(document).ready(function() {
         $("input[id$='-date_set']").datepicker();
-    });
-    
+    })
 
     var contact_toggle = document.getElementById('contact_toggle');
 
