@@ -140,9 +140,12 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
-        context['contact_formset'] = ContactFormSet(
-            queryset=self.object.contacts.all(),
-        )
+        if self.object:
+            context['contact_formset'] = ContactFormSet(
+                queryset=self.object.contacts.all(),
+            )
+        else:
+            context['contact_formset'] = ContactFormSet()
         context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
