@@ -26,6 +26,7 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
+    <label class="control-label"> Contact Information <input type="button" class="btn btn-default" id="contact_toggle" value="hide/show"></label>
     <div id="id_contactformset">
         {% crispy contact_formset contact_formset_helper %}
     </div>
@@ -149,5 +150,16 @@
     });
     
 
+    var contact_toggle = document.getElementById('contact_toggle');
+
+    contact_toggle.onclick = function() {
+        var div = document.getElementById('id_contactformset');
+        if (div.style.display !== 'none') {
+            div.style.display = 'none';
+        }
+        else {
+            div.style.display = 'block';
+        }
+    };
     </script>
 {% endblock %}
