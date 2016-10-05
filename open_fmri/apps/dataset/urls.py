@@ -4,7 +4,8 @@ from dataset.views import (DatasetCreateUpdate, DatasetDelete,
     DatasetDetail, DatasetList, FeaturedDatasetEdit,
     FeaturedDatasetDelete, UserDatasetCreate, UserDataRequestCreate,
     UserDataset, ReferencePaperCreate, ReferencePaperUpdate,
-    ReferencePaperDelete, ReferencePaperList)
+    ReferencePaperDelete, ReferencePaperList, ContactCreate, ContactUpdate,
+    ContactList, ContactDelete)
 
 from dataset.api_views import DatasetAPIList, DatasetAPIDetail
 
@@ -74,6 +75,26 @@ urlpatterns = patterns('',
         r'^reference/delete/(?P<pk>\d+)$',
         ReferencePaperDelete.as_view(),
         name='reference_paper_delete'
+    ),
+    url(
+        r'^contact/edit/(?P<pk>\d+)$',
+        ContactUpdate.as_view(),
+        name='contact_update'
+    ),
+    url(
+        r'^contact/new/',
+        ContactCreate.as_view(),
+        name='contact_create'
+    ),
+    url(
+        r'^contact/delete/(?P<pk>\d+)$',
+        ContactDelete.as_view(),
+        name='contact_delete'
+    ),
+    url(
+        r'^contact/list/',
+        ContactList.as_view(),
+        name='contact_list'
     ),
     url(
         r'^$',

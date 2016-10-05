@@ -192,7 +192,7 @@ class TaskForm(ModelForm):
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
 ContactFormSet = modelformset_factory(Contact, form=NewContactForm,
-                                       extra=1, can_delete=True)
+                                      extra=1, can_delete=True) 
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
@@ -223,7 +223,7 @@ class ContactFormSetHelper(FormHelper):
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
-                Field('DELETE', css_class='form-control'),
+                Field('DELETE', css_class="form-control"),
                 css_class="fieldset-control form-control"
             )
         )

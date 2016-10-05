@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    Contacts
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block header-image %}
+{% static 'images/banner_view_data.png' %}
+{% endblock %}
+
+{% block content %}
+<h1 class="title">Contacts</h1>
+<h4><a href {% url 'contact_create' %}>Add New Contact</a></h4>
+<table id="dataset-list-table" class="table table-bordered">
+<thead>
+<tr>
+<th> Name </th>
+<th> Email </th>
+<th> Website </th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+{% for contact in object_list %}
+    <tr>
+    <td class="first_td">{{ contact.name }}</td>
+    <td> {{ contact.email }} </td>
+    <td>{{ contact.website }}</td>
+    <td> 
+        <a href="{% url 'contact_update' contact.pk %}">Edit</a><br/>
+        <a href="{% url 'contact_delete' contact.pk %}">Delete</a>
+    </td>
+    </tr>
+{% endfor %} 
+</tbody>
+</table>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript">
+$(document).ready(function() {
+    $('#dataset-list-table').DataTable({
+        "bLengthChange": false,        
+        "pageLength": 50,
+        "order": [[ 1, "asc" ]],
+        });
+});
+</script>
+{% endblock %}

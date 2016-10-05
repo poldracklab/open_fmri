@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+{% if object.pk %}
+    Update Contact
+{% else %}
+    Create Contact
+{% endif %}
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link href="{% static 'css/select2.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
+{% block content %}
+    {% if object.pk %}
+        <h2>
+            Update Contact
+        </h2>
+    {% else %}
+        <h2>Create Contact</h2>
+    {% endif %}
+
+    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {% crispy form %}
+    <input class="btn btn-primary" type="submit" value="Save">
+    </form>
+{% endblock %}
+{% block javascript %}
+{{ block.super }}
+{% endblock %}

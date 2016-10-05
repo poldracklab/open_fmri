@@ -29,11 +29,6 @@
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
 
-    <label class="control-label">Edit/Add Contact Information <input type="button" class="btn btn-default" id="contact_toggle" value="hide/show"></label>
-    <div id="id_contactformset" style="display: None">
-        {% crispy contact_formset contact_formset_helper %}
-    </div>
-
     <div id="id_task">
         {% crispy task_formset task_formset_helper %}
     </div>
@@ -82,6 +77,7 @@
         select_elem = row.find("select[id$='-cogat_id']");
         select_elem.select2();
     }
+
      $(document).ready(function() {
         $('#id_link .fieldset-control').formset({
             addText: 'Add Link',
@@ -111,13 +107,6 @@
             formCssClass: 'id_publication_document_set'
         });
 
-        $('#id_contactformset .fieldset-control').formset({
-            addText: 'Add additional Contact',
-            deleteText: 'Remove',
-            prefix: 'id_contacts',
-            formCssClass: 'id_contacts'
-        });
-
         $('#id_publication_pubmed_link .fieldset-control').formset({
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
@@ -135,17 +124,5 @@
         });
         $("input[id$='-date_set']").datepicker();
     })
-
-    var contact_toggle = document.getElementById('contact_toggle');
-
-    contact_toggle.onclick = function() {
-        var div = document.getElementById('id_contactformset');
-        if (div.style.display !== 'none') {
-            div.style.display = 'none';
-        }
-        else {
-            div.style.display = 'block';
-        }
-    };
     </script>
 {% endblock %}

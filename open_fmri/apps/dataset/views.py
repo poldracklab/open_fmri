@@ -28,6 +28,24 @@ from log_parse.models import S3File
 
 requests_cache.install_cache('cache')
 
+class ContactList(LoginRequiredMixin, ListView):
+    model = Contact
+
+class ContactDelete(LoginRequiredMixin, DeleteView):
+    model = Contact
+    success_url = reverse_lazy('contact_list')
+
+class ContactUpdate(LoginRequiredMixin, UpdateView):
+    model = Contact
+    form_class = NewContactForm
+    success_url = reverse_lazy('contact_list')
+
+class ContactCreate(LoginRequiredMixin, CreateView):
+    model = Contact
+    form_class = NewContactForm
+    success_url = reverse_lazy('contact_list')
+    
+
 class DatasetList(ListView):
     model = Dataset
     def get_queryset(self, **kwargs):
@@ -141,32 +159,11 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
-        if self.object:
-            context['contact_formset'] = ContactFormSet(
-                queryset=self.object.contacts.all(),
-                prefix='contacts'
-            )
-        else:
-            context['contact_formset'] = ContactFormSet(
-                queryset=Contact.objects.none(
-                    prefix='contacts'
-                )
-            )
-        context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
     def form_valid(self, form):
         dataset = form.save()
         invalid_form = False
-
-        contact_formset = ContactFormSet(self.request.POST)
-        if contact_formset.is_valid():
-            contact_forms = contact_formset.save()
-            for contact_form in contact_forms:
-                dataset.contacts.add(contact_form)
-            dataset.save()
-        else:
-            invalid_form = True
 
         investigator_formset = InvestigatorFormSet(self.request.POST,
             self.request.FILES, instance=dataset)
@@ -220,14 +217,12 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                 'publication_pubmed_link_formset': publication_pubmed_link_formset,
                 'revision_formset': revision_formset,
                 'task_formset': task_formset,
-                'contact_formset': contact_formset,
                 'investigator_formset_helper': InvestigatorFormSetHelper(),
                 'link_formset_helper': LinkFormSetHelper(),
                 'publication_document_formset_helper': PublicationDocumentFormSetHelper(),
                 'publication_pubmed_link_formset_helper': PublicationPubMedLinkFormSetHelper(),
                 'task_formset_helper': TaskFormSetHelper(),
                 'revision_formset_helper': RevisionFormSetHelper(),
-                'contact_formset_helper': ContactFormSetHelper()
             }
             return self.render_to_response(context)
         else:
