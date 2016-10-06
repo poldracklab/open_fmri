@@ -192,7 +192,7 @@ class TaskForm(ModelForm):
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
 ContactFormSet = modelformset_factory(Contact, form=NewContactForm,
-                                      extra=1, can_delete=True) 
+                                      extra=1) 
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)

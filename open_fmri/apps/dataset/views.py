@@ -159,6 +159,15 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
+        if self.object:
+            context['contact_formset'] = ContactFormSet(
+                queryset=self.object.contacts.all(),
+            )
+        else:
+            context['contact_formset'] = ContactFormSet(
+                queryset=Contact.objects.none(),
+            )
+        context['contact_formset_helper'] = ContactFormSetHelper()
         return context
 
     def form_valid(self, form):
@@ -206,6 +215,13 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         else:
             invalid_form = True
 
+        contact_formset = ContactFormSet(self.request.POST)
+        if contact_formset.is_valid():
+            contact_forms = contact_formset.save()
+            for contact_form in contact_forms:
+                dataset.contacts.add(contact_form)
+        else:
+            invalid_form = True
         
         if invalid_form:
             context = {
@@ -217,6 +233,8 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                 'publication_pubmed_link_formset': publication_pubmed_link_formset,
                 'revision_formset': revision_formset,
                 'task_formset': task_formset,
+                'contact_formset': contact_formset,
+                'contact_formset_helper': ContactFormSetHelper(),
                 'investigator_formset_helper': InvestigatorFormSetHelper(),
                 'link_formset_helper': LinkFormSetHelper(),
                 'publication_document_formset_helper': PublicationDocumentFormSetHelper(),
