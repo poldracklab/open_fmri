@@ -10,10 +10,6 @@ machine:
         SECRET_KEY: CI
 
 test:
-  pre:
-    - ./manage.py makemigrations
-    - ./manage.py migrate
-    - ./manage.py collectstatic --noinput
   override:
     - coverage run --source=dataset manage.py test
   post:
