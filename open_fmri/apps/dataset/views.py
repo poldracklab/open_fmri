@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.crypto import constant_time_compare, salted_hmac
 from django.views.generic import (CreateView, DeleteView, DetailView,
@@ -112,7 +113,6 @@ class DatasetDetail(DetailView):
         context['has_contacts'] = self.object.contacts.all().count() > 0
         return context
 
-
 class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
                               ModelFormMixin, ProcessFormView):
     model = Dataset
@@ -159,6 +159,7 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context['task_formset_helper'] = TaskFormSetHelper()
         context['revision_formset'] = RevisionFormSet(instance=self.object)
         context['revision_formset_helper'] = RevisionFormSetHelper()
+        print(self.object)
         if self.object:
             context['contact_formset'] = ContactFormSet(
                 queryset=self.object.contacts.all(),
@@ -172,6 +173,7 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
 
     def form_valid(self, form):
         dataset = form.save()
+        self.object = dataset
         invalid_form = False
 
         investigator_formset = InvestigatorFormSet(self.request.POST,
@@ -218,11 +220,12 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         contact_formset = ContactFormSet(self.request.POST)
         if contact_formset.is_valid():
             contact_forms = contact_formset.save()
-            for contact_form in contact_forms:
-                dataset.contacts.add(contact_form)
+            for contact in contact_forms:
+                dataset.contacts.add(contact.pk)
         else:
             invalid_form = True
-        
+
+        print(dataset.contacts.all())
         if invalid_form:
             context = {
                 'request': self.request,
@@ -244,8 +247,7 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
             }
             return self.render_to_response(context)
         else:
-            return super(DatasetCreateUpdate, self).form_valid(form)
-
+            return HttpResponseRedirect(self.get_success_url())
 
 
 class FeaturedDatasetEdit(LoginRequiredMixin, CreateView):

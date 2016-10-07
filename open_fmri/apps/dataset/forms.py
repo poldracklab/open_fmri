@@ -223,7 +223,6 @@ class ContactFormSetHelper(FormHelper):
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
-                Field('DELETE', css_class="form-control"),
                 css_class="fieldset-control form-control"
             )
         )
