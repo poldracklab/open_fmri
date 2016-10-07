@@ -1,7 +1,4 @@
 dependencies:
-  pre:
-    - ./manage.py makemigrations
-    - ./manage.py migrate
   override:
     - pip install -r requirements.txt
     - pip install coveralls
