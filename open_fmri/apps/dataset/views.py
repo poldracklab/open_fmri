@@ -110,7 +110,9 @@ class DatasetDetail(DetailView):
         context['revisions'] = context_revisions
         context['other_links'] = context_links
         context['ref_papers'] = self.object.referencepaper_set.all()
-        context['has_contacts'] = self.object.contacts.all().count() > 0
+        contacts = self.object.contacts.all().order_by('name')
+        context['has_contacts'] = contacts.count() > 0
+        context['contacts'] = contacts
         return context
 
 class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,

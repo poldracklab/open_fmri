@@ -32,7 +32,7 @@
 
     {% if has_contacts %}
     <h4>Contact Information:</h4>
-        {% for contact in object.contacts.all %}
+        {% for contact in contacts %}
             {% if contact.name %}
                 Name: {{ contact.name }}<br/>
             {% endif %}
