@@ -18,13 +18,21 @@
 
 {% block content %}
     {% if object.pk %}
-        <h2>Update Dataset</h2>
+        <h2>
+            Update Dataset 
+            (<a href="{% url 'dataset_detail' object.accession_number %}">View</a>)
+        </h2>
     {% else %}
         <h2>Create Dataset</h2>
     {% endif %}
 
     <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {% crispy form %}
+
+    <label class="control-label">Edit Contact Information<input type="button" class="btn btn-default" id="contact_toggle" value="hide/show"></label>
+    <div id="id_contact" style="display: None;">
+        {% crispy contact_formset contact_formset_helper %}
+    </div>
 
     <div id="id_task">
         {% crispy task_formset task_formset_helper %}
@@ -50,14 +58,6 @@
         {% crispy revision_formset revision_formset_helper %}
     </div>
 
-    <div id="id_contact">
-        {% crispy contact_form %}
-    </div>
-    
-     <div id="id_new_contact">
-        {% crispy new_contact_form %}
-    </div>
-
     <input class="btn btn-primary" type="submit" value="Save">
 
     </form>
@@ -75,12 +75,14 @@
         task_template = $('.task_set:last').clone(true)
         task_template.find('input:hidden[id $= "-DELETE"]').remove();
         $("select[id$='-cogat_id']").select2();
+        $("select[id$='contacts']").select2();
     });
 
     function updateCogatSelect(row) {
         select_elem = row.find("select[id$='-cogat_id']");
         select_elem.select2();
     }
+
      $(document).ready(function() {
         $('#id_link .fieldset-control').formset({
             addText: 'Add Link',
@@ -88,45 +90,35 @@
             prefix: '{{ link_formset.prefix }}',
             formCssClass: '{{ link_formset.prefix }}'
         });
-    })   
 
-    $(document).ready(function() {
         $('#id_revision .fieldset-control').formset({
             addText: 'Add Revision',
             deleteText: 'Remove',
             prefix: '{{ revision_formset.prefix }}',
             formCssClass: '{{ revision_formset.prefix }}'
         });
-    })
 
-    $(document).ready(function() {
         $('#id_investigator .fieldset-control').formset({
             addText: 'Add Investigator',
             deleteText: 'Remove',
             prefix: '{{ investigator_formset.prefix }}',
             formCssClass: '{{ investigator_formset.prefix }}'
         });
-    })
     
-    $(document).ready(function() {
         $('#id_publication_document .fieldset-control').formset({
             addText: 'Add Publication Document',
             deleteText: 'Remove',
             prefix: 'id_publication_document_set',
             formCssClass: 'id_publication_document_set'
         });
-    })
 
-    $(document).ready(function() {
         $('#id_publication_pubmed_link .fieldset-control').formset({
             addText: 'Add Publication PubMed Link',
             deleteText: 'Remove',
             prefix: '{{ publication_pubmed_link_formset.prefix }}',
             formCssClass: '{{ publication_pubmed_link_formset.prefix }}',
         });
-    })
 
-    $(document).ready(function() {
         $('#id_task .fieldset-control').formset({
             addText: 'Add Task',
             deleteText: 'Remove',
@@ -135,13 +127,27 @@
             added: updateCogatSelect,
             formTemplate: task_template
         });
+
+       $('#id_contact .fieldset-control').formset({
+            addText: 'Add Contact',
+            deleteText: 'Remove',
+            prefix: '{{ contact_formset.prefix }}',
+            formCssClass: '{{ contact_formset.prefix }}'
+        });
+
+
+        $("input[id$='-date_set']").datepicker();
     })
 
-    
-    $(document).ready(function() {
-        $("input[id$='-date_set']").datepicker();
-    });
-    
-
+    var contact_toggle = document.getElementById('contact_toggle');
+    contact_toggle.onclick = function() {
+        var div = document.getElementById('id_contact');
+        if (div.style.display !== 'none') {
+            div.style.display = 'none';
+        }
+        else {
+            div.style.display = 'block';
+        }
+    };
     </script>
 {% endblock %}

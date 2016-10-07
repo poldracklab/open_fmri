@@ -88,6 +88,8 @@ class Dataset(models.Model):
     aws_link_url = models.TextField(validators=[URLValidator()], blank=True,
                                     null=True)
     contact = models.ForeignKey('Contact', blank=True, null=True)
+    contacts = models.ManyToManyField('Contact', related_name='m2m_contact',
+                                      blank=True)
     orientation_warning = models.NullBooleanField(default=False, null=True)
     
     def __str__(self):
@@ -111,7 +113,13 @@ class Dataset(models.Model):
                 list_serv_notify(self)
             if settings.TWITTER_NOTIFY:
                 twitter_notify(self)
-            
+
+def migrate_contacts():
+    datasets = Dataset.objects.all()
+    for dataset in datasets:
+        if dataset.contact:
+            dataset.contacts.add(dataset.contact.pk)
+
 def list_serv_notify(dataset):
     subject = "New dataset avaliable on OpenfMRI.org"
     body = render_to_string(

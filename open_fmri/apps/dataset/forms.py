@@ -5,7 +5,7 @@ from django import forms
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.forms import Form, ModelForm
-from django.forms.models import inlineformset_factory
+from django.forms.models import modelformset_factory, inlineformset_factory
 from django.forms.widgets import TextInput
 from django.template.loader import render_to_string
 from django.utils.crypto import salted_hmac
@@ -13,15 +13,17 @@ from django.utils.crypto import salted_hmac
 from ckeditor.widgets import CKEditorWidget
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Column, Field, Fieldset, \
-    Layout, Row, Submit
+from crispy_forms.layout import (ButtonHolder, Column, Field, Fieldset,
+    Layout, Row, Submit)
 
-from dataset.models import Contact, Dataset, FeaturedDataset, Investigator, \
-    Link, PublicationPubMedLink, PublicationDocument, Revision, Task, \
-    UserDataRequest, ReferencePaper
+from dataset.models import (Contact, Dataset, FeaturedDataset, Investigator,
+    Link, PublicationPubMedLink, PublicationDocument, Revision, Task,
+    UserDataRequest, ReferencePaper)
 
 class ContactForm(Form):
-    contact = forms.ModelChoiceField(queryset=Contact.objects.all().order_by('name'))
+    contact = forms.ModelMultipleChoiceField(
+        queryset=Contact.objects.all()
+    )
 
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
@@ -51,7 +53,7 @@ class NewContactForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "New Contact Information",
+                "",
                 Field('name', css_class="form-control"),
                 Field('email', css_class="form-control"),
                 Field('website', css_class="form-control"),
@@ -67,7 +69,7 @@ class DatasetForm(ModelForm):
             'workflow_stage', 'status', 'project_name', 'summary', 
             'sample_size', 'scanner_type', 'accession_number', 
             'acknowledgements', 'license_title', 'license_url', 'curated',
-            'orientation_warning' 
+            'orientation_warning', 'contacts'
         ]
         
         widgets = {
@@ -91,6 +93,7 @@ class DatasetForm(ModelForm):
             Field('license_title', css_class="form-control"),
             Field('license_url', css_class="form-control"),
             Field('orientation_warning', css_class="form-control"),
+            Field('contacts', css_class="form-control"),
         )
         self.helper.form_tag = False
 
@@ -188,13 +191,14 @@ class TaskForm(ModelForm):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['cogat_id'].choices = self.get_cogat_tasks()
 
-    
+ContactFormSet = modelformset_factory(Contact, form=NewContactForm,
+                                      extra=1) 
 
 InvestigatorFormSet = inlineformset_factory(
     Dataset, Investigator, form=InvestigatorForm, extra=1, can_delete=True)
 
-LinkFormSet = inlineformset_factory(
-    Dataset, Link, form=LinkForm, extra=1, can_delete=True)
+LinkFormSet = inlineformset_factory(Dataset, Link, form=LinkForm, extra=1,
+                                    can_delete=True)
 
 PublicationDocumentFormSet = inlineformset_factory(
     Dataset, PublicationDocument, form=PublicationDocumentForm, extra=1, 
@@ -209,6 +213,21 @@ RevisionFormSet = inlineformset_factory(
 
 TaskFormSet = inlineformset_factory(
     Dataset, Task, form=TaskForm, extra=1, can_delete=True)
+
+class ContactFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(ContactFormSetHelper, self).__init__(*args, **kwargs)
+        self.layout = Layout(
+            Fieldset(
+                "",
+                Field('name', css_class="form-control"),
+                Field('email', css_class="form-control"),
+                Field('website', css_class="form-control"),
+                css_class="fieldset-control form-control"
+            )
+        )
+        self.form_tag = False
+
 
 class InvestigatorFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):

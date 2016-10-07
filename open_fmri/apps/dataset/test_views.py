@@ -7,7 +7,7 @@ from django.test import TestCase, RequestFactory
 from model_mommy import mommy as ModelFactory
 
 from dataset.models import Dataset, FeaturedDataset
-from dataset.views import DatasetCreate
+from dataset.views import DatasetCreateUpdate
 
 class DatasetViewTestCase(TestCase):
     def setUp(self):
@@ -160,7 +160,6 @@ class DatasetViewTestCase(TestCase):
         response = self.client.post(
             reverse('dataset_update', args=[dataset.accession_number]), data)
         self.assertEqual(response.status_code, 200)
-
 
     '''
     Test to see if the detail view is displaying the three values that the 
