@@ -96,15 +96,6 @@
         provided in the <strong>scan_key.txt</strong> or the <strong>.json</strong> sidecar file for analysis purposes.</strong> 
     </p>
 
-    {% if object.orientation_warning %}
-    <p>
-        <strong style="color: red"> Warning: some of NIFTI files included in this dataset are missing orientation information 
-        (sform and qform). Distinguishing between left and right might not be possible. We are looking into fixing this issue.
-        <br>
-        More information can be found here: <a href="/dataset-orientation-issues/">https://openfmri.org/dataset-orientation-issues/</a>
-        </strong> 
-    </p>
-    {% endif %}
     {% for revision in revisions %}
     <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
     {% if revision.0.notes %}
