@@ -145,7 +145,7 @@ class DatasetCreateUpdate(LoginRequiredMixin, SingleObjectTemplateResponseMixin,
         context = super(DatasetCreateUpdate, self).get_context_data(**kwargs)
         contact_pk = 0
         # initial = {'contact': contact_pk})
-        context['investigator_formset'] = InvestigatorFormSet()
+        context['investigator_formset'] = InvestigatorFormSet(instance=self.object)
         context['investigator_formset_helper'] = InvestigatorFormSetHelper()
         context['link_formset'] = LinkFormSet(instance=self.object)
         context['link_formset_helper'] = LinkFormSetHelper()
