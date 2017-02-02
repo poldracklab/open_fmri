@@ -27,7 +27,7 @@ from dataset.models import (Contact, Dataset, Investigator,
     UserDataRequest, ReferencePaper)
 from log_parse.models import S3File
 
-requests_cache.install_cache('cache', expire_after=3600)
+# requests_cache.install_cache('cache', expire_after=3600)
 
 class ContactList(LoginRequiredMixin, ListView):
     model = Contact
