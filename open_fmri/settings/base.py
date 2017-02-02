@@ -43,14 +43,12 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'contact',
     'dataset',
     'log_parse',
 )
 
 THIRD_PARTY_APPS = (
     'ckeditor',
-    'contact_form',
     'crispy_forms',
     'opbeat.contrib.django',
     'rest_framework',

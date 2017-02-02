@@ -2,7 +2,6 @@ boto
 celery
 django<1.9
 django-braces
-django-contact-form
 django-ckeditor
 django-crispy-forms
 django-model-utils
