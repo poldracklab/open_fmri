@@ -11,6 +11,7 @@ machine:
 
 test:
   override:
+    - python manage.py makemigrations
     - coverage run --source=dataset manage.py test
   post:
     - coveralls

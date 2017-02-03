@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.contrib.flatpages import views
 from django.views.generic.base import RedirectView, TemplateView
 
-import contact.urls
 import dataset.urls
 from dataset.views import DatasetList, Index
 
@@ -14,7 +13,8 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^dataset/', include(dataset.urls)),
-    url(r'^contact/', include('contact.urls')),
+    url(r'^contact/', TemplateView.as_view(template_name='contact_form.html'),
+        name='contact_form'),
     url(r'^$', Index.as_view(), name='index'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^subscribed/', TemplateView.as_view(template_name='subscribe_success.html')),
