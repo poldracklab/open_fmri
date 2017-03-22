@@ -1,7 +1,12 @@
 from rest_framework import serializers
 
 from dataset.models import Dataset, Investigator, Link, PublicationDocument, \
-    PublicationPubMedLink, Revision, Task
+    PublicationPubMedLink, Revision, Task, Contact
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = ['email', 'name', 'website']
 
 class InvestigatorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,6 +54,7 @@ class DatasetSerializer(serializers.ModelSerializer):
     task_set = TaskSerializer(read_only=True, many=True)
     revision_set = RevisionSerializer(read_only=True, many=True)
     link_set = LinkSerializer(read_only=True, many=True)
+    contacts = ContactSerializer(read_only=True, many=True)
     class Meta:
         model = Dataset
         fields = [
@@ -56,5 +62,5 @@ class DatasetSerializer(serializers.ModelSerializer):
             'sample_size', 'scanner_type', 
             'acknowledgements', 'license_title', 'license_url', 'curated',
             'publicationdocument_set', 'publicationpubmedlink_set', 'task_set',
-            'revision_set', 'investigator_set', 'link_set'
+            'revision_set', 'investigator_set', 'link_set', 'contacts'
         ]
