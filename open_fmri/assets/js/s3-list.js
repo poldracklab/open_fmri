@@ -117,10 +117,7 @@ function getS3Data(marker, html) {
         }
       })
       .fail(function(error, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-        console.error(error);
-        $('#listing').html('<strong>Error: ' + error + '</strong>');
+        $('#listing').html('<strong>Unable to load listing from S3 at this time.</strong>');
       });
 }
 
