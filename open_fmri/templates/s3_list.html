@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    Datasets
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+{% endblock %}
+
+{% block header-image %}
+{% static 'images/banner_view_data.png' %}
+{% endblock %}
+
+{% block content %}
+<h4>Data on S3:</h4>
+<div id="listing"></div>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<!-- the JS variables for the listing -->
+<script type="text/javascript">
+  var S3BL_IGNORE_PATH = true;
+  var BUCKET_URL = 'https://s3.amazonaws.com/openneuro';
+</script>
+
+<!-- the JS to the do the listing -->
+<script type="text/javascript" src="{% static 'js/s3-list.js' %}"></script>
+{% endblock %}

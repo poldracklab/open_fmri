@@ -135,6 +135,8 @@
         {% endfor %}
     {% endif %}
 
+    <h4><a href="{% url 's3_list' %}?prefix={{ object.accession_number }}">Browse Data on S3</a></h4>
+
 {% else %}
     <h1> 
         The dataset <i>{{ object.project_name }}</i> with accession number {{ object.accession_number }} has been 
