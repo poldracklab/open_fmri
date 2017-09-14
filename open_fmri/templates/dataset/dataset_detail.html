@@ -4,6 +4,19 @@
 {{ object.project_name }}
 {% endblock %}
 
+{% block css %}
+{{ block.super }}
+<style type="text/css">
+.detail-block {
+    padding: 9px 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    border: 1px solid #c1c1c1;
+};
+</style>
+{% endblock %}
+
 {% block content %}
 
 
@@ -14,8 +27,12 @@
             (<a href="{% url 'dataset_update' object.accession_number %}">Edit</a>)
         {% endif %}
     </h1>
-    <p>{{ object.summary|safe }}</p>
 
+    <div class="detail-block">
+    <p>{{ object.summary|safe }}</p>
+    </div>
+
+    <div class="detail-block">
     {% if object.task_set.all %}
         <h4>Tasks:</h4>
         {% for task in object.task_set.all %}
@@ -65,7 +82,9 @@
     {% endfor %}
 
     {% endif %}
+    </div>
 
+    <div class="detail-block">
     <h4>Sample Size:</h4>
     <p>{{ object.sample_size }}</p>
 
@@ -90,7 +109,11 @@
 
     <h4>Curated:</h4>
     <p>{{ object.curated|yesno:"Yes,No,Unknown" }}</p>
+    </div>
 
+    <div class="detail-block">
+    <h3><a href="{% url 's3_list' %}?prefix={{ object.accession_number }}">Browse Data For All Revisions on S3</a></h3>
+    <h3>Direct Links to data:</h3>
     {% for revision in revisions %}
     <h4>Revision: {{ revision.0.revision_number }} <small>Date Set: {{ revision.0.date_set }}</small></h4>
     {% if revision.0.notes %}
@@ -100,6 +123,7 @@
     </div>
     {% endif %}
     <div class="revision_links">
+
     <h5>Data Associated with Revision:</h5>
         <ul>
         {% for link in revision.1 %}
@@ -134,8 +158,8 @@
             </p>
         {% endfor %}
     {% endif %}
+    </div>
 
-    <h4><a href="{% url 's3_list' %}?prefix={{ object.accession_number }}">Browse Data on S3</a></h4>
 
 {% else %}
     <h1> 
