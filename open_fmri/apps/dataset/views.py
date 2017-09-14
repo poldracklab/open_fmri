@@ -86,6 +86,8 @@ class DatasetDetail(DetailView):
             for link in revision.link_set.all().order_by('title'):
                 try:
                     filename = urlparse(link.url).path 
+                    if not filename:
+                        continue
                     if filename[0] == '/':
                         filename = filename[1:]
                     count = S3File.objects.get(filename=filename).count
@@ -99,7 +101,7 @@ class DatasetDetail(DetailView):
         for link in links:
             try:
                 filename = urlparse(link.url).path 
-                if filename[0] == '/':
+                if filename and filename[0] == '/':
                     filename = filename[1:]
                 count = S3File.objects.get(filename=filename).count
                 context_links.append((link, count))
