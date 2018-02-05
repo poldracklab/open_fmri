@@ -5,60 +5,11 @@
 Contact
 {% endblock %}
 {% block content %}
-    <h1>Contact</h1>
+    <h1>Submit new dataset</h1>
     <p>
-        Requirements for data set submission to OpenfMRI:
-        <br/>
-        <ul>
-            <li>
-            The data when uploaded must be raw and unprocessed. Researchers who 
-            wish to share processed data should use 
-            <a href="http://neurovault.org">http://neurovault.org</a> 
-            instead.
-            </li>
-            <li>
-            The dataset must include some form of brain imaging data. All forms of 
-            MRI data are accepted including structural, functional, and diffusion 
-            MRI. Electrophysiological data will be accepted if they accompany a
-            MRI dataset.
-            </li>
-            <li>
-            All data must be deidentified prior to submission, with no links from 
-            the dataset to the individuals who were imaged. Tools that can do this 
-            include 
-            <a href="https://pypi.python.org/pypi/pydeface">pydeface</a> 
-            and
-            <a href="https://www.nitrc.org/projects/deid/">DeID</a>
-            </li>
-            <li>
-            All submitted datasets need to be organized according to the 
-            <a href="https://openfmri.org/data-organization/">Brain Imaging Data Structure (BIDS) standard</a>.
-            Please validate your dataset before submission using the 
-            <a href="http://incf.github.io/bids-validator/">
-                in-browser validator
-            </a>
-             (requires Chrome browser, also available as a 
-            <a href="http://incf.github.io/bids-validator/">command line tool</a>) 
-            <p>
-            Please note that if you upload structural images without the face 
-            removed, you are likely in violation of HIPAA regulations, which 
-            require removal of identifying features in order to consider the data to be deidentified.
-            </p>
-            </li>
-        </ul>
+        OpenfMRI is transitioning to a new platform - <a href="http://OpenNeuro.org">OpenNeuro.org</a>. 
+        Please use the new platform to submit your data.
     </p>
-    <p>Our data curation team will work with you
-        to accurately validate the completeness of your submission and the quality of the metadata to make the dataset
-        easy to reuse thus improving the impact of your contribution. The time required by our curation team to process 
-        submission depends on current workload, complexity of the dataset,
-        quality of the metadata as well as responsiveness of the submitters. However, the curation process takes at least one
-        week. Please take this into consideration when submitting a dataset especially if it is as part of a data paper submission.
-    </p>
-    <p> 
-        If you would like to submit a dataset or have any questions regarding submission process please email us at
-        <a href="mailto:submissions@openfmri.org">submissions@openfmri.org</a>
-    </p>
-    <br/>
 {% endblock %}
 
 {% block javascript %}
